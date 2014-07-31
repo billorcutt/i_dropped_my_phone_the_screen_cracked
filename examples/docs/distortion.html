@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>DISTORTION</title>
+	<link rel="stylesheet" href="../includes/examples.css" type="text/css"/>
+</head>
+<body>
+	
+	<div class="container">
+
+		<h1>Distortion</h1>
+
+		<p>An overview of available distortion effects</p>
+
+		<h2>Waveshaper</h2>
+				
+		<div id="editor1" class="small editor">//create &amp; connect a sampler to overdrive to output
+//crank the drive to 100		
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	waveshaper(100).
+	dac(.25);
+__("sampler").start();
+		</div>
+        <p><button class="play" data-id="editor1">START</button></p>				
+
+ 		<h2>Overdrive</h2>
+		
+		<div id="editor2" class="small editor">//create &amp; connect a sampler to overdrive to output
+//crank the drive to 100		
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	overdrive(100).
+	dac(.25);
+__("sampler").start();
+
+		</div>
+        <p><button class="play" data-id="editor2">START</button></p>
+
+
+		<div id="editor3" class="small editor">//create &amp; connect a sampler to output
+//trebly overdrive		
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	overdrive({drive:50,color:5000,postCut:8000}).
+	dac(.25);
+__("sampler").start();			
+		</div>
+        <p><button class="play" data-id="editor3">START</button></p>
+
+ 		<h2>Ring Modulator</h2>
+
+		<div id="editor4" class="small editor">//create & connect a sampler to output
+//ring modulator - default settings - frequency : 30, distortion : 1
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	ring().
+	dac(.1);
+__("sampler").start();
+		</div>
+        <p><button class="play" data-id="editor4">START</button></p> 
+
+
+		<div id="editor5" class="small editor">//create a sampler and connect to output			
+//ring modulator - default settings - frequency : 30, distortion : 1
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	ring({frequency:2000,distortion:50}).
+	dac(.025);
+__("sampler").start();
+
+		</div>
+        <p><button class="play" data-id="editor5">START</button></p>
+
+ 		<h2>Bit Crusher</h2>
+
+		<div id="editor6" class="small editor">//create & connect a sampler to output
+//ring modulator - default settings - frequency : 30, distortion : 1
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	bitcrusher().
+	dac(.5);
+__("sampler").start();
+		</div>
+        <p><button class="play" data-id="editor6">START</button></p> 
+
+
+		<div id="editor7" class="small editor">//decimate			
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	bitcrusher({bits:2,frequency:.01}).
+	dac();
+__("sampler").start();
+
+		</div>
+        <p><button class="play" data-id="editor7">START</button></p>                          
+
+    </div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../src/cracked.js"></script>
+<script src="../../plugins/cracked.miscellaneous.js"></script>
+<script src="../../plugins/cracked.utilities.js"></script>
+<script src="../../plugins/cracked.oscillators.js"></script>
+<script src="../../plugins/cracked.filters.js"></script>
+<script src="../../plugins/cracked.modulators.js"></script>
+<script src="../../plugins/cracked.noise.js"></script>
+<script src="../../plugins/cracked.distortion.js"></script>
+<script src="../includes/examples.js"></script>
+</body>
+</html>

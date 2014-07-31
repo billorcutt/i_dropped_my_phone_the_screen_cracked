@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>CONTROL</title>
+	<link rel="stylesheet" href="../includes/examples.css" type="text/css"/>
+</head>
+<body>
+	
+	<div class="container">
+
+		<h1>Control</h1>
+
+		<p>A overview of methods of controlling audio nodes</p>		
+
+ 		<h2>Convenience Methods</h2>
+		
+		<div id="editor1" class="medium-small editor">//set up sounds to control
+__().sine().lowpass().gain().dac();
+
+//add a delay in parallel
+__("sine").delay().connect("gain");
+
+//example convenience methods to set a single parameter
+__("lowpass").frequency(200);
+__("sine").detune(6);
+__("gain").volume(.5);
+__("delay").time(1);
+__("delay").feedback(.9);
+		</div>
+        <p><button class="play" data-id="editor1">START</button></p>
+
+		<div id="editor2" class="medium editor">//set up sounds to control
+__().
+	sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+	ring().gain().dac(.5).
+play();	
+
+//use jquery to bind to events from the slider
+$("input[type='range']").bind("input",function(evt){
+	if(evt && evt.target) {
+		var mods = $(evt.target).data("modifies");
+		if(mods==="speed") {
+			__("sampler").speed(evt.target.value);
+		} else if(mods==="distortion") {
+			__("ring").distortion(evt.target.value);
+		} else if(mods==="frequency") {
+			__("ring").frequency(evt.target.value);
+		}
+	}
+});				
+		</div>
+        <input type="range" data-modifies="speed" data-selector="sampler" step=".001" min=0.001 max=2> <span>Speed</span>
+        <input type="range" data-modifies="distortion" data-selector="ring" min=1 max=100> <span>Distortion</span> 
+        <input type="range" data-modifies="frequency" data-selector="ring" min=1 max=2000> <span>Frequency</span>                  
+        <p><button class="play" data-id="editor2">START</button></p>         	        		
+
+ 		<h2>Attr</h2>
+		
+		<div id="editor3" class="medium-small editor">//set up sounds to control
+__().sine().lowpass().gain().dac();
+
+//add a delay in parallel
+__("sine").delay().connect("gain");
+
+//use attr() to set any attribute in any combination on a node
+__("lowpass").attr({"frequency":200,"q":5});
+__("sine").attr({"detune":6});
+__("gain").attr({"gain":.5});
+__("delay").attr({"delay":1,feedback:.9});			
+		</div>
+        <p><button class="play" data-id="editor3">START</button></p>
+
+        </div>
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../src/cracked.js"></script>
+<script src="../../plugins/cracked.miscellaneous.js"></script>
+<script src="../../plugins/cracked.delays.js"></script>
+<script src="../../plugins/cracked.distortion.js"></script>
+<script src="../../plugins/cracked.utilities.js"></script>
+<script src="../../plugins/cracked.oscillators.js"></script>
+<script src="../../plugins/cracked.filters.js"></script>
+<script src="../includes/examples.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>BASICS</title>
+<link rel="stylesheet" href="includes/examples.css" type="text/css"/>
+</head>
+<body>
+	
+	<div class="container">
+
+		<h1>Quick Start</h1>
+
+
+ 		<h2>Create</h2>
+		<p>Create and connect nodes in one step by chaining their methods together. Sound flows from left to right.</p>
+		<div id="editor1" class="tiny editor">
+//create & connect a sine, lowpass, wavershaper &amp; compressor to output			
+__().sine().lowpass().waveshaper().compressor().dac().play();			
+		</div>
+        <p><button class="play" data-id="editor1">START</button></p>
+               
+
+		<h2>Configure</h2>
+		<p>Set key values on audio nodes with a single argument or use JSON to set multiple parameters at once.</p>
+		<div id="editor2" class="tiny editor">//create a sawtooth oscillator with a frequency of 180, a lowpass filter
+//with a frequency of 175 and Q of 20 and a dac node with a gain of 0.25.
+__().saw(180).lowpass({frequency:175,q:20}).dac(.25).play();			
+		</div>
+        <p><button class="play" data-id="editor2">START</button></p>
+		
+
+		<h2>Connect</h2>
+		<p>Connect nodes to existing nodes by referring to them using CSS style selectors. You can use type, id & class selectors</p>
+		<div id="editor3" class="medium-small editor">//give the lowpass an id and and the compressor a class name so we can find 
+//them later
+__().square().lowpass({id:"foo"}).compressor({class:"bar"}).dac(.25);
+
+//create a reverb and connect its input to the existing square wave
+//and its output to the previous instantiated compressor, using
+//node type and class name as selectors.	
+__("square").reverb().connect(".bar");
+
+//create a waveshaper and connect it to the existing lowpass and 
+//the system output using id and node name
+__("#foo").waveshaper().connect("dac").play();
+		</div>
+        <p><button class="play" data-id="editor3">START</button></p>
+ 
+
+		<h2>Control</h2>
+		<p>Control nodes by using selectors to get a reference and simple setters to control parameters</p>
+		<div id="editor4" class="medium-large editor">//create a triange wave and connect it to output
+//give ids to the oscillator and gain nodes
+__().triangle({id:"t1"}).gain({id:"g1"}).dac();
+
+//start the oscillator
+__("#t1").start();
+
+//use jquery to bind to events from the slider
+$("input[type='range']").bind("input",function(evt){
+	if(evt && evt.target) {
+		//change the frequency of the triangle
+		//with values from the slider
+		__("#t1").frequency(evt.target.value);
+	}
+});
+
+//bind to the checkbox to mute the gain
+$("input[type='checkbox']").bind("click",function(evt){
+	if(evt && evt.target) {
+		var state = evt.target.checked ? 0 : 1;
+		//if checked, set the gain to 0
+		//unchecked, set gain to 1	
+		__("#g1").volume(state);
+	}
+});
+		</div>
+
+		<input id="freq_slider" type="range" label="frequency" min=80 max=800> 
+		<span>Frequency</span> <input type="checkbox"> <span>Mute</span>
+        <p><button class="play" data-id="editor4">START</button></p>
+				
+	</div>
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../src/cracked.js"></script>
+<script src="../plugins/cracked.utilities.js"></script>
+<script src="../plugins/cracked.miscellaneous.js"></script>
+<script src="../plugins/cracked.oscillators.js"></script>
+<script src="../plugins/cracked.filters.js"></script>
+<script src="../plugins/cracked.experimental.js"></script>
+<script src="../plugins/cracked.delays.js"></script>
+<script src="../plugins/cracked.envelopes.js"></script>
+<script src="../plugins/cracked.noise.js"></script>
+<script src="../plugins/cracked.distortion.js"></script>
+<script src="includes/examples.js"></script>
+
+<script>
+$(function(){
+//this does the real work
+	$("#freq_slider").bind("input",function(evt){
+		if(evt && evt.target) {
+
+			__("editor4 triangle").frequency(evt.target.value);
+		}
+	});
+
+	$("input[type='checkbox']").bind("click",function(evt){
+		if(evt && evt.target) {
+			var state = evt.target.checked ? 0 : 1;
+			__("editor4 gain").volume(state);
+		}
+	});
+});
+</script>
+
+
+</body>
+</html>

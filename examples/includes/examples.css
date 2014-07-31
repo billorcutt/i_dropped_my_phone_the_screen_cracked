@@ -1,0 +1,49 @@
+	body {
+		font-family:Verdana, Arial, Helvetica, sans-serif;
+	}
+
+	button {
+		font-size: 15px;
+		margin-bottom: 20px;
+	}
+		
+	.container {
+		padding:30px 0 0 50px;
+	}
+
+    .editor { 
+        position: relative;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+		width:1000px;
+    }
+
+	.large {
+		height:1000px;
+	}
+
+    .large-medium {
+        height:850px;
+    }
+
+	.medium-large {
+		height:700px;
+	}	
+	
+	.medium {
+		height:500px;
+	}
+
+	.medium-small {
+		height:325px;
+	}	
+	
+	.small {
+		height:250px;
+	}
+	
+	.tiny {
+		height:125px;	
+	}
