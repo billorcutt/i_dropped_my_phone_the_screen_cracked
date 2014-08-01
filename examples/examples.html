@@ -16,6 +16,23 @@
 		
 <script>
 
+ cracked.microsynth = function(params) {
+  __().begin("microsynth",params).sine().gain(0).end("microsynth");
+     return cracked;
+ };
+
+//create two instances with different ids
+__().microsynth({id:"micro1"}).lowpass().dac();
+__().microsynth({id:"micro2"}).lowpass().connect("dac");
+
+ //change the frequency in the first
+ __("#micro1").frequency(1200);
+ //change the frequency in the second
+ __("#micro2").frequency(100);
+
+ //set the gain in both and start them
+ __("microsynth").volume(1).start();
+
 //create & connect white noise and notch filter to output			
 //__().white().notch(440).dac(.25);
 //__("white").start();

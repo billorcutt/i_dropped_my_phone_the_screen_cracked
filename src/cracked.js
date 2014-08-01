@@ -65,6 +65,7 @@
  * \_\_().sine();
  * \_\_.lowpass();
  * \_\_.dac();
+ *
  * //Create but don't connect
  * \_\_().sine();
  * \_\_().lowpass();
@@ -161,11 +162,12 @@
      * \_\_.sine().lowpass().dac();
      * </code>
      *
-     * If there's no previous nodes, then a new node will look for selected nodes to
+     * If there are no previous nodes, then a new node will look for selected nodes to
      * connect to.
      * <code>
      * //create and connect sine->lowpass->dac
      * \_\_().sine().lowpass().dac();
+     *
      * //create a new delay and connect to the previously instantiated sine.
      * \_\_("sine").delay();
      * </code>
@@ -175,6 +177,7 @@
      * <code>
      * //same as above, but connect the new delay's output the existing dac
      * \_\_().sine().lowpass().dac();
+     *
      * //create a new delay and connect to the previously instantiated sine.
      * \_\_("sine").delay().connect("dac");
      * </code>
@@ -194,6 +197,22 @@
      * \_\_().sine();
      * \_\_().lowpass();
      * \_\_().dac();
+     * </code>
+     *
+     * ##Connecting Modulators##
+     * If a node was created with a "modulates" parameter, then it will attempt to
+     * connect to the following node as a modulator using the value of "modulates"
+     * as the type of audio param to connect to.
+     * <code>
+     * //create & connect sine->lowpass->dac
+     * \_\_.sine().lowpass().dac();
+     *
+     * //the gain node will connect to the sine's frequency audio param
+     * \_\_.saw(5).gain(gain:100,modulates:"frequency").connect("sine");
+     *
+     * //the gain node will connect to the lowpass's q audio param
+     * \_\_.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
+     *
      * </code>
      *
      *
@@ -337,25 +356,49 @@
   }
 
     /**
-     * #Macros#
-     * Macros are a key feature of Cracked that allow any chain of audio nodes
-     * to be encapsulated in a single unit. The begin(<macro-name>) & end(<macro-name>)
-     * methods mark the beginning and end of a macro chain. Once defined, a macro effectively
-     * becomes a unit and can be selected by type/id/class, etc. For example:
+     * #Macros &amp; Plugins#
+     * Macros allow any chain of audio nodes to be encapsulated as a single unit.
+     * The begin(&lt;macro-name&gt;) & end(&lt;macro-name&gt;) methods marking the beginning and
+     * end of a macro chain. Once defined, a macro effectively becomes a unit and
+     * can be selected by type/id/class like any other node. Parameter change requests
+     * will be mapped to any audio params nodes within the macro that match the
+     * request. For example:
      * <code>
      * //define a simple macro named "microsynth"
-     * __().begin("microsynth").sine().gain(0).end("microsynth");
-     *
-     * //start it up
-     * __("microsynth").start();
-     *
-     * //set the level to 1
-     * __("microsynth").volume(1);
+     * \_\_().begin("microsynth").sine().gain(0).dac().end("microsynth");
      *
      * //change the frequency of the sine
-     * __("microsynth").frequency(800);
+     * \_\_("microsynth").frequency(100);
+     *
+     * //start it up
+     * \_\_("microsynth").start();
+     *
+     * //set the level
+     * \_\_("microsynth").volume(.5);
      *</code>
-     * Macros can be nested to any level and are a basis for the Cracked plugin architecture.
+     * If we wrap the a macro in a function, it becomes a plugin and now it's possible
+     * to instantiate as many microsyths as we need, connect them to other nodes,
+     * address them individually or as a group, nest them within other macros, etc.
+     * <code>
+     * cracked.microsynth = function(params) {
+     * //pass any params to begin() so they can associated with the instance
+     *  \_\_().begin("microsynth",params).sine().gain(0).end("microsynth");
+     *  //return cracked so we can chain methods
+     *  return cracked;
+     * }
+     *
+     * //create two instances with different ids
+     * \_\_().microsynth({id:"micro1"}).lowpass().dac();
+     * \_\_().microsynth({id:"micro2"}).lowpass().connect("dac");
+     *
+     * //change the frequency in the first
+     * \_\_("#micro1").frequency(1200);
+     * //change the frequency in the second
+     * \_\_("#micro2").frequency(600);
+     *
+     * //set the gain in both and start them
+     * \_\_("microsynth").volume(1).start();
+     * </code>
      *
      */
 
@@ -550,333 +593,10 @@
         return cracked;
     };
 
-  //Audio Nodes
-
-/**
- * Native Script node
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.buffersize=4096]
- * @param {Number} [userParams.channels=1]
- * @param {Function} [userParams.fn=defaultFunction]
- */
-  cracked.script = function(userParams) {
-    userParams = userParams || {};
-    var buffersize = userParams.buffersize || 4096;
-    var channels = userParams.channels || 1;
-    var fn = userParams.fn || defaultFunction;
-    var creationParams = {
-      "method": "createScriptProcessor",
-      "methodParams": [buffersize, channels, channels],
-      "settings": {
-        "onaudioprocess": fn
-      }
-    };
-    createNode("script", creationParams, userParams);
-
-    //default function just passes sound thru
-    function defaultFunction(e) {
-      var input = e.inputBuffer.getChannelData(0);
-      var output = e.outputBuffer.getChannelData(0);
-      for (var i = 0; i < buffersize; i++) {
-        output[i] = input[i];
-      }
-    }
-
-    return cracked;
-  };
-
-/**
- * Native Waveshaper
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.drive=50]
- */
-  cracked.waveshaper = function(userParams) {
-
-    userParams = userParams || {};
-    var drive = __.isObj(userParams) ? 
-        cracked.ifUndef(userParams.drive, 50) : 
-        userParams;
-    var creationParams = {
-      "method": "createWaveShaper",
-      "settings": {
-        "curve": userParams.curve || makeCurve(drive),
-        "mapping":{
-            "distortion": {
-                "path": "curve",
-                "fn": (function() {
-                    return makeCurve;
-                })()
-            }
-        }
-      }
-    };
-    //tbd need a way to modifiy the param to makeCurve
-    createNode("waveshaper", creationParams, userParams);
-
-    return cracked;
-
-    //curve generator for waveshaper
-    function makeCurve(amount) {
-      var k = __.isNum(amount) ? amount : 50,
-        n_samples = 44100, //hard coded
-        curve = new Float32Array(n_samples),
-        deg = Math.PI / 180,
-        x;
-      for (var i = 0; i < n_samples; ++i) {
-        x = i * 2 / n_samples - 1;
-        curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
-      }
-      return curve;
-    }
-
-  };
-
-/**
- * Native Compressor
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
- * @param {Number} [userParams.knee=30] in decibels, range of 0 to 40
- * @param {Number} [userParams.ratio=12] nominal range of 1 to 20
- * @param {Number} [userParams.attack=0.003] time in seconds, nominal range of 0 to 1
- * @param {Number} [userParams.release=0.250] time in seconds, nominal range of 0 to 1
- */
-  cracked.compressor = function(userParams) {
-    var mapping = {
-      "threshold": "threshold.value",
-      "knee": "knee.value",
-      "ratio": "ratio.value",
-      "attack": "attack.value",
-      "release": "release.value"
-    };
-    var creationParams = {
-      "method": "createDynamicsCompressor",
-      "settings": {},
-      "mapping": mapping
-    };
-    createNode("compressor", creationParams, userParams);
-    return cracked;
-  };
-
-/**
- * Native Gain
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
- */
-  cracked.gain = function(userParams) {
-    var gain = __.isNum(userParams) ? userParams : 1;
-    var params = __.isObj(userParams) ? userParams : {
-      "gain": gain
-    };
-    var creationParams = {
-      "method": "createGain",
-      "settings": {},
-      "mapping": {
-        "gain": "gain.value"
-      }
-    };
-    createNode("gain", creationParams, params);
-    return cracked;
-  };
-
-/**
- * Naming this with prefix native so I can use "delay" as a plugin name
- * max buffer size three minutes
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.delay=0] in seconds.
- */
-  cracked.nativeDelay = function(userParams) {
-    var creationParams = {
-      "method": "createDelay",
-      "methodParams": [179.0],
-      "settings": {},
-      "mapping": {
-        "delay": "delayTime.value"
-      }
-    };
-    createNode("delay", creationParams, userParams);
-    return cracked;
-  };
-
-/**
- * Native oscillator, used the oscillator plugins
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
- */
-  cracked.osc = function(userParams) {
-    var creationParams = {
-      "method": "createOscillator",
-      "settings": {},
-      "mapping": {
-        "frequency": "frequency.value",
-        "detune": "detune.value"
-      }
-    };
-    createNode("osc", creationParams, userParams);
-    return cracked;
-  };
-
-/**
- * Native biquad filter, used by filter plugins
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.q=0]
- * @param {String} [userParams.gain=0]
- * @param {String} [userParams.type=lowpass]
- */
-  cracked.biquadFilter = function(userParams) {
-    var creationParams = {
-      "method": "createBiquadFilter",
-      "settings": {},
-      "mapping": {
-        "q": "Q.value",
-        "frequency": "frequency.value",
-        "gain": "gain.value"
-      }
-    };
-    createNode("biquadFilter", creationParams, userParams);
-    return cracked;
-  };
-
-/**
- * Native convolver, used by reverb
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {String} [userParams.path] path to remote impulse
- * @param {Function} [userParams.fn] function to generate impulse
- */
-  cracked.convolver = function(userParams) {
-
-    userParams = userParams || {};
-    var creationParams = {
-      "method": "createConvolver",
-      "settings": {}
-    };
-    var node = createNode("convolver", creationParams, userParams);
-    loadBuffer(userParams, node);
-
-    return cracked;
-
-  };
-
-/**
- * Native destination, used by the dac plugin
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- */
-  cracked.destination = function(userParams) {
-    createNode("destination", {
-      "method": "createDestination",
-      "settings": {}
-    }, userParams);
-    return cracked;
-  };
-
-/**
- * Native audio source node and buffer combined.
- * @function
- * @public
- * @param {Object} [userParams] map of optional values
- * @param {String} [userParams.path] path to remote file
- * @param {Number} [userParams.speed=1] playback speed
- * @param {Number} [userParams.start=0] play head start value in seconds
- * @param {Number} [userParams.end=0] play head end value in seconds
- * @param {Boolean} [userParams.loop=false] loop?
- */
-  cracked.buffer = function(userParams) {
-    var creationParams = {
-      "method": "createBufferSource",
-      "settings": {},
-      "mapping": {
-        "speed": "playbackRate.value",
-        "start": "loopStart",
-        "end": "loopEnd"
-      }
-    };
-    var buffersrc = createNode("buffer", creationParams, userParams);
-    loadBuffer(userParams, buffersrc);
-    return cracked;
-  };
-
-/**
- * helper function for buffer & reverb
- * @function
- * @private
- */
-  function loadBuffer(userParams, node) {
-    if (userParams && userParams.path && node) {
-      loadBufferFromFile(userParams.path, node.getNativeNode());
-    } else if (userParams && userParams.fn && node) {
-      loadBufferWithData(userParams.fn, node.getNativeNode());
-    }
-  }
-
-/**
- * helper function for buffer & reverb
- * @function
- * @private
- */
-  function loadBufferWithData(dataFunction, buffersrc) {
-    if (dataFunction && buffersrc) {
-      buffersrc.buffer = dataFunction(_context);
-    }
-  }
-
-/**
- * helper function for buffer & reverb
- * @function
- * @private
- */
-  function loadBufferFromFile(path_to_soundfile, buffersrc) {
-    if (path_to_soundfile && buffersrc) {
-      fetchSoundFile(path_to_soundfile, function(sndArray) {
-        _context.decodeAudioData(sndArray, function(buf) {
-          buffersrc.buffer = buf;
-          logToConsole("sound loaded");
-        }, function() {
-          logToConsole("Couldn't load audio");
-        });
-      });
-    }
-  }
-
-/**
- * asynchronously fetches a file for the buffer and returns an arraybuffer
- * @function
- * @private
- */
-  function fetchSoundFile(path, callback) {
-    if (path && callback) {
-      var request = new XMLHttpRequest();
-      request.open("GET", path, true); // Path to Audio File
-      request.responseType = "arraybuffer"; // Read as Binary Data
-      request.onload = function() {
-        if (__.isFun(callback)) {
-          callback(request.response);
-        }
-      };
-      request.send();
-    }
-  }
-
-  // Mutators
+    /**
+     * #Mutators#
+     *
+     */
 
 /**
  * Calls start() on the currently selected nodes
@@ -1518,7 +1238,16 @@
     }
   }
 
-  // Time
+    /**
+     * #Loop#
+     *
+     */
+
+    /**
+     * global vars for loop
+      * @type {boolean}
+     * @private
+     */
 
   var _isLoopRunning = false,
     _loopStepSize = 16,
@@ -1686,6 +1415,335 @@
       _loopListeners = tmp;
     }
   };
+
+    /**
+     * #Native Audio Nodes#
+     * Only the native implementations of web audio nodes live in the core.
+     */
+
+    /**
+     * Native Script node
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.buffersize=4096]
+     * @param {Number} [userParams.channels=1]
+     * @param {Function} [userParams.fn=defaultFunction]
+     */
+    cracked.script = function(userParams) {
+        userParams = userParams || {};
+        var buffersize = userParams.buffersize || 4096;
+        var channels = userParams.channels || 1;
+        var fn = userParams.fn || defaultFunction;
+        var creationParams = {
+            "method": "createScriptProcessor",
+            "methodParams": [buffersize, channels, channels],
+            "settings": {
+                "onaudioprocess": fn
+            }
+        };
+        createNode("script", creationParams, userParams);
+
+        //default function just passes sound thru
+        function defaultFunction(e) {
+            var input = e.inputBuffer.getChannelData(0);
+            var output = e.outputBuffer.getChannelData(0);
+            for (var i = 0; i < buffersize; i++) {
+                output[i] = input[i];
+            }
+        }
+
+        return cracked;
+    };
+
+    /**
+     * Native Waveshaper
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.drive=50]
+     */
+    cracked.waveshaper = function(userParams) {
+
+        userParams = userParams || {};
+        var drive = __.isObj(userParams) ?
+            cracked.ifUndef(userParams.drive, 50) :
+            userParams;
+        var creationParams = {
+            "method": "createWaveShaper",
+            "settings": {
+                "curve": userParams.curve || makeCurve(drive),
+                "mapping":{
+                    "distortion": {
+                        "path": "curve",
+                        "fn": (function() {
+                            return makeCurve;
+                        })()
+                    }
+                }
+            }
+        };
+        //tbd need a way to modifiy the param to makeCurve
+        createNode("waveshaper", creationParams, userParams);
+
+        return cracked;
+
+        //curve generator for waveshaper
+        function makeCurve(amount) {
+            var k = __.isNum(amount) ? amount : 50,
+                n_samples = 44100, //hard coded
+                curve = new Float32Array(n_samples),
+                deg = Math.PI / 180,
+                x;
+            for (var i = 0; i < n_samples; ++i) {
+                x = i * 2 / n_samples - 1;
+                curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+            }
+            return curve;
+        }
+
+    };
+
+    /**
+     * Native Compressor
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
+     * @param {Number} [userParams.knee=30] in decibels, range of 0 to 40
+     * @param {Number} [userParams.ratio=12] nominal range of 1 to 20
+     * @param {Number} [userParams.attack=0.003] time in seconds, nominal range of 0 to 1
+     * @param {Number} [userParams.release=0.250] time in seconds, nominal range of 0 to 1
+     */
+    cracked.compressor = function(userParams) {
+        var mapping = {
+            "threshold": "threshold.value",
+            "knee": "knee.value",
+            "ratio": "ratio.value",
+            "attack": "attack.value",
+            "release": "release.value"
+        };
+        var creationParams = {
+            "method": "createDynamicsCompressor",
+            "settings": {},
+            "mapping": mapping
+        };
+        createNode("compressor", creationParams, userParams);
+        return cracked;
+    };
+
+    /**
+     * Native Gain
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
+     */
+    cracked.gain = function(userParams) {
+        var gain = __.isNum(userParams) ? userParams : 1;
+        var params = __.isObj(userParams) ? userParams : {
+            "gain": gain
+        };
+        var creationParams = {
+            "method": "createGain",
+            "settings": {},
+            "mapping": {
+                "gain": "gain.value"
+            }
+        };
+        createNode("gain", creationParams, params);
+        return cracked;
+    };
+
+    /**
+     * Naming this with prefix native so I can use "delay" as a plugin name
+     * max buffer size three minutes
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.delay=0] in seconds.
+     */
+    cracked.nativeDelay = function(userParams) {
+        var creationParams = {
+            "method": "createDelay",
+            "methodParams": [179.0],
+            "settings": {},
+            "mapping": {
+                "delay": "delayTime.value"
+            }
+        };
+        createNode("delay", creationParams, userParams);
+        return cracked;
+    };
+
+    /**
+     * Native oscillator, used the oscillator plugins
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.frequency=440]
+     * @param {Number} [userParams.detune=0]
+     * @param {String} [userParams.type=sine]
+     */
+    cracked.osc = function(userParams) {
+        var creationParams = {
+            "method": "createOscillator",
+            "settings": {},
+            "mapping": {
+                "frequency": "frequency.value",
+                "detune": "detune.value"
+            }
+        };
+        createNode("osc", creationParams, userParams);
+        return cracked;
+    };
+
+    /**
+     * Native biquad filter, used by filter plugins
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {Number} [userParams.frequency=440]
+     * @param {Number} [userParams.q=0]
+     * @param {String} [userParams.gain=0]
+     * @param {String} [userParams.type=lowpass]
+     */
+    cracked.biquadFilter = function(userParams) {
+        var creationParams = {
+            "method": "createBiquadFilter",
+            "settings": {},
+            "mapping": {
+                "q": "Q.value",
+                "frequency": "frequency.value",
+                "gain": "gain.value"
+            }
+        };
+        createNode("biquadFilter", creationParams, userParams);
+        return cracked;
+    };
+
+    /**
+     * Native convolver, used by reverb
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {String} [userParams.path] path to remote impulse
+     * @param {Function} [userParams.fn] function to generate impulse
+     */
+    cracked.convolver = function(userParams) {
+
+        userParams = userParams || {};
+        var creationParams = {
+            "method": "createConvolver",
+            "settings": {}
+        };
+        var node = createNode("convolver", creationParams, userParams);
+        loadBuffer(userParams, node);
+
+        return cracked;
+
+    };
+
+    /**
+     * Native destination, used by the dac plugin
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     */
+    cracked.destination = function(userParams) {
+        createNode("destination", {
+            "method": "createDestination",
+            "settings": {}
+        }, userParams);
+        return cracked;
+    };
+
+    /**
+     * Native audio source node and buffer combined.
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     * @param {String} [userParams.path] path to remote file
+     * @param {Number} [userParams.speed=1] playback speed
+     * @param {Number} [userParams.start=0] play head start value in seconds
+     * @param {Number} [userParams.end=0] play head end value in seconds
+     * @param {Boolean} [userParams.loop=false] loop?
+     */
+    cracked.buffer = function(userParams) {
+        var creationParams = {
+            "method": "createBufferSource",
+            "settings": {},
+            "mapping": {
+                "speed": "playbackRate.value",
+                "start": "loopStart",
+                "end": "loopEnd"
+            }
+        };
+        var buffersrc = createNode("buffer", creationParams, userParams);
+        loadBuffer(userParams, buffersrc);
+        return cracked;
+    };
+
+    /**
+     * helper function for buffer & reverb
+     * @function
+     * @private
+     */
+    function loadBuffer(userParams, node) {
+        if (userParams && userParams.path && node) {
+            loadBufferFromFile(userParams.path, node.getNativeNode());
+        } else if (userParams && userParams.fn && node) {
+            loadBufferWithData(userParams.fn, node.getNativeNode());
+        }
+    }
+
+    /**
+     * helper function for buffer & reverb
+     * @function
+     * @private
+     */
+    function loadBufferWithData(dataFunction, buffersrc) {
+        if (dataFunction && buffersrc) {
+            buffersrc.buffer = dataFunction(_context);
+        }
+    }
+
+    /**
+     * helper function for buffer & reverb
+     * @function
+     * @private
+     */
+    function loadBufferFromFile(path_to_soundfile, buffersrc) {
+        if (path_to_soundfile && buffersrc) {
+            fetchSoundFile(path_to_soundfile, function(sndArray) {
+                _context.decodeAudioData(sndArray, function(buf) {
+                    buffersrc.buffer = buf;
+                    logToConsole("sound loaded");
+                }, function() {
+                    logToConsole("Couldn't load audio");
+                });
+            });
+        }
+    }
+
+    /**
+     * asynchronously fetches a file for the buffer and returns an arraybuffer
+     * @function
+     * @private
+     */
+    function fetchSoundFile(path, callback) {
+        if (path && callback) {
+            var request = new XMLHttpRequest();
+            request.open("GET", path, true); // Path to Audio File
+            request.responseType = "arraybuffer"; // Read as Binary Data
+            request.onload = function() {
+                if (__.isFun(callback)) {
+                    callback(request.response);
+                }
+            };
+            request.send();
+        }
+    }
 
   // Model
 

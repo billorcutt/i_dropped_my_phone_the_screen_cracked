@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         },
         dox: {
             options: {
-                title: "Documentation"
+                title: "Cracked Documentation"
             },
             files: {
                 src: ['src/**/*.js','plugins/**/*.js'],
