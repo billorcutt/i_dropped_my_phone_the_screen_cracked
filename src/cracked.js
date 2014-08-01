@@ -55,9 +55,6 @@
  * //and set their frequencies to 200
  * __("sine,.bar,#foo").frequency(200);</code>
  *
- * cracked is the namespace for public methods and also can be written as a
- * double underscore \_\_
- *
  * If invoked without arguments, cracked() resets the selection/connection state,
  * removing any record of previous nodes and effectively marking the start of
  * a new connection chain. Since a new node will try to connect to any previous
@@ -73,6 +70,11 @@
  * \_\_().lowpass();
  * \_\_().dac();</code>
  *
+ * cracked is also the namespace for public methods and also can be written as a
+ * double underscore \_\_
+ * <code>
+ * \_\_("sine"); //same as cracked("sine")
+ * </code>
  *
  * [See more selector examples](../../examples/docs/selector.html)
  *
@@ -143,6 +145,59 @@
       });
     }
   }
+
+    /**
+     * #Connecting#
+     * By default, at the time they are created, nodes will attempt to connect
+     * to the node immediately prior to them in the graph. It doesn't matter if
+     * the methods are chained together or not:
+     * <code>
+     * //create & connect sine->lowpass->dac
+     * \_\_.sine();
+     * \_\_.lowpass();
+     * \_\_.dac();
+     *
+     * //same as
+     * \_\_.sine().lowpass().dac();
+     * </code>
+     *
+     * If there's no previous nodes, then a new node will look for selected nodes to
+     * connect to.
+     * <code>
+     * //create and connect sine->lowpass->dac
+     * \_\_().sine().lowpass().dac();
+     * //create a new delay and connect to the previously instantiated sine.
+     * \_\_("sine").delay();
+     * </code>
+     *
+     * The connect method below makes it possible to connect outputs to the inputs of
+     * previous instantiated nodes.
+     * <code>
+     * //same as above, but connect the new delay's output the existing dac
+     * \_\_().sine().lowpass().dac();
+     * //create a new delay and connect to the previously instantiated sine.
+     * \_\_("sine").delay().connect("dac");
+     * </code>
+     *
+     * As noted above, if cracked() is invoked without arguments, it resets the
+     * selection/connection state, removing any record of previous nodes and
+     * effectively marking the start of a new connection chain. Since a new node
+     * will try to connect to any previous node, calling \_\_() tells a node that
+     * there is no previous node to connect to.
+     * <code>
+     * //create & connect sine->lowpass->dac
+     * \_\_.sine();
+     * \_\_.lowpass();
+     * \_\_.dac();
+     *
+     * //Create but don't connect
+     * \_\_().sine();
+     * \_\_().lowpass();
+     * \_\_().dac();
+     * </code>
+     *
+     *
+      */
 
 /**
  * chainable method to connect nodes to previously instantiated
