@@ -23,7 +23,7 @@
      * <code>
      *     //create and connect some nodes
      *     \_\_().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
-     *</code><code>
+     * </code> <code>
      *     \_\_("#foo") //selects the sine
      *     \_\_(".bar") //selects the lowpass & the waveshaper
      * </code>
@@ -31,7 +31,7 @@
      * <code>
      *     //create and connect some nodes
      *     \_\_().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
-     *</code><code>
+     * </code><code>
      *     \_\_("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
      * </code>
      *
@@ -336,7 +336,28 @@
     _currentSelector = "";
   }
 
-  // Macro
+    /**
+     * #Macros#
+     * Macros are a key feature of Cracked that allow any chain of audio nodes
+     * to be encapsulated in a single unit. The begin(<macro-name>) & end(<macro-name>)
+     * methods mark the beginning and end of a macro chain. Once defined, a macro effectively
+     * becomes a unit and can be selected by type/id/class, etc. For example:
+     * <code>
+     * //define a simple macro named "microsynth"
+     * __().begin("microsynth").sine().gain(0).end("microsynth");
+     *
+     * //start it up
+     * __("microsynth").start();
+     *
+     * //set the level to 1
+     * __("microsynth").volume(1);
+     *
+     * //change the frequency of the sine
+     * __("microsynth").frequency(800);
+     *</code>
+     * Macros can be nested to any level and are a basis for the Cracked plugin architecture.
+     *
+     */
 
 /**
  * start macro recording, add any user parameters (id,classname,etc)
