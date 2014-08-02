@@ -38,25 +38,32 @@
 
   	function buildBuffer(audioContext) {
 
-  		var rand,
-  			buf = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
-  		for (var i = 0; i < buf.length; i++) {
-  			rand = Math.random() * 2 - 1;
-  			for (var j = 0; j < buf.numberOfChannels; j++) {
-  				buf.getChannelData(j)[i] = buf.numberOfChannels === 2 ? Math.random() * 2 - 1 : rand;
+  		var buf = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buflen = buf.length;
+        var bufNum = buf.numberOfChannels;
+        var buffArr = []; //call only once and cache
+
+        for (var k = 0; k < bufNum; k++) {
+            buffArr.push(buf.getChannelData(k));
+        }
+
+  		for (var i = 0; i < buflen; i++) {
+  			for (var j = 0; j < bufNum; j++) {
+                buffArr[j][i] = Math.random() * 2 - 1;
   			}
   		}
 
-  		pinkify(buf);
+  		pinkify(buf,buffArr);
 
-  		function pinkify(buf) {
+  		function pinkify(buf,buffArr) {
   			var buffer = buf,
   				b = [0, 0, 0, 0, 0, 0, 0],
-  				channelData, white, i, j, pink = [];
-  			for (i = 0; i < buffer.numberOfChannels; i++) {
-  				pink[i] = new Float32Array(buffer.length);
-  				channelData = buffer.getChannelData(i);
-  				for (j = 0; j < buffer.length; j++) {
+  				channelData, white, i, j, pink = [],
+                bufNum=buffer.numberOfChannels, buflen = buffer.length;
+  			for (i = 0; i < bufNum; i++) {
+  				pink[i] = new Float32Array(buflen);
+  				channelData = buffArr[i];
+  				for (j = 0; j < buflen; j++) {
   					white = channelData[j];
   					b[0] = 0.99886 * b[0] + white * 0.0555179;
   					b[1] = 0.99332 * b[1] + white * 0.0750759;
@@ -71,9 +78,9 @@
   				b = [0, 0, 0, 0, 0, 0, 0];
   			}
 
-  			for (i = 0; i < buffer.numberOfChannels; i++) {
-  				for (j = 0; j < buffer.length; j++) {
-  					buffer.getChannelData(i)[j] = pink[i][j];
+  			for (i = 0; i < bufNum; i++) {
+  				for (j = 0; j < buflen; j++) {
+                    buffArr[i][j] = pink[i][j];
   				}
   			}
 
@@ -106,9 +113,15 @@
   		var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
   		var buflen = buffer.length;
   		var bufNum = buffer.numberOfChannels;
+        var buffArr = []; //call only once and cache
+
+        for (var k = 0; k < bufNum; k++) {
+            buffArr.push(buffer.getChannelData(k));
+        }
+
   		for (var i = 0; i < buflen; i++) {
   			for (var j = 0; j < bufNum; j++) {
-  				buffer.getChannelData(j)[i] = (Math.random() * 2 - 1) * 0.44;
+                buffArr[j][i] = (Math.random() * 2 - 1) * 0.44;
   			}
   		}
   		return buffer;
@@ -137,13 +150,20 @@
 
   	function buildBuffer(audioContext) {
   		var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate),
-  			lastOut = 0.0;
-  		for (var i = 0; i < buffer.length; i++) {
-  			for (var j = 0; j < buffer.numberOfChannels; j++) {
+  			lastOut = 0.0, bufLen = buffer.length, bufNum = buffer.numberOfChannels;
+
+        var buffArr = []; //call only once and cache
+
+        for (var k = 0; k < bufNum; k++) {
+            buffArr.push(buffer.getChannelData(k));
+        }
+
+  		for (var i = 0; i < bufLen; i++) {
+  			for (var j = 0; j < bufNum; j++) {
   				var white = Math.random() * 2 - 1;
-  				buffer.getChannelData(j)[i] = (lastOut + (0.02 * white)) / 1.02;
-  				lastOut = buffer.getChannelData(j)[i];
-  				buffer.getChannelData(j)[i] *= 3.5; // (roughly) compensate for gain
+                buffArr[j][i] = (lastOut + (0.02 * white)) / 1.02;
+  				lastOut = buffArr[j][i];
+                buffArr[j][i] *= 3.5; // (roughly) compensate for gain
   			}
   		}
   		return buffer;
