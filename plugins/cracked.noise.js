@@ -108,8 +108,7 @@
   		var bufNum = buffer.numberOfChannels;
   		for (var i = 0; i < buflen; i++) {
   			for (var j = 0; j < bufNum; j++) {
-  				buffer.getChannelData(j)[i] = Math.random() * 2 - 1;
-  				buffer.getChannelData(j)[i] *= 0.44;
+  				buffer.getChannelData(j)[i] = (Math.random() * 2 - 1) * 0.44;
   			}
   		}
   		return buffer;
