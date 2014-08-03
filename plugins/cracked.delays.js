@@ -71,7 +71,7 @@ cracked.delay = function(userParams) {
     id: "delay-input"
   }).
 
-  nativeDelay({
+  native_delay({
     id: "native-delay",
     delay: time,
     mapping: {
@@ -135,7 +135,7 @@ cracked.comb = function(params) {
   __.gain({
     id: "comb-input"
   }).
-  nativeDelay({
+  native_delay({
     id: "comb-delay",
     delay: __.ifUndef(userParams.delay, 0.027),
     mapping: {
