@@ -14,7 +14,7 @@
 
     /**
      * #Selecting#
-     * Cracked uses a subset of [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes
+     * Cracked implements a subset of [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes
      * in the graph. You can refer to a node by its type:
      * <code>
      *     \_\_("compressor") //selects all the compressors in the graph
@@ -272,69 +272,6 @@
   }
 
 /**
- * log selected nodes to console if any.
- * <code>
- * //create and connect sine -> lowpass -> dac
- * \_\_().sine().lowpass().dac();
- *
- * //logs the [oscillatorNode] object to the console
- * \_\_("sine").log()</code>
- *
- * @public
- * @function
- */
-  cracked.log = function() {
-    var arr = [];
-    logNodes(null,arr);
-    console.log(arr);
-  };
-
-    /**
-     * helper for above
-     * @private
-     * @param node
-     * @param arr
-     */
- function logNodes(node,arr) {
-     if (_currentSelector) {
-         var nodes = arr || [];
-         var selectedNodes = node || _selectedNodes;
-         selectedNodes.forEach(function(nodeID, i, array) {
-             var tmp = getNodeWithUUID(nodeID).getNativeNode();
-             //recurse thru the node array if its a macro
-             if(__.isArr(tmp)) {
-                 logNodes(tmp,nodes);
-             }
-             //if we're in outer loop, add to the output array
-             if(array===_selectedNodes) {
-                 nodes.push(tmp);
-             }
-         });
-     }
- }
-
-/**
- * return the length of selected nodes array
- * <code>
- * //create and connect sine -> lowpass -> dac
- * \_\_().sine().lowpass().dac();
- *
- * //returns 2
- * \_\_("sine,lowpass").size();</code>
- *
- * @public
- * @function
- * @returns {Number}
- */
-  cracked.size = function() {
-    if (_selectedNodes.length) {
-      return _selectedNodes.length;
-    } else {
-      return 0;
-    }
-  };
-
-/**
  * reset state
  * @function
  * @private
@@ -354,6 +291,148 @@
     _selectedNodes = [];
     _currentSelector = "";
   }
+
+
+    /**
+     * #Mutators#
+     * Core methods to interact with audio nodes
+     */
+
+    /**
+     * Calls start() on the currently selected nodes
+     * Throws no error if there are no selected nodes
+     * that have a start method
+     * @function
+     * @public
+     */
+    cracked.start = function() {
+        if (!recordingMacro()) {
+            for (var i = 0; i < _selectedNodes.length; i++) {
+                var currNode = getNodeWithUUID(_selectedNodes[i]);
+                if (currNode && !currNode.getIsPlaying()) {
+                    currNode.start(0);
+                }
+            }
+        }
+        return cracked;
+    };
+
+    /**
+     * Calls stop() on the currently selected nodes
+     * Throws no error if there are no selected nodes
+     * that have a stop method
+     * @function
+     * @public
+     */
+    cracked.stop = function() {
+        for (var i = 0; i < _selectedNodes.length; i++) {
+            var currNode = getNodeWithUUID(_selectedNodes[i]);
+            if (currNode && currNode.getIsPlaying()) {
+                currNode.stop(0);
+            }
+        }
+        return cracked;
+    };
+
+    /**
+     * Public method to ramp a parameter on currently selected nodes
+     * Value & Endtime parameters can be numbers or arrays of numbers
+     * for multisegement ramps. Initial value param is optional, if
+     * omitted, then the current value is used as the initial value.
+     * If loop is running, then ramp start times are snapped to the
+     * sequencer grid.
+     * @function
+     * @public
+     * @param {Number|Array} value target value to ramp to
+     * @param {Number|Array} endtime length of ramp in seconds
+     * @param {String} paramToRamp name of parameter to ramp
+     * @param {Number} initial value to start the ramp at
+     *
+     */
+    cracked.ramp = function(value, endtime, paramToRamp, initial) {
+        for (var i = 0; i < _selectedNodes.length; i++) {
+            var currNode = getNodeWithUUID(_selectedNodes[i]);
+            if (currNode) {
+                currNode.ramp(value, endtime, paramToRamp, null, initial);
+            }
+        }
+        return cracked;
+    };
+
+    /**
+     * Set attribute values on a node. Takes an object with
+     * any number of key:value pairs to set
+     * @function
+     * @public
+     * @param {Object} userParams options object
+     * @param {String} userParams.paramName
+     * @param {} userParams.paramValue
+     *
+     */
+    cracked.attr = function(userParams) {
+        for (var i = 0; i < _selectedNodes.length; i++) {
+            var currNode = getNodeWithUUID(_selectedNodes[i]);
+            if (currNode && userParams) {
+                currNode.attr(userParams);
+            }
+        }
+        return cracked;
+    };
+
+    /**
+     * parses the dot separated keys in the param string and sets the value on the node helper for the above
+     * @private
+     * @param {Object} node native node we are setting on
+     * @param {String} keyStr unresolved parameter name
+     * @param {*} value value to set
+     * @param {Object} map name/param mapping
+     */
+    function applyParam(node, keyStr, value, map) {
+        var mappingResult = resolveParamMapping(keyStr, map),
+            keyArr = mappingResult.path.split("."),
+            keyFunc = mappingResult.fn || function(val) {
+                return val;
+            };
+        for (var i = 0; i < keyArr.length; i++) {
+            if ((i + 1) < keyArr.length && __.isNotUndef(node[keyArr[i]])) {
+                if (node[keyArr[i]].constructor.name === "AudioParam") {
+                    setAudioParam(node[keyArr[i]], value);
+                } else {
+                    node = node[keyArr[i]];
+                }
+            } else if (node && __.isNotUndef(node[keyArr[i]])) {
+                node[keyArr[i]] = keyFunc(value);
+            }
+        }
+    }
+
+    /**
+     * helper for above - set value at time
+     * @private
+     * @param node
+     * @param value
+     */
+    function setAudioParam(node, value) {
+        if (node && __.isFun(node.setValueAtTime)) {
+            node.setValueAtTime(value, _loopTimeToNextStep);
+        }
+    }
+
+    /**
+     * parameter name mapping resolver takes a native node &
+     * the name to be resolved helper for above
+     * @private
+     * @param name param name
+     * @param map mapping hash
+     * @returns {*}
+     */
+    function resolveParamMapping(name, map) {
+        var mapping = map || {},
+            result = mapping[name] || name;
+        return result.path ? result : {
+            path: result
+        };
+    }
 
     /**
      * #Macros &amp; Plugins#
@@ -592,147 +671,6 @@
         }
         return cracked;
     };
-
-    /**
-     * #Mutators#
-     *
-     */
-
-/**
- * Calls start() on the currently selected nodes
- * Throws no error if there are no selected nodes
- * that have a start method
- * @function
- * @public
- */
-  cracked.start = function() {
-    if (!recordingMacro()) {
-      for (var i = 0; i < _selectedNodes.length; i++) {
-        var currNode = getNodeWithUUID(_selectedNodes[i]);
-        if (currNode && !currNode.getIsPlaying()) {
-          currNode.start(0);
-        }
-      }
-    }
-    return cracked;
-  };
-
-/**
- * Calls stop() on the currently selected nodes
- * Throws no error if there are no selected nodes
- * that have a stop method
- * @function
- * @public
- */
-  cracked.stop = function() {
-    for (var i = 0; i < _selectedNodes.length; i++) {
-      var currNode = getNodeWithUUID(_selectedNodes[i]);
-      if (currNode && currNode.getIsPlaying()) {
-        currNode.stop(0);
-      }
-    }
-    return cracked;
-  };
-
-/**
- * Public method to ramp a parameter on currently selected nodes
- * Value & Endtime parameters can be numbers or arrays of numbers
- * for multisegement ramps. Initial value param is optional, if
- * omitted, then the current value is used as the initial value.
- * If loop is running, then ramp start times are snapped to the
- * sequencer grid.
- * @function
- * @public
- * @param {Number|Array} value target value to ramp to
- * @param {Number|Array} endtime length of ramp in seconds
- * @param {String} paramToRamp name of parameter to ramp
- * @param {Number} initial value to start the ramp at
- *
- */
-  cracked.ramp = function(value, endtime, paramToRamp, initial) {
-    for (var i = 0; i < _selectedNodes.length; i++) {
-      var currNode = getNodeWithUUID(_selectedNodes[i]);
-      if (currNode) {
-        currNode.ramp(value, endtime, paramToRamp, null, initial);
-      }
-    }
-    return cracked;
-  };
-
-/**
- * Set attribute values on a node. Takes an object with
- * any number of key:value pairs to set
- * @function
- * @public
- * @param {Object} userParams options object
- * @param {String} userParams.paramName
- * @param {} userParams.paramValue
- *
- */
-  cracked.attr = function(userParams) {
-    for (var i = 0; i < _selectedNodes.length; i++) {
-      var currNode = getNodeWithUUID(_selectedNodes[i]);
-      if (currNode && userParams) {
-        currNode.attr(userParams);
-      }
-    }
-    return cracked;
-  };
-
-/**
- * parses the dot separated keys in the param string and sets the value on the node helper for the above
- * @private
- * @param {Object} node native node we are setting on
- * @param {String} keyStr unresolved parameter name
- * @param {*} value value to set
- * @param {Object} map name/param mapping
- */
-  function applyParam(node, keyStr, value, map) {
-    var mappingResult = resolveParamMapping(keyStr, map),
-      keyArr = mappingResult.path.split("."),
-      keyFunc = mappingResult.fn || function(val) {
-        return val;
-      };
-    for (var i = 0; i < keyArr.length; i++) {
-      if ((i + 1) < keyArr.length && __.isNotUndef(node[keyArr[i]])) {
-        if (node[keyArr[i]].constructor.name === "AudioParam") {
-          setAudioParam(node[keyArr[i]], value);
-        } else {
-          node = node[keyArr[i]];
-        }
-      } else if (node && __.isNotUndef(node[keyArr[i]])) {
-        node[keyArr[i]] = keyFunc(value);
-      }
-    }
-  }
-
-/**
- * helper for above - set value at time
- * @private
- * @param node
- * @param value
- */
-  function setAudioParam(node, value) {
-    if (node && __.isFun(node.setValueAtTime)) {
-      node.setValueAtTime(value, _loopTimeToNextStep);
-    }
-  }
-
-/**
- * parameter name mapping resolver takes a native node &
- * the name to be resolved helper for above
- * @private
- * @param name param name
- * @param map mapping hash
- * @returns {*}
- */
-  function resolveParamMapping(name, map) {
-    var mapping = map || {},
-        result = mapping[name] || name;
-    return result.path ? result : {
-      path: result
-    };
-  }
 
   // Node Creation
 
@@ -1239,7 +1177,7 @@
   }
 
     /**
-     * #Loop#
+     * #Sequencing#
      *
      */
 
@@ -1418,7 +1356,7 @@
 
     /**
      * #Native Audio Nodes#
-     * Only the native implementations of web audio nodes live in the core.
+     * Native implementations of web audio nodes.
      */
 
     /**
@@ -1994,6 +1932,72 @@
   }
 
   // Development/Debug
+    /**
+     * #Debug#
+     */
+
+    /**
+     * log selected nodes to console if any.
+     * <code>
+     * //create and connect sine -> lowpass -> dac
+     * \_\_().sine().lowpass().dac();
+     *
+     * //logs the [oscillatorNode] object to the console
+     * \_\_("sine").log()</code>
+     *
+     * @public
+     * @function
+     */
+    cracked.log = function() {
+        var arr = [];
+        logNodes(null,arr);
+        console.log(arr);
+    };
+
+    /**
+     * helper for above
+     * @private
+     * @param node
+     * @param arr
+     */
+    function logNodes(node,arr) {
+        if (_currentSelector) {
+            var nodes = arr || [];
+            var selectedNodes = node || _selectedNodes;
+            selectedNodes.forEach(function(nodeID, i, array) {
+                var tmp = getNodeWithUUID(nodeID).getNativeNode();
+                //recurse thru the node array if its a macro
+                if(__.isArr(tmp)) {
+                    logNodes(tmp,nodes);
+                }
+                //if we're in outer loop, add to the output array
+                if(array===_selectedNodes) {
+                    nodes.push(tmp);
+                }
+            });
+        }
+    }
+
+    /**
+     * return the length of selected nodes array
+     * <code>
+     * //create and connect sine -> lowpass -> dac
+     * \_\_().sine().lowpass().dac();
+     *
+     * //returns 2
+     * \_\_("sine,lowpass").size();</code>
+     *
+     * @public
+     * @function
+     * @returns {Number}
+     */
+    cracked.size = function() {
+        if (_selectedNodes.length) {
+            return _selectedNodes.length;
+        } else {
+            return 0;
+        }
+    };
 
   (function() {
     if (window.location.href.indexOf("debug=true") !== -1) {
