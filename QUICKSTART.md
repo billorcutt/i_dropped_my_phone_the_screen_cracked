@@ -91,11 +91,10 @@ or by using an assigned id or class:
 
 # Macros &amp; Plugins #
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
-  The begin(&lt;macro-name&gt;) & end(&lt;macro-name&gt;) methods marking the beginning and
-  end of a macro chain. Once defined, a macro effectively becomes a unit and
-  can be selected by type/id/class like any other node. Parameter change requests
-  will be mapped to any audio params nodes within the macro that match the
-  request. For example:
+  The begin() & end() methods mark the beginning and end of a macro chain. 
+  Once defined, a macro effectively becomes a unit and can be selected by 
+  type/id/class like any other node. Parameter change requests will be mapped 
+  to any audio params nodes within the macro that match the request. For example:
   ```javascript
   //define a simple macro named "microsynth"
   __().begin("microsynth").sine().gain(0).dac().end("microsynth");
