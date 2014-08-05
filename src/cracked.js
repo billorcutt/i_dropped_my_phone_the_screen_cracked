@@ -2052,6 +2052,9 @@
     logToConsole("connected "+vals[0]+" - "+vals[1]+" to "+vals[2]+" - "+vals[3]);
   }
 
+  //version
+  cracked.version = "0.1.0";
+
   //set the global entry points
   window.cracked = cracked;
   window.__ = window.__ || cracked;
