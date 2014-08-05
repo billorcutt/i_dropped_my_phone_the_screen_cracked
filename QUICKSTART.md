@@ -1,80 +1,82 @@
 
   Selecting
-  =========
+  ---------
   Cracked implements a subset of [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes
   in the graph. You can refer to a node by its type:
   ```javascript
-      \_\_("compressor") //selects all the compressors in the graph
+      __("compressor") //selects all the compressors in the graph
   ```
   or by using an assigned id or class:
   ```javascript
       //create and connect some nodes
-      \_\_().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
+      __().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
   ```
   ```javascript
-      \_\_("#foo") //selects the sine
-      \_\_(".bar") //selects the lowpass & the waveshaper
+      __("#foo") //selects the sine
+      __(".bar") //selects the lowpass & the waveshaper
   ```
   Selectors can be grouped with a comma and the final match is the combination of both
   ```javascript
       //create and connect some nodes
-      \_\_().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
+      __().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
   ```
   ```javascript
-      \_\_("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
+      __("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
   ```
  
 
  Connecting
- ==========
+ ----------
  By default, at the time they are created, nodes will attempt to connect
  to the node immediately prior to them in the graph. It doesn't matter if
  the methods are chained together or not:
+ 
   ```javascript
- //create & connect sine->lowpass->dac
- \_\_.sine();
- \_\_.lowpass();
- \_\_.dac();
+    //create &amp; connect sine-&lt;lowpass-&lt;dac
 
- //same as
- \_\_.sine().lowpass().dac();
+    __.sine();
+    __.lowpass();
+    __.dac();
+
+    //same as
+    __.sine().lowpass().dac();
   ```
 
  If there are no previous nodes, then a new node will look for selected nodes to
  connect to.
   ```javascript
  //create and connect sine->lowpass->dac
- \_\_().sine().lowpass().dac();
+ __().sine().lowpass().dac();
 
  //create a new delay and connect to the previously instantiated sine.
- \_\_("sine").delay();
+ __("sine").delay();
   ```
 
  The connect method below makes it possible to connect outputs to the inputs of
  previous instantiated nodes.
   ```javascript
  //same as above, but connect the new delay's output the existing dac
- \_\_().sine().lowpass().dac();
+ __().sine().lowpass().dac();
 
  //create a new delay and connect to the previously instantiated sine.
- \_\_("sine").delay().connect("dac");
+ __("sine").delay().connect("dac");
   ```
 
  As noted above, if cracked() is invoked without arguments, it resets the
  selection/connection state, removing any record of previous nodes and
  effectively marking the start of a new connection chain. Since a new node
- will try to connect to any previous node, calling \_\_() tells a node that
+ will try to connect to any previous node, calling __() tells a node that
  there is no previous node to connect to.
   ```javascript
  //create & connect sine->lowpass->dac
- \_\_.sine();
- \_\_.lowpass();
- \_\_.dac();
+ __.sine();
+ __.lowpass();
+ __.dac();
 
  //Create but don't connect
- \_\_().sine();
- \_\_().lowpass();
- \_\_().dac();
+ __().sine();
+ __().lowpass();
+ __().dac();
   ```
 
  Connecting Modulators
@@ -84,19 +86,19 @@
  as the type of audio param to connect to.
   ```javascript
  //create & connect sine->lowpass->dac
- \_\_.sine().lowpass().dac();
+ __.sine().lowpass().dac();
 
  //the gain node will connect to the sine's frequency audio param
- \_\_.saw(5).gain(gain:100,modulates:"frequency").connect("sine");
+ __.saw(5).gain(gain:100,modulates:"frequency").connect("sine");
 
  //the gain node will connect to the lowpass's q audio param
- \_\_.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
+ __.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
 
   ```
 
 
   Macros &amp; Plugins
-  ====================
+  --------------------
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
   The begin(&lt;macro-name&gt;) & end(&lt;macro-name&gt;) methods marking the beginning and
   end of a macro chain. Once defined, a macro effectively becomes a unit and
@@ -105,16 +107,16 @@
   request. For example:
   ```javascript
   //define a simple macro named "microsynth"
-  \_\_().begin("microsynth").sine().gain(0).dac().end("microsynth");
+  __().begin("microsynth").sine().gain(0).dac().end("microsynth");
  
   //change the frequency of the sine
-  \_\_("microsynth").frequency(100);
+  __("microsynth").frequency(100);
  
   //start it up
-  \_\_("microsynth").start();
+  __("microsynth").start();
  
   //set the level
-  \_\_("microsynth").volume(.5);
+  __("microsynth").volume(.5);
   ```
   If we wrap the a macro in a function, it becomes a plugin and now it's possible
   to instantiate as many microsyths as we need, connect them to other nodes,
@@ -122,20 +124,20 @@
   ```javascript
   cracked.microsynth = function(params) {
   //pass any params to begin() so they can associated with the instance
-   \_\_().begin("microsynth",params).sine().gain(0).end("microsynth");
+   __().begin("microsynth",params).sine().gain(0).end("microsynth");
    //return cracked so we can chain methods
    return cracked;
   }
  
   //create two instances with different ids
-  \_\_().microsynth({id:"micro1"}).lowpass().dac();
-  \_\_().microsynth({id:"micro2"}).lowpass().connect("dac");
+  __().microsynth({id:"micro1"}).lowpass().dac();
+  __().microsynth({id:"micro2"}).lowpass().connect("dac");
  
   //change the frequency in the first
-  \_\_("#micro1").frequency(1200);
+  __("#micro1").frequency(1200);
   //change the frequency in the second
-  \_\_("#micro2").frequency(600);
+  __("#micro2").frequency(600);
  
   //set the gain in both and start them
-  \_\_("microsynth").volume(1).start();
+  __("microsynth").volume(1).start();
   ```
