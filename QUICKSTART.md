@@ -7,8 +7,7 @@ or by using an assigned id or class:
   ```javascript
       //create and connect some nodes
       __().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
-  ```
-  ```javascript
+
       __("#foo") //selects the sine
       __(".bar") //selects the lowpass & the waveshaper
   ```
@@ -16,8 +15,7 @@ or by using an assigned id or class:
   ```javascript
       //create and connect some nodes
       __().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
-  ```
-  ```javascript
+
       __("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
   ```
  
