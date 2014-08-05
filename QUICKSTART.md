@@ -1,5 +1,4 @@
 #  Selecting
----------
 Cracked implements a subset of [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
 ```javascript
       __("compressor") //selects all the compressors in the graph
@@ -23,14 +22,12 @@ or by using an assigned id or class:
   ```
  
 # Connecting #
- ----------
  By default, at the time they are created, nodes will attempt to connect
  to the node immediately prior to them in the graph. It doesn't matter if
  the methods are chained together or not:
  
   ```javascript
     //create &amp; connect sine-&lt;lowpass-&lt;dac
-
     __.sine();
     __.lowpass();
     __.dac();
@@ -76,7 +73,6 @@ or by using an assigned id or class:
  __().dac();
   ```
 ## Connecting Modulators ##
-
  If a node was created with a "modulates" parameter, then it will attempt to
  connect to the following node as a modulator using the value of "modulates"
  as the type of audio param to connect to.
@@ -94,7 +90,6 @@ or by using an assigned id or class:
 
 
 # Macros &amp; Plugins #
---------------------
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
   The begin(&lt;macro-name&gt;) & end(&lt;macro-name&gt;) methods marking the beginning and
   end of a macro chain. Once defined, a macro effectively becomes a unit and
