@@ -54,7 +54,7 @@ or by using an assigned id or class:
  __("sine").delay().connect("dac");
   ```
 
- As noted above, if cracked() is invoked without arguments, it resets the
+ If __() is invoked without arguments, it resets the
  selection/connection state, removing any record of previous nodes and
  effectively marking the start of a new connection chain. Since a new node
  will try to connect to any previous node, calling __() tells a node that
