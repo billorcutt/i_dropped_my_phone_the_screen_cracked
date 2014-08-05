@@ -27,7 +27,7 @@ or by using an assigned id or class:
  the methods are chained together or not:
  
   ```javascript
-    //create &amp; connect sine-&lt;lowpass-&lt;dac
+    //create &amp; connect sine->lowpass->dac
     __.sine();
     __.lowpass();
     __.dac();
@@ -73,8 +73,8 @@ or by using an assigned id or class:
  __().dac();
   ```
 ## Connecting Modulators ##
- If a node was created with a "modulates" parameter, then it will attempt to
- connect to the following node as a modulator using the value of "modulates"
+ If a node has a "modulates" parameter, then it will attempt to
+ connect to the next node as a modulator using the value of "modulates"
  as the type of audio param to connect to.
   ```javascript
  //create & connect sine->lowpass->dac
