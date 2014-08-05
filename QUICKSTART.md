@@ -25,7 +25,7 @@ or by using an assigned id or class:
  the methods are chained together or not:
  
   ```javascript
-    //create &amp; connect sine->lowpass->dac
+    //create & connect sine->lowpass->dac
     __.sine();
     __.lowpass();
     __.dac();
