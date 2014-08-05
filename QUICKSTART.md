@@ -78,9 +78,11 @@ or by using an assigned id or class:
  //create & connect sine->lowpass->dac
  __.sine().lowpass().dac();
 
- //the gain node will connect to the sine's frequency audio param
+ //create and connect saw and gain nodes
+ //the gain will connect to the sine's frequency audio param
  __.saw(5).gain(gain:100,modulates:"frequency").connect("sine");
 
+ //create and connect saw and gain nodes
  //the gain node will connect to the lowpass's q audio param
  __.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
 
