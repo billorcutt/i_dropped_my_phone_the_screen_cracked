@@ -1,6 +1,13 @@
 I Dropped My Phone The Screen Cracked
 -------------------------------------
-I Dropped My Phone The Screen Cracked is a [web audio](http://www.w3.org/TR/webaudio/) library that uses method chaining and CSS style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's an example:
+I Dropped My Phone The Screen Cracked is a [web audio](http://www.w3.org/TR/webaudio/) library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's Hello World:
+
+```javascript
+//create and connect sine and system out. start the sine
+__().sine().dac().play();
+```
+and a slightly more complex example:
+
 ```javascript
 
 //create and connect a sine oscillator (frequency of 180), lowpass,
@@ -14,8 +21,8 @@ __("sine").detune(10);
 //filter and set the frequency to 600
 __("#lp1").frequency(600);
 
-//create a sawtooth oscillator, waveshaper & compressor
-//and connect them to the existing system out.
+//create and connect a sawtooth oscillator, waveshaper & compressor
+//and connect the compressor to the existing dac we created above.
 __().saw(800).waveshaper().compressor().connect("dac");
 
 //change the ratio on both compressors to 1
@@ -25,3 +32,6 @@ __("compressor").attr("ratio",1);
 __("sine,saw").start();
 
 ```
+
+
+
