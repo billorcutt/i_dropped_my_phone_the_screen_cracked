@@ -33,7 +33,7 @@ __("sine,saw").start();
 
 If you're curious, there's a one page quickstart [here](QUICKSTART.md), full code documentation here and playground where you try it out here.
 
-And there's some live, editable code samples (&amp; cute cat photos) [here]:(http://idroppedmyphonethescreencracked.tumblr.com) 
+And there's some live, editable code samples (&amp; cute cat photos) [here](http://idroppedmyphonethescreencracked.tumblr.com) 
 
 
 
