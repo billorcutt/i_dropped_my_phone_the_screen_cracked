@@ -1,5 +1,5 @@
 #Creating
-A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to build chains of nodes of connected nodes.
+A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of nodes of connected nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
