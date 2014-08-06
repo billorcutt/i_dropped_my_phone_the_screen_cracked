@@ -1,16 +1,13 @@
 #Creating
-A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create connections.
+A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to build chains of nodes of connected nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
 __().sine().compressor().wavehshaper().gain().dac();
-
-
-
 ```
 
 #  Selecting
-Cracked implements a rudimentary pattern matching, based on [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
+Cracked implements a form of rudimentary pattern matching, based on [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
 ```javascript
 __("compressor") //selects all the compressors in the graph
 ```
@@ -98,7 +95,7 @@ __("sine").delay();
  __.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
 
   ```
-
+# Controlling and Configuring #
 
 # Macros &amp; Plugins #
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
