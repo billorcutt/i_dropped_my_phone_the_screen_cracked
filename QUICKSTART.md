@@ -1,22 +1,33 @@
-#  Selecting
-Cracked implements a subset of [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
+#Creating
+A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create connections.
+
 ```javascript
-      __("compressor") //selects all the compressors in the graph
+//create and connect sine->compressor->waveshaper->gain->dac
+__().sine().compressor().wavehshaper().gain().dac();
+
+
+
+```
+
+#  Selecting
+Cracked implements a rudimentary pattern matching, based on [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
+```javascript
+__("compressor") //selects all the compressors in the graph
 ```
 or by using an assigned id or class:
   ```javascript
-      //create and connect some nodes
-      __().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
+//create and connect some nodes
+__().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
 
-      __("#foo") //selects the sine
-      __(".bar") //selects the lowpass & the waveshaper
+__("#foo") //selects the sine
+__(".bar") //selects the lowpass & the waveshaper
   ```
   Selectors can be grouped with a comma and the final match is the combination of both
   ```javascript
-      //create and connect some nodes
-      __().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
+//create and connect some nodes
+__().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
 
-      __("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
+__("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
   ```
  
 # Connecting #
@@ -25,23 +36,23 @@ or by using an assigned id or class:
  the methods are chained together or not:
  
   ```javascript
-    //create & connect sine->lowpass->dac
-    __.sine();
-    __.lowpass();
-    __.dac();
+//create & connect sine->lowpass->dac
+__.sine();
+__.lowpass();
+__.dac();
 
-    //same as
-    __.sine().lowpass().dac();
+//same as
+__.sine().lowpass().dac();
   ```
 
  If there are no previous nodes, then a new node will look for selected nodes to
  connect to.
   ```javascript
- //create and connect sine->lowpass->dac
- __().sine().lowpass().dac();
+//create and connect sine->lowpass->dac
+__().sine().lowpass().dac();
 
- //create a new delay and connect to the previously instantiated sine.
- __("sine").delay();
+//create a new delay and connect to the previously instantiated sine.
+__("sine").delay();
   ```
 
  The connect method below makes it possible to connect outputs to the inputs of
