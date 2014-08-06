@@ -414,7 +414,8 @@
      */
     function setAudioParam(node, value) {
         if (node && __.isFun(node.setValueAtTime)) {
-            node.setValueAtTime(value, _loopTimeToNextStep);
+            var time = _ignoreGrid ? 0 : _loopTimeToNextStep;
+            node.setValueAtTime(value, time);
         }
     }
 
@@ -1187,15 +1188,16 @@
      * @private
      */
 
-  var _isLoopRunning = false,
-    _loopStepSize = 16,
-    _loopInterval = 100,
-    _loopID = 0,
-    _loopCB = function() {},
-    _loopData = [],
-    _loopIndex = 0,
-    _loopListeners = [],
-    _loopTimeToNextStep = 0;
+  var   _isLoopRunning = false,
+        _ignoreGrid = false,
+        _loopStepSize = 16,
+        _loopInterval = 100,
+        _loopID = 0,
+        _loopCB = function() {},
+        _loopData = [],
+        _loopIndex = 0,
+        _loopListeners = [],
+        _loopTimeToNextStep = 0;
 
 /**
  * main method for loop
@@ -1214,6 +1216,8 @@
         startLoop();
       } else if (arguments[0] === "reset") {
         resetLoop();
+      } else if (arguments[0] === "toggle_grid") {
+        toggleGrid();
       } else if (arguments[0] && __.isObj(arguments[0])) {
         //configure loop with options
         //set data & callback
@@ -1222,6 +1226,16 @@
     }
     return cracked;
   };
+
+    /**
+     * Toggles the state of the _ignoreGrid variable
+     * @private
+     */
+  function toggleGrid() {
+    if (_isLoopRunning) {
+        _ignoreGrid = !_ignoreGrid;
+    }
+  }
 
     /**
      * Starts the loop
@@ -1254,6 +1268,7 @@
   function resetLoop() {
     _loopStepSize = 16;
     _loopInterval = 100;
+    _ignoreGrid = false;
     _loopID = 0;
     _loopCB = function() {};
     _loopData = [];
