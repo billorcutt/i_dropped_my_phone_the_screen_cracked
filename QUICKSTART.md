@@ -1,9 +1,24 @@
+#Namespace#
+Cracked has two global identifiers that all public methods are namespaced under: "cracked" &amp; "__".
+
 #Creating
 A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of connected nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
 __().sine().compressor().wavehshaper().gain().dac();
+```
+# Configuring #
+Nodes are configurable at creation by passing an options JSON object that sets
+several values at once. 
+```javascript
+//create, connect and configure
+__().sine({frequency:800,detune:5,id:"sine1"}).delay({delay:0.5,feedback:0.75}).dac();
+```
+Many node methods will also accept a single parameter to set one key value. 
+```javascript
+//create, connect and configure - sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
+__().sine(800).delay(0.5).dac(0.75);
 ```
 
 #  Selecting
@@ -95,18 +110,8 @@ __("sine").delay();
  __.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
 
   ```
-# Configuring and Controlling #
-Nodes are configurable at creation by passing an options JSON object that sets
-several values at once. 
-```javascript
-//create, connect and configure
-__().sine({frequency:800,detune:5,id:"sine1"}).delay({delay:0.5,feedback:0.75}).dac();
-```
-Many node methods will also accept a single parameter to set one key value. 
-```javascript
-//create, connect and configure - sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
-__().sine(800).delay(0.5).dac(0.75);
-```
+# Controlling #
+
 There are a variety of methods for interacting with nodes. attr() is the generic way
 to set one or more properties on an audio node. ramp() provides a general method for
 changing values over time
