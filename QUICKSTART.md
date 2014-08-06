@@ -1,5 +1,5 @@
 #Creating
-A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of nodes of connected nodes.
+A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of connected nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
@@ -95,7 +95,16 @@ __("sine").delay();
  __.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
 
   ```
-# Controlling and Configuring #
+# Configuring and Controlling #
+Nodes are configurable at creation by passing an options JSON object that sets
+several values at once. Many node methods will also accept a single parameter 
+to set one key value. (sine() for example takes either an options object that can
+set frequency, detune, class or id, or it can take a single number to set just
+frequency).
+
+There are a variety of methods for interacting with nodes. attr() is the generic way
+to set one or more properties on an audio node. ramp() provides a general method for
+changing values over time
 
 # Macros &amp; Plugins #
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
