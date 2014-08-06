@@ -31,9 +31,7 @@ __("compressor").attr("ratio",12);
 __("sine,saw").start();
 ```
 
-If you'd like to see more, there's a [one page quickstart](QUICKSTART.md), [full code documentation](http://www.tumblr.com) and a [playground to try it all out](http://www.tumblr.com).
-
-And there's some live, editable code samples (and cat photos) [here](http://idroppedmyphonethescreencracked.tumblr.com) 
+If you'd like to see more, there's a one page [quickstart](QUICKSTART.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com).
 
 
 
