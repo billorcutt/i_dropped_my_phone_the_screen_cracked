@@ -1,6 +1,12 @@
 #Namespace#
 Cracked has two global identifiers that all public methods are namespaced under: "cracked" &amp; "__".
+```javascript
+//create a sine
+__().sine();
 
+//same as above
+cracked().sine();
+```
 #Creating
 A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of connected nodes.
 
