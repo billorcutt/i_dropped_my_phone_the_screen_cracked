@@ -58,7 +58,7 @@ __("sine").delay();
  //same as above, but connect the new delay's output the existing dac
  __().sine().lowpass().dac();
 
- //create a new delay and connect to the previously instantiated sine.
+ //create a new delay and connect to the previously instantiated sine & dac
  __("sine").delay().connect("dac");
   ```
 
@@ -97,11 +97,16 @@ __("sine").delay();
   ```
 # Configuring and Controlling #
 Nodes are configurable at creation by passing an options JSON object that sets
-several values at once. Many node methods will also accept a single parameter 
-to set one key value. (sine() for example takes either an options object that can
-set frequency, detune, class or id, or it can take a single number to set just
-frequency).
-
+several values at once. 
+```javascript
+//create, connect and configure
+__().sine({frequency:800,detune:5,id:"sine1"}).delay({delay:0.5,feedback:0.75}).dac();
+```
+Many node methods will also accept a single parameter to set one key value. 
+```javascript
+//create, connect and configure - sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
+__().sine(800).delay(0.5).dac(0.75);
+```
 There are a variety of methods for interacting with nodes. attr() is the generic way
 to set one or more properties on an audio node. ramp() provides a general method for
 changing values over time
