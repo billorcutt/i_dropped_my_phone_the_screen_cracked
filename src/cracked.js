@@ -414,7 +414,7 @@
      */
     function setAudioParam(node, value) {
         if (node && __.isFun(node.setValueAtTime)) {
-            var time = _ignoreGrid ? 0 : _loopTimeToNextStep;
+            var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
             node.setValueAtTime(value, time);
         }
     }
