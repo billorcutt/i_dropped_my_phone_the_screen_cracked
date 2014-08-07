@@ -118,9 +118,19 @@ __("sine").delay();
   ```
 # Controlling #
 
-There are a variety of methods for interacting with nodes. attr() is the generic way
+There are two primary methods for interacting with nodes. attr() is the general method
 to set one or more properties on an audio node. ramp() provides a general method for
-changing values over time
+setting values over time.
+```javascript
+//create and connect sine->delay->dac
+__().sine().delay().dac();
+
+//set the delay's delay time to 2
+__("delay").attr({delay:2});
+
+//change the frequency to 800 over 5 seconds
+__("sine").ramp(800, 5,"frequency");
+```  
 
 # Macros &amp; Plugins #
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
