@@ -153,10 +153,10 @@ __("sine").stop();
 __.play(); 
 ``` 
 # Sequencing #
-Sequencing in cracked uses loop() to schedules events on a grid. It's configured with a number of steps and an interval length. Loop emits events while running and it's possible to bind a group of audio nodes to the step event and execute a callback for each step.
+Sequencing in cracked uses loop() to schedules events on a grid. It's configured with a number of steps and an interval length. Loop emits events while running and it's possible to bind any number of audio nodes to the step event and execute a callback for each step.
 ```javascript
-//set up a sound
-__().sine().dac();
+//set up a sound and start it playing
+__().sine().dac().play();
 
 //cinfigure the loop: 8 steps, 100ms between steps
 __.loop({steps:8,interval:100});
@@ -171,6 +171,7 @@ __("sine").bind("step",function(data,index,array){
   //callback iterates over the data array
 },[1,2,3,4,5,6,7,8]);
 
+//start the sequencer
 __.loop("start");
 
 ```
