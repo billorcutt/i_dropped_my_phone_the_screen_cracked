@@ -35,5 +35,7 @@ If you'd like to see more, there's a one page [quickstart](QUICKSTART.md), full 
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
 
+If you'd like to contribute, you can drop a line to cracked@fastinversesquare.com, open an issue for bugs or feature enhancements or best of all, submit a pull request.
+
 
 
