@@ -23,7 +23,7 @@ __().sine({frequency:800,detune:5,id:"sine1"}).delay({delay:0.5,feedback:0.75}).
 ```
 Many node methods will also accept a single parameter to set one key value. 
 ```javascript
-//create, connect and configure-sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
+//create, connect & configure - sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
 __().sine(800).delay(0.5).dac(0.75);
 ```
 
