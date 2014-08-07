@@ -199,6 +199,12 @@
      * Calls start() on the currently selected nodes
      * Throws no error if there are no selected nodes
      * that have a start method
+     * <code>
+     * //create and connect sine->lowpass->dac
+     * \_\_().sine().lowpass().dac();
+     * //start the sine node
+     * \_\_("sine").start();</code>
+     *
      * @function
      * @public
      */
@@ -218,6 +224,11 @@
      * Calls stop() on the currently selected nodes
      * Throws no error if there are no selected nodes
      * that have a stop method
+     * <code>
+     * //create and connect sine->lowpass->dac
+     * \_\_().sine().lowpass().dac();
+     * //start the sine node
+     * \_\_("sine").stop();</code>
      * @function
      * @public
      */
