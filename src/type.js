@@ -1,5 +1,5 @@
 /**
- * Returns a random number between min & max
+ * Returns the 2nd argument if the 1st is undefined
  * @plugin
  * @param {*} test thing to test for undefined
  * @param {*} def default value to return if test is undefined

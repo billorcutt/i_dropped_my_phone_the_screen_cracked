@@ -11,32 +11,6 @@
     _debugEnabled = false,
     _context = window.AudioContext ? new AudioContext() : new webkitAudioContext();
 
-
-    /**
-     * #Selecting#
-     * Cracked implements a subset of [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes
-     * in the graph. You can refer to a node by its type:
-     * <code>
-     *     \_\_("compressor") //selects all the compressors in the graph
-     * </code>
-     * or by using an assigned id or class:
-     * <code>
-     *     //create and connect some nodes
-     *     \_\_().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
-     * </code> <code>
-     *     \_\_("#foo") //selects the sine
-     *     \_\_(".bar") //selects the lowpass & the waveshaper
-     * </code>
-     * Selectors can be grouped with a comma and the final match is the combination of both
-     * <code>
-     *     //create and connect some nodes
-     *     \_\_().sine({id:"foo"}).lowpass({class:"bar"}).waveshaper({class:"bar"}).dac();
-     * </code><code>
-     *     \_\_("#foo,.bar,dac") //selects the sine, lowpass, waveshaper & dac nodes
-     * </code>
-     *
-      */
-
 /**
  * Updates the internal selected nodes array with a collection of audio
  * nodes matching the selector provided. Type, Class & Id selectors are
@@ -147,77 +121,6 @@
     }
   }
 
-    /**
-     * #Connecting#
-     * By default, at the time they are created, nodes will attempt to connect
-     * to the node immediately prior to them in the graph. It doesn't matter if
-     * the methods are chained together or not:
-     * <code>
-     * //create & connect sine->lowpass->dac
-     * \_\_.sine();
-     * \_\_.lowpass();
-     * \_\_.dac();
-     *
-     * //same as
-     * \_\_.sine().lowpass().dac();
-     * </code>
-     *
-     * If there are no previous nodes, then a new node will look for selected nodes to
-     * connect to.
-     * <code>
-     * //create and connect sine->lowpass->dac
-     * \_\_().sine().lowpass().dac();
-     *
-     * //create a new delay and connect to the previously instantiated sine.
-     * \_\_("sine").delay();
-     * </code>
-     *
-     * The connect method below makes it possible to connect outputs to the inputs of
-     * previous instantiated nodes.
-     * <code>
-     * //same as above, but connect the new delay's output the existing dac
-     * \_\_().sine().lowpass().dac();
-     *
-     * //create a new delay and connect to the previously instantiated sine.
-     * \_\_("sine").delay().connect("dac");
-     * </code>
-     *
-     * As noted above, if cracked() is invoked without arguments, it resets the
-     * selection/connection state, removing any record of previous nodes and
-     * effectively marking the start of a new connection chain. Since a new node
-     * will try to connect to any previous node, calling \_\_() tells a node that
-     * there is no previous node to connect to.
-     * <code>
-     * //create & connect sine->lowpass->dac
-     * \_\_.sine();
-     * \_\_.lowpass();
-     * \_\_.dac();
-     *
-     * //Create but don't connect
-     * \_\_().sine();
-     * \_\_().lowpass();
-     * \_\_().dac();
-     * </code>
-     *
-     * ##Connecting Modulators##
-     * If a node was created with a "modulates" parameter, then it will attempt to
-     * connect to the following node as a modulator using the value of "modulates"
-     * as the type of audio param to connect to.
-     * <code>
-     * //create & connect sine->lowpass->dac
-     * \_\_.sine().lowpass().dac();
-     *
-     * //the gain node will connect to the sine's frequency audio param
-     * \_\_.saw(5).gain(gain:100,modulates:"frequency").connect("sine");
-     *
-     * //the gain node will connect to the lowpass's q audio param
-     * \_\_.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
-     *
-     * </code>
-     *
-     *
-      */
-
 /**
  * chainable method to connect nodes to previously instantiated
  * nodes. Takes a selector to find the nodes to connect to.
@@ -291,12 +194,6 @@
     _selectedNodes = [];
     _currentSelector = "";
   }
-
-
-    /**
-     * #Mutators#
-     * Core methods to interact with audio nodes
-     */
 
     /**
      * Calls start() on the currently selected nodes
@@ -414,7 +311,9 @@
      */
     function setAudioParam(node, value) {
         if (node && __.isFun(node.setValueAtTime)) {
-            node.setValueAtTime(value, _loopTimeToNextStep);
+            var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+            node.cancelScheduledValues(time);
+            node.setValueAtTime(value, time);
         }
     }
 
@@ -433,53 +332,6 @@
             path: result
         };
     }
-
-    /**
-     * #Macros &amp; Plugins#
-     * Macros allow any chain of audio nodes to be encapsulated as a single unit.
-     * The begin(&lt;macro-name&gt;) & end(&lt;macro-name&gt;) methods marking the beginning and
-     * end of a macro chain. Once defined, a macro effectively becomes a unit and
-     * can be selected by type/id/class like any other node. Parameter change requests
-     * will be mapped to any audio params nodes within the macro that match the
-     * request. For example:
-     * <code>
-     * //define a simple macro named "microsynth"
-     * \_\_().begin("microsynth").sine().gain(0).dac().end("microsynth");
-     *
-     * //change the frequency of the sine
-     * \_\_("microsynth").frequency(100);
-     *
-     * //start it up
-     * \_\_("microsynth").start();
-     *
-     * //set the level
-     * \_\_("microsynth").volume(.5);
-     *</code>
-     * If we wrap the a macro in a function, it becomes a plugin and now it's possible
-     * to instantiate as many microsyths as we need, connect them to other nodes,
-     * address them individually or as a group, nest them within other macros, etc.
-     * <code>
-     * cracked.microsynth = function(params) {
-     * //pass any params to begin() so they can associated with the instance
-     *  \_\_().begin("microsynth",params).sine().gain(0).end("microsynth");
-     *  //return cracked so we can chain methods
-     *  return cracked;
-     * }
-     *
-     * //create two instances with different ids
-     * \_\_().microsynth({id:"micro1"}).lowpass().dac();
-     * \_\_().microsynth({id:"micro2"}).lowpass().connect("dac");
-     *
-     * //change the frequency in the first
-     * \_\_("#micro1").frequency(1200);
-     * //change the frequency in the second
-     * \_\_("#micro2").frequency(600);
-     *
-     * //set the gain in both and start them
-     * \_\_("microsynth").volume(1).start();
-     * </code>
-     *
-     */
 
 /**
  * start macro recording, add any user parameters (id,classname,etc)
@@ -1177,25 +1029,21 @@
   }
 
     /**
-     * #Sequencing#
-     *
-     */
-
-    /**
      * global vars for loop
       * @type {boolean}
      * @private
      */
 
-  var _isLoopRunning = false,
-    _loopStepSize = 16,
-    _loopInterval = 100,
-    _loopID = 0,
-    _loopCB = function() {},
-    _loopData = [],
-    _loopIndex = 0,
-    _loopListeners = [],
-    _loopTimeToNextStep = 0;
+  var   _isLoopRunning = false,
+        _ignoreGrid = false,
+        _loopStepSize = 16,
+        _loopInterval = 100,
+        _loopID = 0,
+        _loopCB = function() {},
+        _loopData = [],
+        _loopIndex = 0,
+        _loopListeners = [],
+        _loopTimeToNextStep = 0;
 
 /**
  * main method for loop
@@ -1214,6 +1062,8 @@
         startLoop();
       } else if (arguments[0] === "reset") {
         resetLoop();
+      } else if (arguments[0] === "toggle_grid") {
+        toggleGrid();
       } else if (arguments[0] && __.isObj(arguments[0])) {
         //configure loop with options
         //set data & callback
@@ -1222,6 +1072,16 @@
     }
     return cracked;
   };
+
+    /**
+     * Toggles the state of the _ignoreGrid variable
+     * @private
+     */
+  function toggleGrid() {
+    if (_isLoopRunning) {
+        _ignoreGrid = !_ignoreGrid;
+    }
+  }
 
     /**
      * Starts the loop
@@ -1254,6 +1114,7 @@
   function resetLoop() {
     _loopStepSize = 16;
     _loopInterval = 100;
+    _ignoreGrid = false;
     _loopID = 0;
     _loopCB = function() {};
     _loopData = [];
@@ -2052,12 +1913,15 @@
     logToConsole("connected "+vals[0]+" - "+vals[1]+" to "+vals[2]+" - "+vals[3]);
   }
 
+  //version
+  cracked.version = "0.1.0";
+
   //set the global entry points
   window.cracked = cracked;
   window.__ = window.__ || cracked;
 
 })();;/**
- * Returns a random number between min & max
+ * Returns the 2nd argument if the 1st is undefined
  * @plugin
  * @param {*} test thing to test for undefined
  * @param {*} def default value to return if test is undefined
