@@ -1,4 +1,7 @@
-#Namespace#
+# Cracked Quick Start #
+A one page introduction to key features.
+
+## Namespace ##
 Cracked has two global identifiers that all public methods are namespaced under: "cracked" &amp; "__".
 ```javascript
 //create a sine
@@ -7,14 +10,14 @@ __.sine();
 //same as above
 cracked.sine();
 ```
-#Creating
+## Creating ##
 A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of connected nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
 __().sine().compressor().wavehshaper().gain().dac();
 ```
-# Configuring #
+## Configuring ##
 Nodes are configurable at creation by passing an options JSON object that sets
 several values at once. 
 ```javascript
