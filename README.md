@@ -35,7 +35,7 @@ If you'd like to see more, there's a one page [quickstart](QUICKSTART.md), full 
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
 
-If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an issue for bugs or feature enhancements or best of all, submit a pull request.
+If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an [issue](https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues) for bugs or feature enhancements or best of all, submit a pull request.
 
 
 
