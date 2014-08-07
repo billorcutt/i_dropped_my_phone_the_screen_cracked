@@ -152,6 +152,8 @@ __("sine").stop();
 //short hand way to call start on all nodes __(*).start() 
 __.play(); 
 ``` 
+# Sequencing #
+
 # Macros &amp; Plugins #
   Macros allow any chain of audio nodes to be encapsulated as a single unit.
   The begin() & end() methods mark the beginning and end of a macro chain. 
