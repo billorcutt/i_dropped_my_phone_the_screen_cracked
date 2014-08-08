@@ -31,9 +31,11 @@ __("compressor").attr("ratio",12);
 __("sine,saw").start();
 ```
 
-If you'd like to see more, there's a one page [quickstart](QUICKSTART.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
+If you're interested, there's a one page [quickstart](QUICKSTART.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
+
+If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an [issue](https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues) for bugs or feature enhancements or best of all, submit a pull request.
 
 
 

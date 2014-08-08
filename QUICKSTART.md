@@ -8,7 +8,7 @@ __.sine();
 cracked.sine();
 ```
 # Creating #
-A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of connected nodes.
+A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node and selector methods. Chaining nodes methods together creates and connects audio nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
@@ -23,11 +23,11 @@ __().sine({frequency:800,detune:5,id:"sine1"}).delay({delay:0.5,feedback:0.75}).
 ```
 Many node methods will also accept a single parameter to set one key value. 
 ```javascript
-//create, connect and configure - sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
+//create, connect & configure - sine (frequency 800), delay (delay time 0.5) and system out (gain 0.5)
 __().sine(800).delay(0.5).dac(0.75);
 ```
 
-#  Selecting
+#  Selecting #
 Cracked implements a form of rudimentary pattern matching, based on [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
 ```javascript
 __("compressor") //selects all the compressors in the graph
@@ -219,3 +219,8 @@ __.loop("start");
   //set the gain in both and start them
   __("microsynth").volume(1).start();
   ```
+# Usage #
+Include the cracked.js or cracked.min.js file (located in the dist directory) in your page.
+```html
+<script src="path_to_cracked.js"></script>
+```
