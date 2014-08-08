@@ -27,7 +27,7 @@ Many node methods will also accept a single parameter to set one key value.
 __().sine(800).delay(0.5).dac(0.75);
 ```
 
-#  Selecting
+#  Selecting #
 Cracked implements a form of rudimentary pattern matching, based on [CSS selectors](http://www.sitepoint.com/web-foundations/css-selectors/) to get references and make connections between nodes in the graph. You can refer to a node by its type:
 ```javascript
 __("compressor") //selects all the compressors in the graph
@@ -219,3 +219,8 @@ __.loop("start");
   //set the gain in both and start them
   __("microsynth").volume(1).start();
   ```
+# Usage #
+Include the cracked.js or cracked.min.js file in your page.
+```html
+<script src="path_to_cracked.js"></script>
+```
