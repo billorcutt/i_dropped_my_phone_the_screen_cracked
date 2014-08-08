@@ -8,7 +8,7 @@ __.sine();
 cracked.sine();
 ```
 # Creating #
-A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node methods and selectors in order to create chains of connected nodes.
+A node is created by calling it's method. Node methods are factories: there's no new operator and methods don't return node instances (those are stored internally); they return the global namespace "cracked" object, which makes them chainable to other node and selector methods. Chaining nodes methods together creates and connects audio nodes.
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
