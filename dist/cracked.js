@@ -3352,6 +3352,26 @@ cracked.cracksynth = function(params) {
     return 440.0 * Math.pow(2, ((Math.floor(pitch) - 69) / 12));
   };
 
+  cracked.shuffle = function(arr) {
+      var counter = arr.length, temp, index;
+
+      // While there are elements in the array
+      while (counter > 0) {
+          // Pick a random index
+          index = Math.floor(Math.random() * counter);
+
+          // Decrease counter by 1
+          counter--;
+
+          // And swap the last element with it
+          temp = arr[counter];
+          arr[counter] = arr[index];
+          arr[index] = temp;
+      }
+
+      return arr;
+  };
+
   /**
    * Returns a random number between min & max
    * @plugin

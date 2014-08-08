@@ -34,7 +34,7 @@
                 var editor = ace.edit(id);
                 editor.setTheme("ace/theme/textmate");
                 editor.getSession().setMode("ace/mode/javascript");
-                editor.setFontSize(18);
+                editor.setFontSize(14);
                 window[id] = editor;
             });
 
