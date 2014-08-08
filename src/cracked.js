@@ -249,6 +249,11 @@
      * omitted, then the current value is used as the initial value.
      * If loop is running, then ramp start times are snapped to the
      * sequencer grid.
+     * <code>
+     * //create and connect sine->lowpass->dac & play
+     * \_\_().sine().lowpass().dac().play();
+     * //ramp the frequency of the sine
+     * \_\_("sine").ramp();</code>
      * @function
      * @public
      * @param {Number|Array} value target value to ramp to
