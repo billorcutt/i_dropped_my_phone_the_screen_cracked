@@ -1,5 +1,8 @@
 /**
  * noise parametrized noise node
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.type=white]
@@ -17,14 +20,17 @@
   };
 
 /**
- * Pink Noise - http://noisehack.com/generate-noise-web-audio-api/
+ * Pink Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.channels=1]
  * @param {Number} [userParams.length=1]
  */
   cracked.pink = function(params) {
-
+//http://noisehack.com/generate-noise-web-audio-api/
   	var userParams = params || {};
   	var channels = userParams.channels || 1;
   	var length = userParams.length || 1;
@@ -90,14 +96,17 @@
   	}
   };
 /**
- * White Noise - http://noisehack.com/generate-noise-web-audio-api/
+ * White Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.channels=1]
  * @param {Number} [userParams.length=1]
  */
   cracked.white = function(params) {
-
+//http://noisehack.com/generate-noise-web-audio-api/
   	var userParams = params || {};
   	var channels = userParams.channels || 1;
   	var length = userParams.length || 1;
@@ -129,14 +138,17 @@
   };
 
 /**
- * Brown Noise - http://noisehack.com/generate-noise-web-audio-api/
+ * Brown Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.channels=1]
  * @param {Number} [userParams.length=1]
  */
   cracked.brown = function(params) {
-
+//http://noisehack.com/generate-noise-web-audio-api/
   	var userParams = params || {};
   	var channels = userParams.channels || 1;
   	var length = userParams.length || 1;

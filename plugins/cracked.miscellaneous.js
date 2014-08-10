@@ -13,6 +13,9 @@ cracked.dac = function(params) {
 };
  /**
   * Sampler - sound file player
+  *
+  * [See more sampler examples](../../examples/sampler.html)
+  *
   * @plugin
   * @param {Object} [userParams] map of optional values
   * @param {Number} [userParams.speed=1]

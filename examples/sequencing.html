@@ -41,7 +41,7 @@ __("sine,adsr").bind("step",function(index,data,array){
 
     //random pitch from major scale
     __.frequency(
-        __.pitch3freq(
+        __.pitch2freq(
             __.scale("major")[__.random(0,6)] + __.random(5,7) * 12
         )
     );
@@ -131,7 +131,7 @@ if(index===0 && array.dir==="up" && array.count < upper) {
 //calculate pitch
 var p = data+(array.count*10);
 //set frequency with the new value
-__.frequency(__.pitch3freq(p));
+__.frequency(__.pitch2freq(p));
 
 },[30,31,32,33,34,35,36,37,38,39]);
 

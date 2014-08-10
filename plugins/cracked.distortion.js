@@ -1,12 +1,15 @@
 /**
- * Bitcrusher - adapted from http://noisehack.com/custom-audio-effects-javascript-web-audio-api/
+ * Bitcrusher
+ *
+ * [See more bitcrusher examples](../../examples/distortion.html)
+ *
  * @plugin
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=0.1]
  * @param {Number} [params.bits=6]
  */
 cracked.bitcrusher = function(params) {
-
+//adapted from http://noisehack.com/custom-audio-effects-javascript-web-audio-api/
 	params = params || {};
 
 	__.begin("bitcrusher", params);
@@ -45,14 +48,17 @@ cracked.bitcrusher = function(params) {
 };
 
 /**
- * Ring Modulator - adapted from http://webaudio.prototyping.bbc.co.uk/ring-modulator/
+ * Ring Modulator
+ *
+ * [See more ring modulator examples](../../examples/distortion.html)
+ *
  * @plugin
  * @param {Object} [params] map of optional values
  * @param {Number} [params.distortion=1]
  * @param {Number} [params.frequency=30]
  */
 cracked.ring = function(params) {
-
+//adapted from http://webaudio.prototyping.bbc.co.uk/ring-modulator/
 	var options = params || {};
 
 	var thisCurve = setCurve(__.ifUndef(options.distortion, 1));
@@ -195,6 +201,9 @@ cracked.ring = function(params) {
 //adapted from https://github.com/web-audio-components
 /**
  * Overdrive, waveshaper with additional parameters
+ *
+ * [See more overdrive examples](../../examples/distortion.html)
+ *
  * @plugin
  * @param {Object} [params] map of optional values
  * @param {Number} [params.drive=0.5]

@@ -1,5 +1,8 @@
 /**
  * Low Frequency Oscillator
+ *
+ * [See more LFO examples](../../examples/modulation.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.modulates=frequency]

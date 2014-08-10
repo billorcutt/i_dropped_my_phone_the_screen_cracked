@@ -44,18 +44,19 @@ $("input[type='range']").bind("input",function(evt){
         <input type="range" data-modifies="detune" data-selector="sine" step="1" min=1 max=440> <span>Detune</span>
         <p><button class="play" data-id="editor1">START</button></p>
 
-        <div id="editor2" class="small editor">//staggered delays in parallel
-__().delay(1); //one sec
-__().delay(2); //two
-__().delay(3); //three
-__().delay(4); //four
+        <div id="editor2" class="small editor">//staggered delays & lowpass fitlers in parallel
+__().delay(1).lowpass(330); //one sec
+__().delay(2).lowpass(660); //two
+__().delay(3).lowpass(1220); //three
+__().delay(4).lowpass(1800); //four
 
 //set all the delay feedbacks to 0
 __("delay").feedback(0);
 
-//create an lfo & sine and connect them to the delays
-//and then connect the all delays to the dac
-__().lfo({frequency:2.5,gain:25}).sine(180).connect("delay").dac().play();</div>
+//create a sine and connect them to the delays
+//and then connect the lowpass all delays to the dac
+__().saw(3600).connect("delay");
+__("lowpass").dac().play();</div>
         <p><button class="play" data-id="editor2">START</button></p>
 
         <h3>Class</h3>

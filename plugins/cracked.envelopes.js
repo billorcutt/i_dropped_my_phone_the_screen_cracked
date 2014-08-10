@@ -1,5 +1,8 @@
 /**
  * Attack Decay Sustain Release envelope
+ *
+ * [See more adsr examples](../../examples/envelopes.html)
+ *
  * @plugin
  * @param {Array}  [userParams] 4 values: attack,decay,sustain,release
  * @param {Array} [userParams] 5 values: attack,decay,sustain,hold, release

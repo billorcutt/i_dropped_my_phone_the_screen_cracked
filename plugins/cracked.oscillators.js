@@ -2,6 +2,9 @@
 
   /**
    * Sine Wave Oscillator
+   *
+   * [See more oscillator examples](../../examples/oscillators.html)
+   *
    * @plugin
    * @param {Object} [userParams] map of optional values
    * @param {Number} [userParams.frequency=440]
@@ -24,6 +27,9 @@
   };
   /**
    * Square Wave Oscillator
+   *
+   * [See more oscillator examples](../../examples/oscillators.html)
+   *
    * @plugin
    * @param {Object} [userParams] map of optional values
    * @param {Number} [userParams.frequency=440]
@@ -46,6 +52,9 @@
   };
   /**
    * Sawtooth Wave Oscillator
+   *
+   * [See more oscillator examples](../../examples/oscillators.html)
+   *
    * @plugin
    * @param {Object} [userParams] map of optional values
    * @param {Number} [userParams.frequency=440]
@@ -68,6 +77,9 @@
   };
   /**
    * Triangle Wave Oscillator
+   *
+   * [See more oscillator examples](../../examples/oscillators.html)
+   *
    * @plugin
    * @param {Object} [userParams] map of optional values
    * @param {Number} [userParams.frequency=440]

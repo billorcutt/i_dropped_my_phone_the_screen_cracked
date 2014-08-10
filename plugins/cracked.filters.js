@@ -1,5 +1,8 @@
 /**
  * Lowpass Filter
+ *
+ * [See more lowpass examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -22,6 +25,9 @@
   };
 /**
  * Highpass Filter
+ *
+ * [See more highpass examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -44,6 +50,9 @@
   };
 /**
  * Bandpass Filter
+ *
+ * [See more bandpass examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -66,6 +75,9 @@
   };
 /**
  * Lowshelf Filter
+ *
+ * [See more lowshelf examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -90,6 +102,9 @@
   };
 /**
  * Highshelf Filter
+ *
+ * [See more highshelf examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -114,6 +129,9 @@
   };
 /**
  * Peaking Filter
+ *
+ * [See more peaking examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -138,6 +156,9 @@
   };
 /**
  * Notch Filter
+ *
+ * [See more notch examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency
@@ -160,6 +181,9 @@
   };
 /**
  * Allpass Filter
+ *
+ * [See more allpass examples](../../examples/filters.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440] frequency

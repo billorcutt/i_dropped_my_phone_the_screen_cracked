@@ -1,5 +1,8 @@
 /**
  * Convolver Reverb
+ *
+ * [See more reverb examples](../../examples/delay.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Boolean} [userParams.reverse=false] reverse reverb
@@ -52,6 +55,9 @@ cracked.reverb = function(userParams) {
 
 /**
  * Delay
+ *
+ * [See more delay examples](../../examples/delay.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.delay=1] delay time in seconds
@@ -118,7 +124,10 @@ cracked.delay = function(userParams) {
 };
 
 /**
- * Comb - adapted from https://github.com/web-audio-components
+ * Comb
+ *
+ * [See more reverb examples](../../examples/delay.html)
+ *
  * @plugin
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.delay=0.027] delay time in seconds
@@ -127,7 +136,7 @@ cracked.delay = function(userParams) {
  * @param {Number} [userParams.feedback=0.84] feedback gain output
  */
 cracked.comb = function(params) {
-
+//adapted from https://github.com/web-audio-components
   var userParams = __.ifUndef(params, {});
 
   __.begin("comb", userParams);

@@ -1,4 +1,7 @@
   /**
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * Frequency setter convenience method
    * @plugin
    * @param {Number} userParam frequency to set
@@ -14,6 +17,9 @@
 
   /**
    * Detune setter convenience method
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam detune frequency to set
    */
@@ -28,6 +34,9 @@
 
   /**
    * Gain setter convenience method
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam gain to set
    */
@@ -42,6 +51,9 @@
 
   /**
    * Delay time setter convenience method
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam delay time to set
    */
@@ -56,6 +68,9 @@
 
   /**
    * Feedback setter convenience method
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam feedback amount to set
    */
@@ -70,6 +85,10 @@
 
   /**
    * Speed setter convenience method
+   *
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam sampler speed to set
    */
@@ -84,6 +103,9 @@
 
   /**
    * Drive setter convenience method
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam drive distortion/waveshaper/etc to set
    */
@@ -98,6 +120,9 @@
 
   /**
    * Distortion setter convenience method
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    * @param {Number} userParam distortion to set
    */
@@ -112,6 +137,9 @@
 
   /**
    * Convenient way to say start everything
+   *
+   * [See more control examples](../../examples/control.html)
+   *
    * @plugin
    */
   cracked.play = function() {
