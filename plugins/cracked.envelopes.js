@@ -9,28 +9,28 @@
  * @param {String} [userParams] "slow" or "fast"
  * @param {Number} [userParams=0.5] length of the total envelope
  */
-cracked.adsr = function(userParams) {
-	var methods = {
-		init: function(options) {
+cracked.adsr = function (userParams) {
+    var methods = {
+        init: function (options) {
 
             options = options || {};
 
             options = __.isNum(options) ||
-                      __.isArr(options) ||
-                      __.isStr(options) ? {envelope:options} : options;
+                __.isArr(options) ||
+                __.isStr(options) ? {envelope: options} : options;
 
-			__.begin("adsr", options).gain({
+            __.begin("adsr", options).gain({
 
-				gain: 0
+                gain: 0
 
-			}).end("adsr");
+            }).end("adsr");
 
-		},
-		trigger: function(params) {
-            cracked.each(function(el,i,arr) {
+        },
+        trigger: function (params) {
+            cracked.each(function (el, i, arr) {
                 //adsr nodes only
-                if(el.getType()==="adsr") {
-                    var p = makeEnv(params,el.getParams().settings.envelope);
+                if (el.getType() === "adsr") {
+                    var p = makeEnv(params, el.getParams().settings.envelope);
                     //options = attack,decay,sustain,hold,release
                     el.ramp(
                         [1, p[2], p[2], 0],
@@ -41,24 +41,24 @@ cracked.adsr = function(userParams) {
                     );
                 }
             });
-		},
-        release: function() {
-            cracked.each(function(el,i,arr) {
-                if(el.getType()==="adsr") {
+        },
+        release: function () {
+            cracked.each(function (el, i, arr) {
+                if (el.getType() === "adsr") {
                     //hard code 100 ms release for now
-                    el.ramp(0,0.1,"gain");
+                    el.ramp(0, 0.1, "gain");
                 }
             });
         }
-	};
+    };
 
-	if (methods[userParams]) {
-		methods[userParams].apply(this, Array.prototype.slice.call(arguments, 1));
-	} else {
-		methods.init(userParams);
-	}
+    if (methods[userParams]) {
+        methods[userParams].apply(this, Array.prototype.slice.call(arguments, 1));
+    } else {
+        methods.init(userParams);
+    }
 
-    function makeEnv(userParams,nodeParams) {
+    function makeEnv(userParams, nodeParams) {
 
         //user params take precedence over the ones stored in the node
         var args = userParams || nodeParams;
@@ -98,5 +98,5 @@ cracked.adsr = function(userParams) {
         return p;
     }
 
-	return cracked;
+    return cracked;
 };

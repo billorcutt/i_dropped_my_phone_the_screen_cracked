@@ -12,10 +12,6 @@
         _context = window.AudioContext ? new AudioContext() : new webkitAudioContext();
 
     /**
-     * #Selecting#
-     */
-
-    /**
      * Updates the internal selected nodes array with a collection of audio
      * nodes matching the selector provided. Type, Class & Id selectors are
      * supported.
@@ -2057,43 +2053,43 @@ cracked.isFun = function(fn) {
  * @param {Function} [userParams.fn=buildImpulse] custom function to generate an impulse buffer
  */
 
-cracked.reverb = function(userParams) {
+cracked.reverb = function (userParams) {
 
-  var params = __.ifUndef(userParams, {});
+    var params = __.ifUndef(userParams, {});
 
-  //if there's no path to an impulse
-  //then generate our own
-  if (!params.path) {
-    params.fn = params.fn || buildImpulse;
-  }
-
-  //if building an impulse
-  var _seconds = __.ifUndef(params.seconds, 3);
-  var _reverse = __.ifUndef(params.reverse, false);
-  var _decay = __.ifUndef(params.decay, 2);
-
-  __.begin("reverb", params).convolver(params).end("reverb");
-
-  //default method to generate an impules 
-  function buildImpulse(audioContext) {
-
-    var rate = audioContext.sampleRate,
-      length = rate * _seconds,
-      decay = _decay,
-      impulse = audioContext.createBuffer(2, length, rate),
-      impulseL = impulse.getChannelData(0),
-      impulseR = impulse.getChannelData(1),
-      n, i;
-
-    for (i = 0; i < length; i++) {
-      n = _reverse ? length - i : i;
-      impulseL[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
-      impulseR[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+    //if there's no path to an impulse
+    //then generate our own
+    if (!params.path) {
+        params.fn = params.fn || buildImpulse;
     }
-    return impulse;
-  }
 
-  return cracked;
+    //if building an impulse
+    var _seconds = __.ifUndef(params.seconds, 3);
+    var _reverse = __.ifUndef(params.reverse, false);
+    var _decay = __.ifUndef(params.decay, 2);
+
+    __.begin("reverb", params).convolver(params).end("reverb");
+
+    //default method to generate an impules
+    function buildImpulse(audioContext) {
+
+        var rate = audioContext.sampleRate,
+            length = rate * _seconds,
+            decay = _decay,
+            impulse = audioContext.createBuffer(2, length, rate),
+            impulseL = impulse.getChannelData(0),
+            impulseR = impulse.getChannelData(1),
+            n, i;
+
+        for (i = 0; i < length; i++) {
+            n = _reverse ? length - i : i;
+            impulseL[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+            impulseR[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+        }
+        return impulse;
+    }
+
+    return cracked;
 
 };
 
@@ -2111,60 +2107,60 @@ cracked.reverb = function(userParams) {
  * @param {Number} [userParams.feedback=0.5] feedback gain output
  */
 
-cracked.delay = function(userParams) {
+cracked.delay = function (userParams) {
 
-  userParams = __.ifUndef(userParams, {});
-  var time = __.isObj(userParams) ? (__.ifUndef(userParams.delay, 1)) : userParams;
+    userParams = __.ifUndef(userParams, {});
+    var time = __.isObj(userParams) ? (__.ifUndef(userParams.delay, 1)) : userParams;
 
-  __.begin("delay", userParams);
+    __.begin("delay", userParams);
 
-  __.gain({
-    id: "delay-input"
-  }).
+    __.gain({
+        id: "delay-input"
+    }).
 
-  native_delay({
-    id: "native-delay",
-    delay: time,
-    mapping: {
-      "delay": "delayTime.value"
-    }
-  }).
+        native_delay({
+            id: "native-delay",
+            delay: time,
+            mapping: {
+                "delay": "delayTime.value"
+            }
+        }).
 
-  gain({
-    id: "delay-damping",
-    gain: __.ifUndef(userParams.damping, 0.84),
-    mapping: {
-      "damping": "gain.value"
-    }
-  }).
+        gain({
+            id: "delay-damping",
+            gain: __.ifUndef(userParams.damping, 0.84),
+            mapping: {
+                "damping": "gain.value"
+            }
+        }).
 
-  lowpass({
-    id: "delay-cutoff",
-    frequency: __.ifUndef(userParams.cutoff, 1500),
-    mapping: {
-      "cutoff": "frequency.value"
-    }
-  }).
+        lowpass({
+            id: "delay-cutoff",
+            frequency: __.ifUndef(userParams.cutoff, 1500),
+            mapping: {
+                "cutoff": "frequency.value"
+            }
+        }).
 
-  gain({
-    id: "delay-feedback",
-    gain: __.ifUndef(userParams.feedback, 0.5),
-    mapping: {
-      "feedback": "gain.value"
-    }
-  }).
+        gain({
+            id: "delay-feedback",
+            gain: __.ifUndef(userParams.feedback, 0.5),
+            mapping: {
+                "feedback": "gain.value"
+            }
+        }).
 
-  gain({
-    id: "delay-output"
-  });
+        gain({
+            id: "delay-output"
+        });
 
-  __("#delay-feedback").connect("#delay-input");
+    __("#delay-feedback").connect("#delay-input");
 
-  __("#native-delay").gain(0.5).connect("#delay-output");
+    __("#native-delay").gain(0.5).connect("#delay-output");
 
-  __.end("delay");
+    __.end("delay");
 
-  return cracked;
+    return cracked;
 
 };
 
@@ -2180,53 +2176,53 @@ cracked.delay = function(userParams) {
  * @param {Number} [userParams.cutoff=3000] frequency of lowpass filtering on feedback loop
  * @param {Number} [userParams.feedback=0.84] feedback gain output
  */
-cracked.comb = function(params) {
+cracked.comb = function (params) {
 //adapted from https://github.com/web-audio-components
-  var userParams = __.ifUndef(params, {});
+    var userParams = __.ifUndef(params, {});
 
-  __.begin("comb", userParams);
+    __.begin("comb", userParams);
 
-  __.gain({
-    id: "comb-input"
-  }).
-  native_delay({
-    id: "comb-delay",
-    delay: __.ifUndef(userParams.delay, 0.027),
-    mapping: {
-      "delay": "delayTime.value"
-    }
-  }).
-  gain({
-    id: "comb-damping",
-    gain: __.ifUndef(userParams.damping, 0.84),
-    mapping: {
-      "damping": "gain.value"
-    }
-  }).
-  lowpass({
-    id: "comb-cutoff",
-    frequency: __.ifUndef(userParams.cutoff, 3000),
-    mapping: {
-      "cutoff": "frequency.value"
-    }
-  }).
-  gain({
-    id: "comb-feedback",
-    gain: __.ifUndef(userParams.feedback, 0.84),
-    mapping: {
-      "feedback": "gain.value"
-    }
-  }).
-  connect("#comb-input");
+    __.gain({
+        id: "comb-input"
+    }).
+        native_delay({
+            id: "comb-delay",
+            delay: __.ifUndef(userParams.delay, 0.027),
+            mapping: {
+                "delay": "delayTime.value"
+            }
+        }).
+        gain({
+            id: "comb-damping",
+            gain: __.ifUndef(userParams.damping, 0.84),
+            mapping: {
+                "damping": "gain.value"
+            }
+        }).
+        lowpass({
+            id: "comb-cutoff",
+            frequency: __.ifUndef(userParams.cutoff, 3000),
+            mapping: {
+                "cutoff": "frequency.value"
+            }
+        }).
+        gain({
+            id: "comb-feedback",
+            gain: __.ifUndef(userParams.feedback, 0.84),
+            mapping: {
+                "feedback": "gain.value"
+            }
+        }).
+        connect("#comb-input");
 
-  __("#comb-damping").
-  gain({
-    id: "output"
-  });
+    __("#comb-damping").
+        gain({
+            id: "output"
+        });
 
-  __.end("comb");
+    __.end("comb");
 
-  return cracked;
+    return cracked;
 
 };;/**
  * Bitcrusher
@@ -2238,42 +2234,42 @@ cracked.comb = function(params) {
  * @param {Number} [params.frequency=0.1]
  * @param {Number} [params.bits=6]
  */
-cracked.bitcrusher = function(params) {
+cracked.bitcrusher = function (params) {
 //adapted from http://noisehack.com/custom-audio-effects-javascript-web-audio-api/
-	params = params || {};
+    params = params || {};
 
-	__.begin("bitcrusher", params);
+    __.begin("bitcrusher", params);
 
-	__.script({
-		fn: (function(options) {
+    __.script({
+        fn: (function (options) {
 
-			var bits = options.bits || 6; // between 1 and 16
-			var normfreq = __.ifUndef(options.frequency, 0.1); // between 0.0 and 1.0
-			var step = Math.pow(1 / 2, bits);
-			var phaser = 0;
-			var last = 0;
+            var bits = options.bits || 6; // between 1 and 16
+            var normfreq = __.ifUndef(options.frequency, 0.1); // between 0.0 and 1.0
+            var step = Math.pow(1 / 2, bits);
+            var phaser = 0;
+            var last = 0;
 
-			function crusher(e) {
-				var input = e.inputBuffer.getChannelData(0);
-				var output = e.outputBuffer.getChannelData(0);
-				for (var i = 0; i < 4096; i++) {
-					phaser += normfreq;
-					if (phaser >= 1.0) {
-						phaser -= 1.0;
-						last = step * Math.floor(input[i] / step + 0.5);
-					}
-					output[i] = last;
-				}
-			}
+            function crusher(e) {
+                var input = e.inputBuffer.getChannelData(0);
+                var output = e.outputBuffer.getChannelData(0);
+                for (var i = 0; i < 4096; i++) {
+                    phaser += normfreq;
+                    if (phaser >= 1.0) {
+                        phaser -= 1.0;
+                        last = step * Math.floor(input[i] / step + 0.5);
+                    }
+                    output[i] = last;
+                }
+            }
 
-			return crusher;
+            return crusher;
 
-		})(params)
-	});
+        })(params)
+    });
 
-	__.end("bitcrusher");
+    __.end("bitcrusher");
 
-	return cracked;
+    return cracked;
 
 };
 
@@ -2287,145 +2283,145 @@ cracked.bitcrusher = function(params) {
  * @param {Number} [params.distortion=1]
  * @param {Number} [params.frequency=30]
  */
-cracked.ring = function(params) {
+cracked.ring = function (params) {
 //adapted from http://webaudio.prototyping.bbc.co.uk/ring-modulator/
-	var options = params || {};
+    var options = params || {};
 
-	var thisCurve = setCurve(__.ifUndef(options.distortion, 1));
+    var thisCurve = setCurve(__.ifUndef(options.distortion, 1));
 
-	__.begin("ring", params);
+    __.begin("ring", params);
 
-	__.gain({
-		id: "player"
-	}).
-	gain({
-		id: "vcInverter1",
-		gain: -1
-	}).
-	waveshaper({
-		id: "vcDiode3",
-		curve: thisCurve,
-		mapping: {
-			"distortion": {
-				"path": "curve",
-				"fn": (function() {
-					return setCurve;
-				})()
-			}
-		}
-	}).
-	compressor({
-		threshold: -12
-	});
+    __.gain({
+        id: "player"
+    }).
+        gain({
+            id: "vcInverter1",
+            gain: -1
+        }).
+        waveshaper({
+            id: "vcDiode3",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        compressor({
+            threshold: -12
+        });
 
-	__("#player").
-	waveshaper({
-		id: "vInDiode4",
-		curve: thisCurve,
-		mapping: {
-			"distortion": {
-				"path": "curve",
-				"fn": (function() {
-					return setCurve;
-				})()
-			}
-		}
-	}).
-	connect("compressor");
+    __("#player").
+        waveshaper({
+            id: "vInDiode4",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        connect("compressor");
 
-	__().sine({
-		id: "vIn",
-		frequency: options.frequency || 30,
-		mapping: {
-			"frequency": "frequency.value"
-		}
-	}).
-	gain({
-		id: "vInGain",
-		gain: 0.5
-	}).
-	gain({
-		id: "vInInverter1",
-		gain: -1
-	}).
-	gain({
-		id: "vInInverter2",
-		gain: -1
-	}).
-	waveshaper({
-		id: "vInDiode1",
-		curve: thisCurve,
-		mapping: {
-			"distortion": {
-				"path": "curve",
-				"fn": (function() {
-					return setCurve;
-				})()
-			}
-		}
-	}).
-	gain({
-		id: "vInInverter3",
-		gain: -1
-	}).
-	connect("compressor");
+    __().sine({
+        id: "vIn",
+        frequency: options.frequency || 30,
+        mapping: {
+            "frequency": "frequency.value"
+        }
+    }).
+        gain({
+            id: "vInGain",
+            gain: 0.5
+        }).
+        gain({
+            id: "vInInverter1",
+            gain: -1
+        }).
+        gain({
+            id: "vInInverter2",
+            gain: -1
+        }).
+        waveshaper({
+            id: "vInDiode1",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        gain({
+            id: "vInInverter3",
+            gain: -1
+        }).
+        connect("compressor");
 
-	__("#vInGain").
-	connect("#vInDiode4");
+    __("#vInGain").
+        connect("#vInDiode4");
 
-	__("#vInGain").
-	connect("#vcInverter1");
+    __("#vInGain").
+        connect("#vcInverter1");
 
-	__("#vInInverter1").
-	waveshaper({
-		id: "vInDiode2",
-		curve: thisCurve,
-		mapping: {
-			"distortion": {
-				"path": "curve",
-				"fn": (function() {
-					return setCurve;
-				})()
-			}
-		}
-	}).
-	connect("#vInInverter3");
+    __("#vInInverter1").
+        waveshaper({
+            id: "vInDiode2",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        connect("#vInInverter3");
 
-	__("compressor").
-	gain({
-		id: "outGain",
-		gain: 4
-	});
+    __("compressor").
+        gain({
+            id: "outGain",
+            gain: 4
+        });
 
-	__.end("ring");
+    __.end("ring");
 
-	return cracked;
+    return cracked;
 
-	function setCurve(distortion) {
+    function setCurve(distortion) {
 
-		var i, samples, v, value, wsCurve, _i, _ref, vb, vl, h;
+        var i, samples, v, value, wsCurve, _i, _ref, vb, vl, h;
 
-		vb = 0.2;
-		vl = 0.4;
-		h = __.ifUndef(distortion, 1);
+        vb = 0.2;
+        vl = 0.4;
+        h = __.ifUndef(distortion, 1);
 
-		samples = 1024;
-		wsCurve = new Float32Array(samples);
+        samples = 1024;
+        wsCurve = new Float32Array(samples);
 
-		for (i = _i = 0, _ref = wsCurve.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-			v = (i - samples / 2) / (samples / 2);
-			v = Math.abs(v);
-			if (v <= vb) {
-				value = 0;
-			} else if ((vb < v) && (v <= vl)) {
-				value = h * ((Math.pow(v - vb, 2)) / (2 * vl - 2 * vb));
-			} else {
-				value = h * v - h * vl + (h * ((Math.pow(vl - vb, 2)) / (2 * vl - 2 * vb)));
-			}
-			wsCurve[i] = value;
-		}
-		return wsCurve;
-	}
+        for (i = _i = 0, _ref = wsCurve.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+            v = (i - samples / 2) / (samples / 2);
+            v = Math.abs(v);
+            if (v <= vb) {
+                value = 0;
+            } else if ((vb < v) && (v <= vl)) {
+                value = h * ((Math.pow(v - vb, 2)) / (2 * vl - 2 * vb));
+            } else {
+                value = h * v - h * vl + (h * ((Math.pow(vl - vb, 2)) / (2 * vl - 2 * vb)));
+            }
+            wsCurve[i] = value;
+        }
+        return wsCurve;
+    }
 
 };
 //adapted from https://github.com/web-audio-components
@@ -2440,59 +2436,59 @@ cracked.ring = function(params) {
  * @param {Number} [params.color=800]
  * @param {Number} [params.postCut=3000]
  */
-cracked.overdrive = function(userParams) {
+cracked.overdrive = function (userParams) {
 
-	userParams = userParams || {};
-	var drive = __.isObj(userParams) ? __.ifUndef(userParams.drive, 0.5) : userParams;
+    userParams = userParams || {};
+    var drive = __.isObj(userParams) ? __.ifUndef(userParams.drive, 0.5) : userParams;
 
-	__.begin("overdrive", userParams);
+    __.begin("overdrive", userParams);
 
-	__.gain({
-		id: "input"
-	}).
-	bandpass({
-		frequency: __.ifUndef(userParams.color, 800),
-		mapping: {
-			"color": "frequency.value"
-		}
-	}).
-	waveshaper({
-		curve: makeCurve(drive),
-		mapping: {
-			"drive": {
-				"path": "curve",
-				"fn": (function() {
-					return makeCurve;
-				})()
-			}
-		}
-	}).
-	lowpass({
-		frequency: __.ifUndef(userParams.postCut, 3000),
-		mapping: {
-			"postCut": "frequency.value"
-		}
-	}).
-	gain({
-		id: "output"
-	});
+    __.gain({
+        id: "input"
+    }).
+        bandpass({
+            frequency: __.ifUndef(userParams.color, 800),
+            mapping: {
+                "color": "frequency.value"
+            }
+        }).
+        waveshaper({
+            curve: makeCurve(drive),
+            mapping: {
+                "drive": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return makeCurve;
+                    })()
+                }
+            }
+        }).
+        lowpass({
+            frequency: __.ifUndef(userParams.postCut, 3000),
+            mapping: {
+                "postCut": "frequency.value"
+            }
+        }).
+        gain({
+            id: "output"
+        });
 
-	__.end("overdrive");
+    __.end("overdrive");
 
-	return cracked;
+    return cracked;
 
-	function makeCurve(value) {
-		var k = value * 100,
-			n = 22050,
-			curve = new Float32Array(n),
-			deg = Math.PI / 180;
+    function makeCurve(value) {
+        var k = value * 100,
+            n = 22050,
+            curve = new Float32Array(n),
+            deg = Math.PI / 180;
 
-		for (var i = 0; i < n; i++) {
-			var x = i * 2 / n - 1;
-			curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
-		}
-		return curve;
-	}
+        for (var i = 0; i < n; i++) {
+            var x = i * 2 / n - 1;
+            curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+        }
+        return curve;
+    }
 
 };;/**
  * Attack Decay Sustain Release envelope
@@ -2505,28 +2501,28 @@ cracked.overdrive = function(userParams) {
  * @param {String} [userParams] "slow" or "fast"
  * @param {Number} [userParams=0.5] length of the total envelope
  */
-cracked.adsr = function(userParams) {
-	var methods = {
-		init: function(options) {
+cracked.adsr = function (userParams) {
+    var methods = {
+        init: function (options) {
 
             options = options || {};
 
             options = __.isNum(options) ||
-                      __.isArr(options) ||
-                      __.isStr(options) ? {envelope:options} : options;
+                __.isArr(options) ||
+                __.isStr(options) ? {envelope: options} : options;
 
-			__.begin("adsr", options).gain({
+            __.begin("adsr", options).gain({
 
-				gain: 0
+                gain: 0
 
-			}).end("adsr");
+            }).end("adsr");
 
-		},
-		trigger: function(params) {
-            cracked.each(function(el,i,arr) {
+        },
+        trigger: function (params) {
+            cracked.each(function (el, i, arr) {
                 //adsr nodes only
-                if(el.getType()==="adsr") {
-                    var p = makeEnv(params,el.getParams().settings.envelope);
+                if (el.getType() === "adsr") {
+                    var p = makeEnv(params, el.getParams().settings.envelope);
                     //options = attack,decay,sustain,hold,release
                     el.ramp(
                         [1, p[2], p[2], 0],
@@ -2537,24 +2533,24 @@ cracked.adsr = function(userParams) {
                     );
                 }
             });
-		},
-        release: function() {
-            cracked.each(function(el,i,arr) {
-                if(el.getType()==="adsr") {
+        },
+        release: function () {
+            cracked.each(function (el, i, arr) {
+                if (el.getType() === "adsr") {
                     //hard code 100 ms release for now
-                    el.ramp(0,0.1,"gain");
+                    el.ramp(0, 0.1, "gain");
                 }
             });
         }
-	};
+    };
 
-	if (methods[userParams]) {
-		methods[userParams].apply(this, Array.prototype.slice.call(arguments, 1));
-	} else {
-		methods.init(userParams);
-	}
+    if (methods[userParams]) {
+        methods[userParams].apply(this, Array.prototype.slice.call(arguments, 1));
+    } else {
+        methods.init(userParams);
+    }
 
-    function makeEnv(userParams,nodeParams) {
+    function makeEnv(userParams, nodeParams) {
 
         //user params take precedence over the ones stored in the node
         var args = userParams || nodeParams;
@@ -2594,7 +2590,7 @@ cracked.adsr = function(userParams) {
         return p;
     }
 
-	return cracked;
+    return cracked;
 };;/**
  * Lowpass Filter
  *
@@ -2605,21 +2601,21 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.frequency=440] frequency
  * @param {Number} [userParams.q=0] Q
  */
-  cracked.lowpass = function(params) {
+cracked.lowpass = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "lowpass";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 0);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "lowpass";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 0);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("lowpass", userParams).biquadFilter(options).end("lowpass");
+    __.begin("lowpass", userParams).biquadFilter(options).end("lowpass");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Highpass Filter
  *
@@ -2630,21 +2626,21 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.frequency=440] frequency
  * @param {Number} [userParams.q=0] Q
  */
-  cracked.highpass = function(params) {
+cracked.highpass = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "highpass";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 0);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "highpass";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 0);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("highpass", userParams).biquadFilter(options).end("highpass");
+    __.begin("highpass", userParams).biquadFilter(options).end("highpass");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Bandpass Filter
  *
@@ -2655,21 +2651,21 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.frequency=440] frequency
  * @param {Number} [userParams.q=0] Q
  */
-  cracked.bandpass = function(params) {
+cracked.bandpass = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "bandpass";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 0);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "bandpass";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 0);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("bandpass", userParams).biquadFilter(options).end("bandpass");
+    __.begin("bandpass", userParams).biquadFilter(options).end("bandpass");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Lowshelf Filter
  *
@@ -2681,22 +2677,22 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.q=0] Q
  * @param {Number} [userParams.gain=0] gain
  */
-  cracked.lowshelf = function(params) {
+cracked.lowshelf = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "lowshelf";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 0);
-      options.gain = __.ifUndef(userParams.gain, 0);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "lowshelf";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 0);
+    options.gain = __.ifUndef(userParams.gain, 0);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("lowshelf", userParams).biquadFilter(options).end("lowshelf");
+    __.begin("lowshelf", userParams).biquadFilter(options).end("lowshelf");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Highshelf Filter
  *
@@ -2708,22 +2704,22 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.q=0] Q
  * @param {Number} [userParams.gain=0] gain
  */
-  cracked.highshelf = function(params) {
+cracked.highshelf = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "highshelf";
-      options.frequency = userParams.frequency || freq;
-      options.gain = __.ifUndef(userParams.gain, 0);
-      options.q = __.ifUndef(userParams.q, 0);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "highshelf";
+    options.frequency = userParams.frequency || freq;
+    options.gain = __.ifUndef(userParams.gain, 0);
+    options.q = __.ifUndef(userParams.q, 0);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("highshelf", userParams).biquadFilter(options).end("highshelf");
+    __.begin("highshelf", userParams).biquadFilter(options).end("highshelf");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Peaking Filter
  *
@@ -2735,22 +2731,22 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.q=0] Q
  * @param {Number} [userParams.gain=0] gain
  */
-  cracked.peaking = function(params) {
+cracked.peaking = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "peaking";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 0);
-      options.gain = __.ifUndef(userParams.gain, 0);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "peaking";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 0);
+    options.gain = __.ifUndef(userParams.gain, 0);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("peaking", userParams).biquadFilter(options).end("peaking");
+    __.begin("peaking", userParams).biquadFilter(options).end("peaking");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Notch Filter
  *
@@ -2761,21 +2757,21 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.frequency=440] frequency
  * @param {Number} [userParams.q=0] Q
  */
-  cracked.notch = function(params) {
+cracked.notch = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "notch";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 10);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "notch";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 10);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("notch", userParams).biquadFilter(options).end("notch");
+    __.begin("notch", userParams).biquadFilter(options).end("notch");
 
-      return cracked;
-  };
+    return cracked;
+};
 /**
  * Allpass Filter
  *
@@ -2786,51 +2782,51 @@ cracked.adsr = function(userParams) {
  * @param {Number} [userParams.frequency=440] frequency
  * @param {Number} [userParams.q=0] Q
  */
-  cracked.allpass = function(params) {
+cracked.allpass = function (params) {
 
-      var freq = __.isNum(params) ? params : 440;
-      var userParams = __.isObj(params) ? params : {};
-      var options = {};
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
 
-      options.type = userParams.type || "allpass";
-      options.frequency = userParams.frequency || freq;
-      options.q = __.ifUndef(userParams.q, 10);
-      options.mapping = userParams.mapping || {};
+    options.type = userParams.type || "allpass";
+    options.frequency = userParams.frequency || freq;
+    options.q = __.ifUndef(userParams.q, 10);
+    options.mapping = userParams.mapping || {};
 
-      __.begin("allpass", userParams).biquadFilter(options).end("allpass");
+    __.begin("allpass", userParams).biquadFilter(options).end("allpass");
 
-      return cracked;
-  };; /**
+    return cracked;
+};;/**
  * System out - destination with a master volume
  * @plugin
  * @param {Number} [params=1] system out gain
  */
-cracked.dac = function(params) {
-  var gain = __.isNum(params) ? params : 1;
-  var userParams = __.isObj(params) ? params : {};
-  var options = {};
-  options.mapping = userParams.mapping || {};
-  __.begin("dac", userParams).gain(gain).destination().end("dac");
-  return cracked;
+cracked.dac = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.mapping = userParams.mapping || {};
+    __.begin("dac", userParams).gain(gain).destination().end("dac");
+    return cracked;
 };
- /**
-  * Sampler - sound file player
-  *
-  * [See more sampler examples](../../examples/sampler.html)
-  *
-  * @plugin
-  * @param {Object} [userParams] map of optional values
-  * @param {Number} [userParams.speed=1]
-  * @param {Number} [userParams.start=1]
-  * @param {Number} [userParams.end=1]
-  * @param {Boolean} [userParams.loop=false]
-  */
-cracked.sampler = function(params) {
-  //sampler only plays sound files not data from functions
-  if (params && params.path) {
-    __.begin("sampler", params).buffer(params).end("sampler");
-  }
-  return cracked;
+/**
+ * Sampler - sound file player
+ *
+ * [See more sampler examples](../../examples/sampler.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.speed=1]
+ * @param {Number} [userParams.start=1]
+ * @param {Number} [userParams.end=1]
+ * @param {Boolean} [userParams.loop=false]
+ */
+cracked.sampler = function (params) {
+    //sampler only plays sound files not data from functions
+    if (params && params.path) {
+        __.begin("sampler", params).buffer(params).end("sampler");
+    }
+    return cracked;
 };;/**
  * Low Frequency Oscillator
  *
@@ -2843,36 +2839,36 @@ cracked.sampler = function(params) {
  * @param {Number} [userParams.frequency=6]
  * @param {Number} [userParams.gain=1000]
  */
-  cracked.lfo = function(userParams) {
+cracked.lfo = function (userParams) {
     var params = userParams || {};
     params.modulates = params.modulates || "frequency";
 
     if (params.type === "white" || params.type === "pink" || params.type === "brown") {
-      __().
-      begin("lfo", params).
-      noise({
-        "type": (params.type || "white"),
-        "channels": (params.channels || 1),
-        "length": (params.length || 1)
-      }).
-      gain({
-        "gain": __.ifUndef(params.gain, 1000)
-      }).
-      end("lfo");
+        __().
+            begin("lfo", params).
+            noise({
+                "type": (params.type || "white"),
+                "channels": (params.channels || 1),
+                "length": (params.length || 1)
+            }).
+            gain({
+                "gain": __.ifUndef(params.gain, 1000)
+            }).
+            end("lfo");
     } else {
-      __().
-      begin("lfo", params).
-      osc({
-        "type": (params.type || "sawtooth"),
-        "frequency": (params.frequency || 6)
-      }).
-      gain({
-        "gain": __.ifUndef(params.gain, 1000)
-      }).
-      end("lfo");
+        __().
+            begin("lfo", params).
+            osc({
+                "type": (params.type || "sawtooth"),
+                "frequency": (params.frequency || 6)
+            }).
+            gain({
+                "gain": __.ifUndef(params.gain, 1000)
+            }).
+            end("lfo");
     }
     return cracked;
-  };;/**
+};;/**
  * noise parametrized noise node
  *
  * [See more noise examples](../../examples/noise.html)
@@ -2881,17 +2877,17 @@ cracked.sampler = function(params) {
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.type=white]
  */
-  cracked.noise = function(params) {
-  	var userParams = params || {};
-  	if (userParams.type === "brown") {
-  		__.begin("noise", userParams).brown(userParams).end("noise");
-  	} else if (userParams.type === "pink") {
-  		__.begin("noise", userParams).pink(userParams).end("noise");
-  	} else {
-  		__.begin("noise", userParams).white(userParams).end("noise");
-  	}
-  	return cracked;
-  };
+cracked.noise = function (params) {
+    var userParams = params || {};
+    if (userParams.type === "brown") {
+        __.begin("noise", userParams).brown(userParams).end("noise");
+    } else if (userParams.type === "pink") {
+        __.begin("noise", userParams).pink(userParams).end("noise");
+    } else {
+        __.begin("noise", userParams).white(userParams).end("noise");
+    }
+    return cracked;
+};
 
 /**
  * Pink Noise
@@ -2903,22 +2899,22 @@ cracked.sampler = function(params) {
  * @param {Number} [userParams.channels=1]
  * @param {Number} [userParams.length=1]
  */
-  cracked.pink = function(params) {
+cracked.pink = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
-  	var userParams = params || {};
-  	var channels = userParams.channels || 1;
-  	var length = userParams.length || 1;
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
 
-  	__().begin("pink", userParams).buffer({
-  		fn: buildBuffer,
-  		loop: true
-  	}).end("pink");
+    __().begin("pink", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("pink");
 
-  	return cracked;
+    return cracked;
 
-  	function buildBuffer(audioContext) {
+    function buildBuffer(audioContext) {
 
-  		var buf = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buf = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
         var buflen = buf.length;
         var bufNum = buf.numberOfChannels;
         var buffArr = []; //call only once and cache
@@ -2927,48 +2923,48 @@ cracked.sampler = function(params) {
             buffArr.push(buf.getChannelData(k));
         }
 
-  		for (var i = 0; i < buflen; i++) {
-  			for (var j = 0; j < bufNum; j++) {
+        for (var i = 0; i < buflen; i++) {
+            for (var j = 0; j < bufNum; j++) {
                 buffArr[j][i] = Math.random() * 2 - 1;
-  			}
-  		}
+            }
+        }
 
-  		pinkify(buf,buffArr);
+        pinkify(buf, buffArr);
 
-  		function pinkify(buf,buffArr) {
-  			var buffer = buf,
-  				b = [0, 0, 0, 0, 0, 0, 0],
-  				channelData, white, i, j, pink = [],
-                bufNum=buffer.numberOfChannels, buflen = buffer.length;
-  			for (i = 0; i < bufNum; i++) {
-  				pink[i] = new Float32Array(buflen);
-  				channelData = buffArr[i];
-  				for (j = 0; j < buflen; j++) {
-  					white = channelData[j];
-  					b[0] = 0.99886 * b[0] + white * 0.0555179;
-  					b[1] = 0.99332 * b[1] + white * 0.0750759;
-  					b[2] = 0.96900 * b[2] + white * 0.1538520;
-  					b[3] = 0.86650 * b[3] + white * 0.3104856;
-  					b[4] = 0.55000 * b[4] + white * 0.5329522;
-  					b[5] = -0.7616 * b[5] - white * 0.0168980;
-  					pink[i][j] = b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + white * 0.5362;
-  					pink[i][j] *= 0.11;
-  					b[6] = white * 0.115926;
-  				}
-  				b = [0, 0, 0, 0, 0, 0, 0];
-  			}
+        function pinkify(buf, buffArr) {
+            var buffer = buf,
+                b = [0, 0, 0, 0, 0, 0, 0],
+                channelData, white, i, j, pink = [],
+                bufNum = buffer.numberOfChannels, buflen = buffer.length;
+            for (i = 0; i < bufNum; i++) {
+                pink[i] = new Float32Array(buflen);
+                channelData = buffArr[i];
+                for (j = 0; j < buflen; j++) {
+                    white = channelData[j];
+                    b[0] = 0.99886 * b[0] + white * 0.0555179;
+                    b[1] = 0.99332 * b[1] + white * 0.0750759;
+                    b[2] = 0.96900 * b[2] + white * 0.1538520;
+                    b[3] = 0.86650 * b[3] + white * 0.3104856;
+                    b[4] = 0.55000 * b[4] + white * 0.5329522;
+                    b[5] = -0.7616 * b[5] - white * 0.0168980;
+                    pink[i][j] = b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + white * 0.5362;
+                    pink[i][j] *= 0.11;
+                    b[6] = white * 0.115926;
+                }
+                b = [0, 0, 0, 0, 0, 0, 0];
+            }
 
-  			for (i = 0; i < bufNum; i++) {
-  				for (j = 0; j < buflen; j++) {
+            for (i = 0; i < bufNum; i++) {
+                for (j = 0; j < buflen; j++) {
                     buffArr[i][j] = pink[i][j];
-  				}
-  			}
+                }
+            }
 
-  		}
+        }
 
-  		return buf;
-  	}
-  };
+        return buf;
+    }
+};
 /**
  * White Noise
  *
@@ -2979,37 +2975,37 @@ cracked.sampler = function(params) {
  * @param {Number} [userParams.channels=1]
  * @param {Number} [userParams.length=1]
  */
-  cracked.white = function(params) {
+cracked.white = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
-  	var userParams = params || {};
-  	var channels = userParams.channels || 1;
-  	var length = userParams.length || 1;
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
 
-  	__().begin("white", userParams).buffer({
-  		fn: buildBuffer,
-  		loop: true
-  	}).end("white");
+    __().begin("white", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("white");
 
-  	return cracked;
+    return cracked;
 
-  	function buildBuffer(audioContext) {
-  		var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
-  		var buflen = buffer.length;
-  		var bufNum = buffer.numberOfChannels;
+    function buildBuffer(audioContext) {
+        var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buflen = buffer.length;
+        var bufNum = buffer.numberOfChannels;
         var buffArr = []; //call only once and cache
 
         for (var k = 0; k < bufNum; k++) {
             buffArr.push(buffer.getChannelData(k));
         }
 
-  		for (var i = 0; i < buflen; i++) {
-  			for (var j = 0; j < bufNum; j++) {
+        for (var i = 0; i < buflen; i++) {
+            for (var j = 0; j < bufNum; j++) {
                 buffArr[j][i] = (Math.random() * 2 - 1) * 0.44;
-  			}
-  		}
-  		return buffer;
-  	}
-  };
+            }
+        }
+        return buffer;
+    }
+};
 
 /**
  * Brown Noise
@@ -3021,22 +3017,22 @@ cracked.sampler = function(params) {
  * @param {Number} [userParams.channels=1]
  * @param {Number} [userParams.length=1]
  */
-  cracked.brown = function(params) {
+cracked.brown = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
-  	var userParams = params || {};
-  	var channels = userParams.channels || 1;
-  	var length = userParams.length || 1;
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
 
-  	__().begin("brown", userParams).buffer({
-  		fn: buildBuffer,
-  		loop: true
-  	}).end("brown");
+    __().begin("brown", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("brown");
 
-  	return cracked;
+    return cracked;
 
-  	function buildBuffer(audioContext) {
-  		var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate),
-  			lastOut = 0.0, bufLen = buffer.length, bufNum = buffer.numberOfChannels;
+    function buildBuffer(audioContext) {
+        var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate),
+            lastOut = 0.0, bufLen = buffer.length, bufNum = buffer.numberOfChannels;
 
         var buffArr = []; //call only once and cache
 
@@ -3044,31 +3040,31 @@ cracked.sampler = function(params) {
             buffArr.push(buffer.getChannelData(k));
         }
 
-  		for (var i = 0; i < bufLen; i++) {
-  			for (var j = 0; j < bufNum; j++) {
-  				var white = Math.random() * 2 - 1;
+        for (var i = 0; i < bufLen; i++) {
+            for (var j = 0; j < bufNum; j++) {
+                var white = Math.random() * 2 - 1;
                 buffArr[j][i] = (lastOut + (0.02 * white)) / 1.02;
-  				lastOut = buffArr[j][i];
+                lastOut = buffArr[j][i];
                 buffArr[j][i] *= 3.5; // (roughly) compensate for gain
-  			}
-  		}
-  		return buffer;
-  	}
+            }
+        }
+        return buffer;
+    }
 
-  };;  //need a custom wave osc
+};;//need a custom wave osc
 
-  /**
-   * Sine Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.sine = function(params) {
+/**
+ * Sine Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.sine = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -3081,19 +3077,19 @@ cracked.sampler = function(params) {
     __.begin("sine", userParams).osc(options).end("sine");
 
     return cracked;
-  };
-  /**
-   * Square Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.square = function(params) {
+};
+/**
+ * Square Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.square = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -3106,19 +3102,19 @@ cracked.sampler = function(params) {
     __.begin("square", userParams).osc(options).end("square");
 
     return cracked;
-  };
-  /**
-   * Sawtooth Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.saw = function(params) {
+};
+/**
+ * Sawtooth Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.saw = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -3131,19 +3127,19 @@ cracked.sampler = function(params) {
     __.begin("saw", userParams).osc(options).end("saw");
 
     return cracked;
-  };
-  /**
-   * Triangle Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.triangle = function(params) {
+};
+/**
+ * Triangle Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.triangle = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -3156,19 +3152,19 @@ cracked.sampler = function(params) {
     __.begin("triangle", userParams).osc(options).end("triangle");
 
     return cracked;
-  };;cracked.monosynth = function(params) {
+};;cracked.monosynth = function (params) {
     //do this: http://noisehack.com/how-to-build-monotron-synth-web-audio-api/
 
     var methods = {
-        init: function(options) {
+        init: function (options) {
             //set up a basic synth: lfo, sine, lowpass, envelope
-            __().begin("monosynth",params).
+            __().begin("monosynth", params).
 
-                lfo({gain:0}).
+                lfo({gain: 0}).
 
                 sine().
 
-                lowpass({q:0}).
+                lowpass({q: 0}).
 
                 adsr().
 
@@ -3176,7 +3172,7 @@ cracked.sampler = function(params) {
 
                 end("monosynth");
         },
-        noteOn: function(params) {
+        noteOn: function (params) {
 
             //process incoming arguments for this note
             var args = params || {};
@@ -3184,14 +3180,14 @@ cracked.sampler = function(params) {
             var env = args.envelope || 1;
 
             //loop thru selected nodes
-            cracked.each(function(el,index,arr) {
+            cracked.each(function (el, index, arr) {
                 //only if its a monosynth
-                if(el.getType()==="monosynth") {
+                if (el.getType() === "monosynth") {
                     //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                     //and then call frequency() passing in the pitch argument we got w noteOn.
-                    cracked.exec("frequency",[freq],el.search("sine"));
+                    cracked.exec("frequency", [freq], el.search("sine"));
                     //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr",["trigger",env],el.search("adsr"));
+                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
                     //ditto internal lfo and ramp() the frequency
                     //cracked.exec("ramp",[[100,10],[(env*0.5),(env*0.5)],"frequency",10],el.search("lfo"));
                     //ditto internal lowpass
@@ -3199,11 +3195,11 @@ cracked.sampler = function(params) {
                 }
             });
         },
-        noteOff: function() {
-            cracked.each(function(el,index,arr) {
-                if(el.getType()==="monosynth") {
+        noteOff: function () {
+            cracked.each(function (el, index, arr) {
+                if (el.getType() === "monosynth") {
                     //call the adsr release
-                    cracked.exec("adsr",["release",[]],el.search("adsr"));
+                    cracked.exec("adsr", ["release", []], el.search("adsr"));
                 }
             });
         }
@@ -3218,26 +3214,26 @@ cracked.sampler = function(params) {
     return cracked;
 };
 
-cracked.cracksynth = function(params) {
+cracked.cracksynth = function (params) {
 
     var methods = {
-        init: function(options) {
+        init: function (options) {
             //set up a basic synth: lfo, sine, lowpass, envelope
-            __().begin("cracksynth",params).
+            __().begin("cracksynth", params).
 
-                lfo({gain:100}).
+                lfo({gain: 100}).
 
                 sine().
 
-                lowpass({q:20}).
+                lowpass({q: 20}).
 
                 adsr().
 
                 gain().
 
-            end("cracksynth");
+                end("cracksynth");
         },
-        noteOn: function(params) {
+        noteOn: function (params) {
 
             //process incoming arguments for this note
             var args = params || {};
@@ -3245,26 +3241,36 @@ cracked.cracksynth = function(params) {
             var env = args.envelope || 1;
 
             //loop thru selected nodes
-            cracked.each(function(el,index,arr) {
+            cracked.each(function (el, index, arr) {
                 //only if its a monosynth
-                if(el.getType()==="cracksynth") {
+                if (el.getType() === "cracksynth") {
                     //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                     //and then call frequency() passing in the pitch argument we got w noteOn.
-                    cracked.exec("frequency",[freq],el.search("sine"));
+                    cracked.exec("frequency", [freq], el.search("sine"));
                     //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr",["trigger",env],el.search("adsr"));
+                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
                     //ditto internal lfo and ramp() the frequency
-                    cracked.exec("ramp",[[100,10],[(env*0.5),(env*0.5)],"frequency",10],el.search("lfo"));
+                    cracked.exec("ramp", [
+                        [100, 10],
+                        [(env * 0.5), (env * 0.5)],
+                        "frequency",
+                        10
+                    ], el.search("lfo"));
                     //ditto internal lowpass
-                    cracked.exec("ramp",[[freq/2,freq*3],[(env*0.1),(env*0.9)],"frequency",freq*3],el.search("lowpass"));
+                    cracked.exec("ramp", [
+                        [freq / 2, freq * 3],
+                        [(env * 0.1), (env * 0.9)],
+                        "frequency",
+                            freq * 3
+                    ], el.search("lowpass"));
                 }
             });
         },
-        noteOff: function() {
-            cracked.each(function(el,index,arr) {
-                if(el.getType()==="cracksynth") {
+        noteOff: function () {
+            cracked.each(function (el, index, arr) {
+                if (el.getType() === "cracksynth") {
                     //call the adsr release
-                    cracked.exec("adsr",["release",[]],el.search("adsr"));
+                    cracked.exec("adsr", ["release", []], el.search("adsr"));
                 }
             });
         }
@@ -3277,203 +3283,203 @@ cracked.cracksynth = function(params) {
     }
 
     return cracked;
-};;  /**
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * Frequency setter convenience method
-   * @plugin
-   * @param {Number} userParam frequency to set
-   */
-  cracked.frequency = function(userParam) {
+};;/**
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * Frequency setter convenience method
+ * @plugin
+ * @param {Number} userParam frequency to set
+ */
+cracked.frequency = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "frequency": userParam
-      });
+        cracked.attr({
+            "frequency": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Detune setter convenience method
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam detune frequency to set
-   */
-  cracked.detune = function(userParam) {
+/**
+ * Detune setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam detune frequency to set
+ */
+cracked.detune = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "detune": userParam
-      });
+        cracked.attr({
+            "detune": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Gain setter convenience method
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam gain to set
-   */
-  cracked.volume = function(userParam) {
+/**
+ * Gain setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam gain to set
+ */
+cracked.volume = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "gain": userParam
-      });
+        cracked.attr({
+            "gain": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Delay time setter convenience method
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam delay time to set
-   */
-  cracked.time = function(userParam) {
+/**
+ * Delay time setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam delay time to set
+ */
+cracked.time = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "delay": userParam
-      });
+        cracked.attr({
+            "delay": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Feedback setter convenience method
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam feedback amount to set
-   */
-  cracked.feedback = function(userParam) {
+/**
+ * Feedback setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam feedback amount to set
+ */
+cracked.feedback = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "feedback": userParam
-      });
+        cracked.attr({
+            "feedback": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Speed setter convenience method
-   *
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam sampler speed to set
-   */
-  cracked.speed = function(userParam) {
+/**
+ * Speed setter convenience method
+ *
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam sampler speed to set
+ */
+cracked.speed = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "speed": userParam
-      });
+        cracked.attr({
+            "speed": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Drive setter convenience method
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam drive distortion/waveshaper/etc to set
-   */
-  cracked.drive = function(userParam) {
+/**
+ * Drive setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam drive distortion/waveshaper/etc to set
+ */
+cracked.drive = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "drive": userParam
-      });
+        cracked.attr({
+            "drive": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Distortion setter convenience method
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   * @param {Number} userParam distortion to set
-   */
-  cracked.distortion = function(userParam) {
+/**
+ * Distortion setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam distortion to set
+ */
+cracked.distortion = function (userParam) {
     if (__.isNum(userParam)) {
-      cracked.attr({
-        "distortion": userParam
-      });
+        cracked.attr({
+            "distortion": userParam
+        });
     }
     return cracked;
-  };
+};
 
-  /**
-   * Convenient way to say start everything
-   *
-   * [See more control examples](../../examples/control.html)
-   *
-   * @plugin
-   */
-  cracked.play = function() {
+/**
+ * Convenient way to say start everything
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ */
+cracked.play = function () {
     cracked("*").start();
     return cracked;
-  };
+};
 
-  /**
-   * Returns a musical scale/mode based on type
-   * @plugin
-   * @param {String} type scale type
-   */
-  cracked.scale = function(type) {
+/**
+ * Returns a musical scale/mode based on type
+ * @plugin
+ * @param {String} type scale type
+ */
+cracked.scale = function (type) {
     return {
-      "major": [0, 2, 4, 5, 7, 9, 11],
-      "minor": [0, 2, 3, 5, 7, 8, 10]
+        "major": [0, 2, 4, 5, 7, 9, 11],
+        "minor": [0, 2, 3, 5, 7, 8, 10]
     }[type];
-  };
+};
 
-  //from https://github.com/hoch/WAAX/blob/master/src/core/Helper.js
-  /**
-   * Converts a pitch value to frequency
-   * @plugin
-   * @param {Number} pitch
-   */
-  cracked.pitch2freq = function(pitch) {
+//from https://github.com/hoch/WAAX/blob/master/src/core/Helper.js
+/**
+ * Converts a pitch value to frequency
+ * @plugin
+ * @param {Number} pitch
+ */
+cracked.pitch2freq = function (pitch) {
     return 440.0 * Math.pow(2, ((Math.floor(pitch) - 69) / 12));
-  };
+};
 
-  cracked.shuffle = function(arr) {
-      var counter = arr.length, temp, index;
+cracked.shuffle = function (arr) {
+    var counter = arr.length, temp, index;
 
-      // While there are elements in the array
-      while (counter > 0) {
-          // Pick a random index
-          index = Math.floor(Math.random() * counter);
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        index = Math.floor(Math.random() * counter);
 
-          // Decrease counter by 1
-          counter--;
+        // Decrease counter by 1
+        counter--;
 
-          // And swap the last element with it
-          temp = arr[counter];
-          arr[counter] = arr[index];
-          arr[index] = temp;
-      }
+        // And swap the last element with it
+        temp = arr[counter];
+        arr[counter] = arr[index];
+        arr[index] = temp;
+    }
 
-      return arr;
-  };
+    return arr;
+};
 
-  /**
-   * Returns a random number between min & max
-   * @plugin
-   * @param {Number} min
-   * @param {Number} max
-   */
-  cracked.random = function(min, max) {
+/**
+ * Returns a random number between min & max
+ * @plugin
+ * @param {Number} min
+ * @param {Number} max
+ */
+cracked.random = function (min, max) {
     return Math.round(min + Math.random() * (max - min));
-  };
+};

@@ -1,16 +1,16 @@
-cracked.monosynth = function(params) {
+cracked.monosynth = function (params) {
     //do this: http://noisehack.com/how-to-build-monotron-synth-web-audio-api/
 
     var methods = {
-        init: function(options) {
+        init: function (options) {
             //set up a basic synth: lfo, sine, lowpass, envelope
-            __().begin("monosynth",params).
+            __().begin("monosynth", params).
 
-                lfo({gain:0}).
+                lfo({gain: 0}).
 
                 sine().
 
-                lowpass({q:0}).
+                lowpass({q: 0}).
 
                 adsr().
 
@@ -18,7 +18,7 @@ cracked.monosynth = function(params) {
 
                 end("monosynth");
         },
-        noteOn: function(params) {
+        noteOn: function (params) {
 
             //process incoming arguments for this note
             var args = params || {};
@@ -26,14 +26,14 @@ cracked.monosynth = function(params) {
             var env = args.envelope || 1;
 
             //loop thru selected nodes
-            cracked.each(function(el,index,arr) {
+            cracked.each(function (el, index, arr) {
                 //only if its a monosynth
-                if(el.getType()==="monosynth") {
+                if (el.getType() === "monosynth") {
                     //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                     //and then call frequency() passing in the pitch argument we got w noteOn.
-                    cracked.exec("frequency",[freq],el.search("sine"));
+                    cracked.exec("frequency", [freq], el.search("sine"));
                     //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr",["trigger",env],el.search("adsr"));
+                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
                     //ditto internal lfo and ramp() the frequency
                     //cracked.exec("ramp",[[100,10],[(env*0.5),(env*0.5)],"frequency",10],el.search("lfo"));
                     //ditto internal lowpass
@@ -41,11 +41,11 @@ cracked.monosynth = function(params) {
                 }
             });
         },
-        noteOff: function() {
-            cracked.each(function(el,index,arr) {
-                if(el.getType()==="monosynth") {
+        noteOff: function () {
+            cracked.each(function (el, index, arr) {
+                if (el.getType() === "monosynth") {
                     //call the adsr release
-                    cracked.exec("adsr",["release",[]],el.search("adsr"));
+                    cracked.exec("adsr", ["release", []], el.search("adsr"));
                 }
             });
         }
@@ -60,26 +60,26 @@ cracked.monosynth = function(params) {
     return cracked;
 };
 
-cracked.cracksynth = function(params) {
+cracked.cracksynth = function (params) {
 
     var methods = {
-        init: function(options) {
+        init: function (options) {
             //set up a basic synth: lfo, sine, lowpass, envelope
-            __().begin("cracksynth",params).
+            __().begin("cracksynth", params).
 
-                lfo({gain:100}).
+                lfo({gain: 100}).
 
                 sine().
 
-                lowpass({q:20}).
+                lowpass({q: 20}).
 
                 adsr().
 
                 gain().
 
-            end("cracksynth");
+                end("cracksynth");
         },
-        noteOn: function(params) {
+        noteOn: function (params) {
 
             //process incoming arguments for this note
             var args = params || {};
@@ -87,26 +87,36 @@ cracked.cracksynth = function(params) {
             var env = args.envelope || 1;
 
             //loop thru selected nodes
-            cracked.each(function(el,index,arr) {
+            cracked.each(function (el, index, arr) {
                 //only if its a monosynth
-                if(el.getType()==="cracksynth") {
+                if (el.getType() === "cracksynth") {
                     //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                     //and then call frequency() passing in the pitch argument we got w noteOn.
-                    cracked.exec("frequency",[freq],el.search("sine"));
+                    cracked.exec("frequency", [freq], el.search("sine"));
                     //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr",["trigger",env],el.search("adsr"));
+                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
                     //ditto internal lfo and ramp() the frequency
-                    cracked.exec("ramp",[[100,10],[(env*0.5),(env*0.5)],"frequency",10],el.search("lfo"));
+                    cracked.exec("ramp", [
+                        [100, 10],
+                        [(env * 0.5), (env * 0.5)],
+                        "frequency",
+                        10
+                    ], el.search("lfo"));
                     //ditto internal lowpass
-                    cracked.exec("ramp",[[freq/2,freq*3],[(env*0.1),(env*0.9)],"frequency",freq*3],el.search("lowpass"));
+                    cracked.exec("ramp", [
+                        [freq / 2, freq * 3],
+                        [(env * 0.1), (env * 0.9)],
+                        "frequency",
+                            freq * 3
+                    ], el.search("lowpass"));
                 }
             });
         },
-        noteOff: function() {
-            cracked.each(function(el,index,arr) {
-                if(el.getType()==="cracksynth") {
+        noteOff: function () {
+            cracked.each(function (el, index, arr) {
+                if (el.getType() === "cracksynth") {
                     //call the adsr release
-                    cracked.exec("adsr",["release",[]],el.search("adsr"));
+                    cracked.exec("adsr", ["release", []], el.search("adsr"));
                 }
             });
         }

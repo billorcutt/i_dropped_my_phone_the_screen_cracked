@@ -12,10 +12,6 @@
         _context = window.AudioContext ? new AudioContext() : new webkitAudioContext();
 
     /**
-     * #Selecting#
-     */
-
-    /**
      * Updates the internal selected nodes array with a collection of audio
      * nodes matching the selector provided. Type, Class & Id selectors are
      * supported.

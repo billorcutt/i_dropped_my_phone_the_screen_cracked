@@ -1,17 +1,17 @@
-  //need a custom wave osc
+//need a custom wave osc
 
-  /**
-   * Sine Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.sine = function(params) {
+/**
+ * Sine Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.sine = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -24,19 +24,19 @@
     __.begin("sine", userParams).osc(options).end("sine");
 
     return cracked;
-  };
-  /**
-   * Square Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.square = function(params) {
+};
+/**
+ * Square Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.square = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -49,19 +49,19 @@
     __.begin("square", userParams).osc(options).end("square");
 
     return cracked;
-  };
-  /**
-   * Sawtooth Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.saw = function(params) {
+};
+/**
+ * Sawtooth Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.saw = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -74,19 +74,19 @@
     __.begin("saw", userParams).osc(options).end("saw");
 
     return cracked;
-  };
-  /**
-   * Triangle Wave Oscillator
-   *
-   * [See more oscillator examples](../../examples/oscillators.html)
-   *
-   * @plugin
-   * @param {Object} [userParams] map of optional values
-   * @param {Number} [userParams.frequency=440]
-   * @param {Number} [userParams.detune=0]
-   * @param {String} [userParams.type=sine]
-   */
-  cracked.triangle = function(params) {
+};
+/**
+ * Triangle Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.frequency=440]
+ * @param {Number} [userParams.detune=0]
+ * @param {String} [userParams.type=sine]
+ */
+cracked.triangle = function (params) {
 
     var freq = __.isNum(params) ? params : 440;
     var userParams = __.isObj(params) ? params : {};
@@ -99,4 +99,4 @@
     __.begin("triangle", userParams).osc(options).end("triangle");
 
     return cracked;
-  };
+};
