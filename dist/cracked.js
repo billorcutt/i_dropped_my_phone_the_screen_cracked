@@ -236,7 +236,7 @@
      * <code>
      * //create and connect sine->lowpass->dac
      * \_\_().sine().lowpass().dac();
-     * //start the sine node
+     * //stop the sine node
      * \_\_("sine").stop();</code>
      *
      * [See more control examples](../../examples/control.html)
@@ -264,8 +264,8 @@
      * <code>
      * //create and connect sine->lowpass->dac & play
      * \_\_().sine().lowpass().dac().play();
-     * //ramp the frequency of the sine
-     * \_\_("sine").ramp();</code>
+     * //ramp the frequency of the sine. 220 to 880 in 5 seconds
+     * \_\_("sine").ramp(880,5,"frequency",220);</code>
      *
      * [See more envelope examples](../../examples/envelopes.html)
      *
@@ -290,6 +290,12 @@
     /**
      * Set attribute values on a node. Takes an object with
      * any number of key:value pairs to set
+     *
+     * <code>
+     * //create and connect sine->lowpass->dac & play
+     * \_\_().sine().lowpass().dac().play();
+     * //set the frequency of the sine to 880
+     * \_\_("sine").attr({"frequency":880});</code>
      *
      * [See more control examples](../../examples/control.html)
      *
@@ -374,6 +380,11 @@
     /**
      * start macro recording, add any user parameters (id,classname,etc)
      * to the container macro
+     *
+     * <code>
+     * //define a simple macro named "microsynth"
+     * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code>
+     *
      * @public
      * @function
      * @param {String} name macro name
@@ -388,6 +399,11 @@
 
     /**
      * end macro recording
+     *
+     * <code>
+     * //define a simple macro named "microsynth"
+     * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code>
+     *
      * @public
      * @function
      * @param {String} name macro name
@@ -542,7 +558,7 @@
      * iterate over the selectedNodes array, executing
      * the supplied function for each element
      * <code>
-     * __.each(function(node,index,array){
+     * \_\_.each(function(node,index,array){
      *      //Loops over any selected nodes. Parameters are the
      *      //current node, current index, and the selectedNode array
      * });</code>
@@ -1087,6 +1103,19 @@
 
     /**
      * main method for loop
+     *
+     * <code>
+     * //configure the loop: 8 steps, 100ms between steps
+     * \_\_.loop({steps:8,interval:100});
+     *
+     * //start
+     * \_\_.loop("start");
+     * //stop
+     * \_\_.loop("stop");
+     * //reset the loop params
+     * \_\_.loop("reset");
+     *
+     * </code>
      *
      * [See sequencing examples](../../examples/sequencing.html)
      *

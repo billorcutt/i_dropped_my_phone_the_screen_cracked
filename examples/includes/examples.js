@@ -50,4 +50,10 @@
 				}
 			});
 
+            $("#examples_select").change(function(){
+                var index = this.selectedIndex;
+                var editor = window["editor1"];
+                editor.setValue($("#example"+index).text(),-1);
+            });
+
 		});

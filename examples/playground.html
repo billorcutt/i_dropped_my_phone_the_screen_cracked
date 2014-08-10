@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        div ul {
+            padding:0 10px 0 10px;
+        }
+        div ul:first-child,div ul:last-child {
+            padding-top:10px;
+        }
+        div ul li a {
+            color:black;
+       }
+        div ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Cracked Documentation</title>
+    <!-- Foundation CSS-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/css/foundation.min.css">
+    <link rel="stylesheet" href="includes/examples.css" type="text/css"/>
+    <!-- Prism CSS-->
+    <script srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/js/vendor/custom.modernizr.js"></script>
+</head>
+
+<body>
+<div class="row">
+    <div class="small-12 columns">
+        <h1 class="page-title">Cracked Playground<small> examples/playground.html</small></h1>
+    </div>
+</div>
+<div class="row">
+    <div id="nav" class="large-2 columns">
+        <select id="examples_select">
+            <option>
+                Hello World
+            </option>
+            <option>
+                LFO 1
+            </option>
+        </select>
+        <div style="height: 635px; overflow: scroll;background-color:#eee;font-size:14px">
+        <ul>
+            <li><a target="_blank" href="../docs/plugins/cracked.miscellaneous.js.html#dac">dac</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.miscellaneous.js.html#sampler">sampler</a></li>
+            <li><a target="_blank" href="../docs/src/cracked.js.html#gain">gain</a></li>
+            <li><a target="_blank" href="../docs/src/cracked.js.html#compressor">compressor</a></li>
+            <li><a target="_blank" href="../docs/src/cracked.js.html#waveshaper">waveshaper</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.oscillators.js.html#sine">sine</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.oscillators.js.html#triangle">triangle</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.oscillators.js.html#square">square</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.oscillators.js.html#saw">saw</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#lowpass">lowpass</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#highpass">highpass</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#bandpass">bandpass</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#lowshelf">lowshelf</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#highshelf">highshelf</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#peaking">peaking</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#notch">notch</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.filters.js.html#allpass">allpass</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.delays.js.html#reverb">reverb</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.delays.js.html#delay">delay</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.delays.js.html#comb">comb</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.distortion.js.html#bitcrusher">bitcrusher</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.distortion.js.html#ring">ring</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.distortion.js.html#overdrive">overdrive</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.envelopes.js.html#adsr">adsr</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.modulators.js.html#lfo">lfo</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.noise.js.html#white">white</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.noise.js.html#pink">pink</a></li>
+            <li><a target="_blank" href="../docs/plugins/cracked.noise.js.html#brown">brown</a></li>
+        </ul>
+        </div>
+    </div>
+    <div class="small-12 large-10 columns">
+
+        <div id="editor1" class="playground editor">//hello world
+__().sine().dac().play();
+        </div>
+        <p><button class="play" data-id="editor1">START</button></p>
+
+
+
+    </div>
+</div>
+<!-- Foundation JS-->
+
+<div id="example0" style="display:none">//hello world
+__().sine().dac().play(); </div>
+
+<div id="example1" style="display:none">//lfo example
+__().lfo().sine().dac().play(); </div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../dist/cracked.js"></script>
+<script src="includes/examples.js"></script>
+</body>
+
+</html>
