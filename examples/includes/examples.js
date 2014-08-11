@@ -8,7 +8,7 @@
             //other examples on the page. Not needed in
             //a "normal" use case
 			$(".play").click(function() {
-                if("AudioContext" in window || "webkitAudioContext" in window) {
+                if("AudioContext" in window || "webkitAudioContext" in window && 0) {
 
                     var $element = $(this),
                         id = $element.data("id");
@@ -28,7 +28,7 @@
                     }
 
                 } else {
-                    $("<div class='msg'>Sorry, your browser doesn't appear to support web audio. <div id='close'>x</div></div>").appendTo("body");
+                    $("<div class='msg'>Sorry, your browser doesn't appear to support web audio. <a href='http://browsehappy.com'>Upgrade?</a><div id='close'>x</div></div>").appendTo("body");
                     $("#close").click(function(){
                         $("#close").unbind();
                         $(".msg").remove();
