@@ -43,7 +43,7 @@
             <option>Simple Modulation 2</option>
             <option>Noise Modulation</option>
             <option>LFO -> LFO</option>
-            <option>Modulating Sines</option>
+            <option>Modulating 2 Sines</option>
             <option>Tremelo</option>
             <option>Modulating Delay Time</option>
             <option>Comb</option>
@@ -54,7 +54,7 @@
             <option>Sequencer 2</option>
             <option>Ramp</option>
         </select>
-        <div style="height: 635px; background-color:#eee;font-size:14px">
+        <div style="height: 635px; overflow-y:scroll; background-color:#eee;font-size:14px">
         <ul>
             <li><a target="_blank" href="docs/plugins/cracked.miscellaneous.js.html#dac">dac</a></li>
             <li><a target="_blank" href="docs/plugins/cracked.miscellaneous.js.html#sampler">sampler</a></li>
@@ -84,6 +84,24 @@
             <li><a target="_blank" href="docs/plugins/cracked.noise.js.html#white">white</a></li>
             <li><a target="_blank" href="docs/plugins/cracked.noise.js.html#pink">pink</a></li>
             <li><a target="_blank" href="docs/plugins/cracked.noise.js.html#brown">brown</a></li>
+            <li><a target="_blank" href="docs/src/cracked.js.html#start">start</a></li>
+            <li><a target="_blank" href="docs/src/cracked.js.html#stop">stop</a></li>
+            <li><a target="_blank" href="docs/src/cracked.js.html#attr">attr</a></li>
+            <li><a target="_blank" href="docs/src/cracked.js.html#ramp">ramp</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#frequency">frequency</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#detune">detune</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#volume">volume</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#time">time</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#feedback">feedback</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#speed">speed</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#drive">drive</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#play">play</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#scale">scale</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#distortion">distortion</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#random">random</a></li>
+            <li><a target="_blank" href="docs/plugins/cracked.utilities.js.html#shuffle">shuffle</a></li>
+
+
         </ul>
         </div>
     </div>
@@ -129,7 +147,7 @@ __().
     lowpass({frequency:20,q:30}).
     gain({gain:1000,modulates:"frequency"}).
     sine(40).
-    dac(.15);
+    dac(.75);
 
 //lfo modulates the frequency of the lowpass
 __().lfo({frequency:.15,gain:5}).connect("lowpass");

@@ -169,6 +169,12 @@ cracked.pitch2freq = function (pitch) {
     return 440.0 * Math.pow(2, ((Math.floor(pitch) - 69) / 12));
 };
 
+/**
+ * Takes a reference to an array, shuffles it
+ * and returns it
+ * @plugin
+ * @param {Array} arr
+ */
 cracked.shuffle = function (arr) {
     var counter = arr.length, temp, index;
 

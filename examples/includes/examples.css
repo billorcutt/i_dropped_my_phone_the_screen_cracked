@@ -59,3 +59,22 @@
 	.tiny {
 		height:155px;
 	}
+
+    .msg {
+        position: absolute;
+        z-index: 9999;
+        top:0;
+        left:0;
+        width:100%;
+        right:0;
+        background-color: yellow;
+        padding:20px;
+        text-align: center;
+    }
+
+    .msg #close {
+       float: right;
+        cursor:pointer;
+        background-color: #ccc;
+        padding:2px 5px 5px 5px;
+    }

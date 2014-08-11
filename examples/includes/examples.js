@@ -8,22 +8,33 @@
             //other examples on the page. Not needed in
             //a "normal" use case
 			$(".play").click(function() {
-				var $element = $(this),
-					id = $element.data("id");
-				if ($element.text() === "START") {
-					var editor = window[id];
-					__().begin(id);
-					eval(editor.getValue());
-					__().end(id);
-					__(id).start();
-					$element.text("STOP");
-				} else {
-					__(id).stop();
-					__(id).loop("stop");
-					__(id).remove();
-					__(id).loop("reset");
-					$element.text("START");
-				}
+                if("AudioContext" in window || "webkitAudioContext" in window) {
+
+                    var $element = $(this),
+                        id = $element.data("id");
+                    if ($element.text() === "START") {
+                        var editor = window[id];
+                        __().begin(id);
+                        eval(editor.getValue());
+                        __().end(id);
+                        __(id).start();
+                        $element.text("STOP");
+                    } else {
+                        __(id).stop();
+                        __(id).loop("stop");
+                        __(id).remove();
+                        __(id).loop("reset");
+                        $element.text("START");
+                    }
+
+                } else {
+                    $("<div class='msg'>Sorry, your browser doesn't appear to support web audio. <div id='close'>x</div></div>").appendTo("body");
+                    $("#close").click(function(){
+                        $("#close").unbind();
+                        $(".msg").remove();
+                    });
+                    window.scrollTo(0,0);
+                }
 			});
 
             //set up editors
@@ -53,7 +64,10 @@
             $("#examples_select").change(function(){
                 var index = this.selectedIndex;
                 var editor = window["editor1"];
+                var $button = $(".play");
+                if($button.text()==="STOP") {
+                    $button.click();
+                }
                 editor.setValue($("#example"+index).text(),-1);
             });
-
 		});
