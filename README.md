@@ -43,8 +43,8 @@ __("microsynth").frequency(100);
 __("microsynth").start();
 ```
 and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate as many instances as needed, connect them to other nodes,
-address them individually or as a group, nest them within other macros, etc.
+to instantiate instances, connect them to other nodes, address them individually or as a group, 
+nest them within other macros, etc.
 ```javascript
 //define a plugin called microsynth
 cracked.microsynth = function(params) {
@@ -66,7 +66,7 @@ __("#micro2").frequency(600);
 //set the gain in both and start them
 __("microsynth").volume(1).start();
 ```
-Generally, the goal is simplicity, brevity without obscurity and keeping development as straighforward as patching a modular, so noise makers can focus on keeping it weird and fun.
+Generally, the project goal is simplicity, brevity without obscurity and keeping development as intuitive as patching a modular, so noise makers can focus on keeping it weird and fun.
 
 If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
 
