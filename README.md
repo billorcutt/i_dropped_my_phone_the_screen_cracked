@@ -30,7 +30,7 @@ __("compressor").attr("ratio",12);
 //start the sine and the sawtooth
 __("sine,saw").start();
 ```
-Once connected together, audio node chains can be encapsulated as units using macros.
+Audio node chains can be encapsulated as units using macros.
 
 ```javascript
 //define a simple macro named "microsynth"
