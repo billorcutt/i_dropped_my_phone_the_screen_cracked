@@ -46,6 +46,7 @@ Macros can be wrapped in simple factory functions to create plugins, making it p
 to instantiate as many instances as needed, connect them to other nodes,
 address them individually or as a group, nest them within other macros, etc.
 ```javascript
+//define a plugin called microsynth
 cracked.microsynth = function(params) {
 //pass any params to begin() so they can associated with the instance
 __().begin("microsynth",params).sine().gain(0).end("microsynth");
