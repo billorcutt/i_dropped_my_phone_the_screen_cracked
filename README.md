@@ -30,7 +30,7 @@ __("compressor").attr("ratio",12);
 //start the sine and the sawtooth
 __("sine,saw").start();
 ```
-Chains of audio nodes can be encapsulated as units using macros.
+Once connected together, audio node chains can be encapsulated as units using macros.
 
 ```javascript
 //define a simple macro named "microsynth"
@@ -65,11 +65,7 @@ __("#micro2").frequency(600);
 //set the gain in both and start them
 __("microsynth").volume(1).start();
 ```
-Use the cracked library by including the cracked.js or cracked.min.js file from the dist directory in your page.
 
-```html
-<script src="path_to_cracked.js"></script>
-```
 If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
