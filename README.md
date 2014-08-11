@@ -30,8 +30,47 @@ __("compressor").attr("ratio",12);
 //start the sine and the sawtooth
 __("sine,saw").start();
 ```
+Chains of audio nodes can be encapsulated as units using macros.
 
-If you're interested, there's a one page [quickstart](QUICKSTART.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
+```javascript
+//define a simple macro named "microsynth"
+__().begin("microsynth").sine().gain(0).dac().end("microsynth");
+
+//change the frequency of the sine
+__("microsynth").frequency(100);
+
+//start it up
+__("microsynth").start();
+```
+Macros can be wrapped in simple factory functions to create plugins, making it possible
+to instantiate as many instances as needed, connect them to other nodes,
+address them individually or as a group, nest them within other macros, etc.
+```javascript
+cracked.microsynth = function(params) {
+//pass any params to begin() so they can associated with the instance
+__().begin("microsynth",params).sine().gain(0).end("microsynth");
+//return cracked so we can chain methods
+return cracked;
+}
+
+//create two instances with different ids
+__().microsynth({id:"micro1"}).lowpass().dac();
+__().microsynth({id:"micro2"}).lowpass().connect("dac");
+
+//change the frequency in the first
+__("#micro1").frequency(1200);
+//change the frequency in the second
+__("#micro2").frequency(600);
+
+//set the gain in both and start them
+__("microsynth").volume(1).start();
+```
+Use the cracked library by including the cracked.js or cracked.min.js file from the dist directory in your page.
+
+```html
+<script src="path_to_cracked.js"></script>
+```
+If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
 

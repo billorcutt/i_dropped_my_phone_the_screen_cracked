@@ -219,8 +219,3 @@ __.loop("start");
   //set the gain in both and start them
   __("microsynth").volume(1).start();
   ```
-# Usage #
-Include the cracked.js or cracked.min.js file (located in the dist directory) in your page.
-```html
-<script src="path_to_cracked.js"></script>
-```
