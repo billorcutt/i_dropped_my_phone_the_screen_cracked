@@ -66,6 +66,7 @@ __("#micro2").frequency(600);
 //set the gain in both and start them
 __("microsynth").volume(1).start();
 ```
+The goal is simplicity, brevity without obscurity and making development easy, so makers can focus on keeping it weird and fun.
 
 If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
 
