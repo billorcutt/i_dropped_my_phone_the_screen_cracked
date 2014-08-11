@@ -42,7 +42,7 @@ __("microsynth").frequency(100);
 //start it up
 __("microsynth").start();
 ```
-Macros can be wrapped in simple factory functions to create plugins, making it possible
+and macros can be wrapped in simple factory functions to create plugins, making it possible
 to instantiate as many instances as needed, connect them to other nodes,
 address them individually or as a group, nest them within other macros, etc.
 ```javascript
