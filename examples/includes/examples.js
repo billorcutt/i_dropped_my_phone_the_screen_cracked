@@ -32,7 +32,7 @@
                 //numerically top to bottom
                 var id = "editor" + (i + 1);
                 var editor = ace.edit(id);
-                editor.setTheme("ace/theme/textmate");
+                editor.setTheme("ace/theme/idle_fingers");
                 editor.getSession().setMode("ace/mode/javascript");
                 editor.setFontSize(14);
                 window[id] = editor;

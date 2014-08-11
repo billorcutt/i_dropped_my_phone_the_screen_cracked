@@ -2,14 +2,22 @@
 		font-family:Verdana, Arial, Helvetica, sans-serif;
 	}
 
-	button {
-		font-size: 15px;
-		margin: 20px 0;
-	}
-		
-	.container {
-		padding:30px 0 0 450px;
-	}
+    p button.play {
+        color:black;
+        font-size: 14px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        background-color: #ddd;
+        border: none;
+        padding: 10px 30px;
+        width: 150px;
+        outline: none;
+        cursor:pointer;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+    }
+    p button.play:hover {
+        background-color: #ccc;
+    }
 
     .editor { 
         position: relative;
@@ -37,7 +45,7 @@
 	}
 
     .playground {
-        height:600px;
+        height:666px;
     }
 
 	.medium-small {
