@@ -1,6 +1,6 @@
 I Dropped My Phone The Screen Cracked
 -------------------------------------
-I Dropped My Phone The Screen Cracked is a [web audio](http://www.w3.org/TR/webaudio/) library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:
+_I Dropped My Phone The Screen Cracked_ is a [web audio](http://www.w3.org/TR/webaudio/) library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:
 
 ```javascript
 //create and connect sine and system out. start the sine
@@ -66,7 +66,7 @@ __("#micro2").frequency(600);
 //set the gain in both and start them
 __("microsynth").volume(1).start();
 ```
-Generally, the project goal is simplicity, brevity without obscurity and keeping development as intuitive as patching a modular, so noise makers can focus on keeping it weird and fun.
+Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making development as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
 
 If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
 
