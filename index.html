@@ -199,22 +199,22 @@ __("sine,lfo").start();</div>
 
 <div id="example9" style="display:none">
 __().
-    sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+    sampler({path:"data/various/gun-cock.wav",loop:true}).
     comb({feedback:1.18,cutoff:6000,damping:.8,delay:.025}).
     dac(.25).
     play(); </div>
 
 <div id="example10" style="display:none">
 __().
-    sampler({path:"../../data/various/stein.mp3"}).
+    sampler({path:"data/various/stein.mp3"}).
     delay({damping:.9,cutoff:3000,feedback:1,delay:3}).
     dac().
     play();</div>
 
 <div id="example11" style="display:none">
 __().
-    sampler({path:"../../data/various/stein.mp3"}).
-    reverb({path:"../../data/ir/hall.wav"}).
+    sampler({path:"data/various/stein.mp3"}).
+    reverb({path:"data/ir/hall.wav"}).
     dac().
     play();</div>
 
