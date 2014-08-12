@@ -66,7 +66,7 @@ __("#micro2").frequency(600);
 //set the gain in both and start them
 __("microsynth").volume(1).start();
 ```
-Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making development as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
+Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making audio development as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
 
 If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/src/cracked.js.html) and a playground to [try it all out](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/). 
 
