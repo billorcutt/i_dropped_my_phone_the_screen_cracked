@@ -3518,3 +3518,12 @@ cracked.shuffle = function (arr) {
 cracked.random = function (min, max) {
     return Math.round(min + Math.random() * (max - min));
 };
+
+/**
+ * Returns a boolean true if the browser supports
+ * web audio
+ * @plugin
+ */
+cracked.isSupported = function() {
+    return ("AudioContext" in window || "webkitAudioContext" in window);
+};

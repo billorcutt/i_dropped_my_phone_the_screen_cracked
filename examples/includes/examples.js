@@ -8,7 +8,7 @@
             //other examples on the page. Not needed in
             //a "normal" use case
 			$(".play").click(function() {
-                if("AudioContext" in window || "webkitAudioContext" in window) {
+                if(__.isSupported()) {
 
                     var $element = $(this),
                         id = $element.data("id");
