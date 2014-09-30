@@ -1097,7 +1097,7 @@
         _loopCB = function () {
         },
         _loopData = [],
-        _loopIndex = 0,
+        _loopIndex = -1,
         _loopListeners = [],
         _loopTimeToNextStep = 0;
 
@@ -1192,7 +1192,7 @@
         };
         _loopData = [];
         _loopListeners = [];
-        _loopIndex = 0;
+        _loopIndex = -1;
         _isLoopRunning = false;
         _loopTimeToNextStep = 0;
     }
