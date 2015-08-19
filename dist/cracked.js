@@ -351,7 +351,7 @@
      */
     function setAudioParam(node, value) {
         if (node && __.isFun(node.setValueAtTime)) {
-            var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+            var time = _ignoreGrid ? _context.currentTime : (_loopTimeToNextStep + _context.currentTime);
             node.cancelScheduledValues(time);
             node.setValueAtTime(value, time);
         }
@@ -1090,14 +1090,14 @@
      */
 
     var _isLoopRunning = false,
-        _ignoreGrid = false,
+        _ignoreGrid = true,
         _loopStepSize = 16,
         _loopInterval = 100,
         _loopID = 0,
         _loopCB = function () {
         },
         _loopData = [],
-        _loopIndex = 0,
+        _loopIndex = -1,
         _loopListeners = [],
         _loopTimeToNextStep = 0;
 
@@ -1186,13 +1186,13 @@
     function resetLoop() {
         _loopStepSize = 16;
         _loopInterval = 100;
-        _ignoreGrid = false;
+        _ignoreGrid = true;
         _loopID = 0;
         _loopCB = function () {
         };
         _loopData = [];
         _loopListeners = [];
-        _loopIndex = 0;
+        _loopIndex = -1;
         _isLoopRunning = false;
         _loopTimeToNextStep = 0;
     }
@@ -1993,7 +1993,8 @@
     window.cracked = cracked;
     window.__ = window.__ || cracked;
 
-})();;/**
+})();
+;/**
  * Returns the 2nd argument if the 1st is undefined
  * @plugin
  * @param {*} test thing to test for undefined
@@ -2563,11 +2564,14 @@ cracked.adsr = function (userParams) {
                 }
             });
         },
-        release: function () {
+        release: function (params) {
             cracked.each(function (el, i, arr) {
                 if (el.getType() === "adsr") {
-                    //hard code 100 ms release for now
-                    el.ramp(0, 0.1, "gain");
+                    if(params && __.isNum(params)) {
+                        el.ramp(0, params, "gain");
+                    } else {
+                        el.attr({"gain":0});
+                    }
                 }
             });
         }
@@ -3212,11 +3216,17 @@ cracked.triangle = function (params) {
             cracked.each(function (el, index, arr) {
                 //only if its a monosynth
                 if (el.getType() === "monosynth") {
+
+                    //kill anything that's running
+                    cracked.exec("adsr", ["release",.006], el.search("adsr"));
                     //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                     //and then call frequency() passing in the pitch argument we got w noteOn.
-                    cracked.exec("frequency", [freq], el.search("sine"));
-                    //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
+                    setTimeout(function(){
+                        cracked.exec("frequency", [freq], el.search("sine"));
+                        //grab internal adsr and call trigger, pass the envelope parameter we received
+                        cracked.exec("adsr", ["trigger", env], el.search("adsr"));
+                    },6);
+
                     //ditto internal lfo and ramp() the frequency
                     //cracked.exec("ramp",[[100,10],[(env*0.5),(env*0.5)],"frequency",10],el.search("lfo"));
                     //ditto internal lowpass
@@ -3224,11 +3234,12 @@ cracked.triangle = function (params) {
                 }
             });
         },
-        noteOff: function () {
+        noteOff: function (param) {
             cracked.each(function (el, index, arr) {
                 if (el.getType() === "monosynth") {
                     //call the adsr release
-                    cracked.exec("adsr", ["release", []], el.search("adsr"));
+                    var p = param ? param : .006;
+                    cracked.exec("adsr", ["release", p], el.search("adsr"));
                 }
             });
         }

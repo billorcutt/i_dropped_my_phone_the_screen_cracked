@@ -42,11 +42,14 @@ cracked.adsr = function (userParams) {
                 }
             });
         },
-        release: function () {
+        release: function (params) {
             cracked.each(function (el, i, arr) {
                 if (el.getType() === "adsr") {
-                    //hard code 100 ms release for now
-                    el.ramp(0, 0.1, "gain");
+                    if(params && __.isNum(params)) {
+                        el.ramp(0, params, "gain");
+                    } else {
+                        el.attr({"gain":0});
+                    }
                 }
             });
         }

@@ -1090,7 +1090,7 @@
      */
 
     var _isLoopRunning = false,
-        _ignoreGrid = false,
+        _ignoreGrid = true,
         _loopStepSize = 16,
         _loopInterval = 100,
         _loopID = 0,
@@ -1186,7 +1186,7 @@
     function resetLoop() {
         _loopStepSize = 16;
         _loopInterval = 100;
-        _ignoreGrid = false;
+        _ignoreGrid = true;
         _loopID = 0;
         _loopCB = function () {
         };
