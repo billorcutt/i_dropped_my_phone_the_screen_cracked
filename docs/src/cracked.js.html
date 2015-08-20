@@ -335,8 +335,9 @@ code {
     };</code></pre></div></div></div></article><article class="comment"><header><h1 id="each">each</h1><h5 class="subheader"><div class="label radius ctx-type">method</div>cracked.each()</h5></header><ul class="no-bullet tags"><li class="tag"><span class="type">@public: </span><span class="visibility">public</span></li><li class="tag"><span class="type">@function: </span><span class="string"></span></li><li class="tag"><span class="type">@type: </span><span class="types">{String}</span></li><li class="tag"><span class="type">@param: </span><span class="types">{Function}</span><span class="name">fn</span><span class="description">function to be called on each node</span></li><li class="tag"><span class="type">@returns: </span><span class="string">{cracked}</span></li></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>iterate over the selectedNodes array, executing<br />the supplied function for each element<br /><code><br />__.each(type, function(node,index,array){<br />     //Loops over any selected nodes. Parameters are the<br />     //current node, current index, and the selectedNode array<br />});</code></p></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">cracked.each = function (type, fn) {
         if (__.isFun(fn)) {
             for (var i = 0; i &lt; _selectedNodes.length; i++) {
-                if (!type || (type &amp;&amp; _selectedNodes[i].getType() === type)) {
-                    fn(getNodeWithUUID(_selectedNodes[i]), i, _selectedNodes);
+                var node = getNodeWithUUID(_selectedNodes[i]);
+                if (!type || (type &amp;&amp; node.getType() === type)) {
+                    fn(node, i, _selectedNodes);
                 }
             }
         }

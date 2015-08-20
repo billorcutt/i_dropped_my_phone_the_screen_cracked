@@ -30,21 +30,24 @@ cracked.adsr = function (userParams) {
             cracked.each("adsr", function (el, i, arr) {
                 var p = makeEnv(params, el.getParams().settings.envelope);
                 //options = attack,decay,sustain,hold,release
-                el.ramp(
-                    [1, p[2], p[2], 0],
-                    [p[0], p[1], p[3], p[4]],
-                    "gain",
-                    null,
-                    0
-                );
+                //set to zero
+                el.ramp(0, 0.006, "gain");
+                setTimeout(function(){
+                    el.ramp(
+                        [1, p[2], p[2], 0],
+                        [p[0], p[1], p[3], p[4]],
+                        "gain",
+                        null,
+                        0
+                    );
+                },6);
             });
         },
         release: function (params) {
             cracked.each("adsr", function (el, i, arr) {
-                if(params && __.isNum(params)) {
-                    el.ramp(0, params, "gain");
-                } else {
-                    el.attr({"gain":0});
+                var time = params ? params : 0.006; // minimum length otherwise "clicks"
+                if(time && __.isNum(time)) {
+                    el.ramp(0, time, "gain");
                 }
             });
         }

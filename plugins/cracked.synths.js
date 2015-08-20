@@ -28,28 +28,18 @@ cracked.monosynth = function (params) {
             //loop thru selected nodes
             cracked.each("monosynth", function (el, index, arr) {
                 //kill anything that's running
-                cracked.exec("adsr", ["release",0.006], el.search("adsr"));
+                cracked.exec("adsr", ["release"], el.search("adsr"));
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
-
-                //slight delay before triggering the note
-                setTimeout(function(){
-                    cracked.exec("frequency", [freq], el.search("sine"));
-                    //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
-                },6);
-
-                //ditto internal lfo and ramp() the frequency
-                //cracked.exec("ramp",[[100,10],[(env*0.5),(env*0.5)],"frequency",10],el.search("lfo"));
-                //ditto internal lowpass
-                //cracked.exec("ramp",[[freq/2,freq*3],[(env*0.1),(env*0.9)],"frequency",freq*3],el.search("lowpass"));
+                cracked.exec("frequency", [freq], el.search("sine"));
+                //grab internal adsr and call trigger, pass the envelope parameter we received
+                cracked.exec("adsr", ["trigger", env], el.search("adsr"));
             });
         },
         noteOff: function (param) {
             cracked.each("monosynth", function (el, index, arr) {
                 //call the adsr release
-                var p = param ? param : 0.006;
-                cracked.exec("adsr", ["release", p], el.search("adsr"));
+                cracked.exec("adsr", ["release", param], el.search("adsr"));
             });
         }
     };
@@ -63,6 +53,7 @@ cracked.monosynth = function (params) {
     return cracked;
 };
 
+//this is junk- just here for reference
 cracked.cracksynth = function (params) {
 
     var methods = {

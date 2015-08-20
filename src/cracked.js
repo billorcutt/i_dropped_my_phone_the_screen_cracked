@@ -573,8 +573,9 @@
     cracked.each = function (type, fn) {
         if (__.isFun(fn)) {
             for (var i = 0; i < _selectedNodes.length; i++) {
-                if (!type || (type && _selectedNodes[i].getType() === type)) {
-                    fn(getNodeWithUUID(_selectedNodes[i]), i, _selectedNodes);
+                var node = getNodeWithUUID(_selectedNodes[i]);
+                if (!type || (type && node.getType() === type)) {
+                    fn(node, i, _selectedNodes);
                 }
             }
         }
@@ -749,6 +750,7 @@
                             currNode[paramToRamp].linearRampToValueAtTime(target[i], (now + prevTime + time[i]));
                         }
                     } else {
+                        logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time));
                         currNode[paramToRamp].linearRampToValueAtTime(target, (now + time));
                     }
                 }

@@ -248,28 +248,18 @@ code {
             //loop thru selected nodes
             cracked.each(&quot;monosynth&quot;, function (el, index, arr) {
                 //kill anything that's running
-                cracked.exec(&quot;adsr&quot;, [&quot;release&quot;,0.006], el.search(&quot;adsr&quot;));
+                cracked.exec(&quot;adsr&quot;, [&quot;release&quot;], el.search(&quot;adsr&quot;));
                 //select any internal sine nodes the monosynth contains (using &quot;el.search(sine)&quot;)
                 //and then call frequency() passing in the pitch argument we got w noteOn.
-
-                //slight delay before triggering the note
-                setTimeout(function(){
-                    cracked.exec(&quot;frequency&quot;, [freq], el.search(&quot;sine&quot;));
-                    //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec(&quot;adsr&quot;, [&quot;trigger&quot;, env], el.search(&quot;adsr&quot;));
-                },6);
-
-                //ditto internal lfo and ramp() the frequency
-                //cracked.exec(&quot;ramp&quot;,[[100,10],[(env*0.5),(env*0.5)],&quot;frequency&quot;,10],el.search(&quot;lfo&quot;));
-                //ditto internal lowpass
-                //cracked.exec(&quot;ramp&quot;,[[freq/2,freq*3],[(env*0.1),(env*0.9)],&quot;frequency&quot;,freq*3],el.search(&quot;lowpass&quot;));
+                cracked.exec(&quot;frequency&quot;, [freq], el.search(&quot;sine&quot;));
+                //grab internal adsr and call trigger, pass the envelope parameter we received
+                cracked.exec(&quot;adsr&quot;, [&quot;trigger&quot;, env], el.search(&quot;adsr&quot;));
             });
         },
         noteOff: function (param) {
             cracked.each(&quot;monosynth&quot;, function (el, index, arr) {
                 //call the adsr release
-                var p = param ? param : 0.006;
-                cracked.exec(&quot;adsr&quot;, [&quot;release&quot;, p], el.search(&quot;adsr&quot;));
+                cracked.exec(&quot;adsr&quot;, [&quot;release&quot;, param], el.search(&quot;adsr&quot;));
             });
         }
     };
@@ -283,6 +273,7 @@ code {
     return cracked;
 };
 
+//this is junk- just here for reference
 cracked.cracksynth = function (params) {
 
     var methods = {
