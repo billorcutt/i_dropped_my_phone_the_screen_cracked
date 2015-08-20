@@ -558,7 +558,7 @@
      * iterate over the selectedNodes array, executing
      * the supplied function for each element
      * <code>
-     * \_\_.each(function(node,index,array){
+     * \_\_.each(type, function(node,index,array){
      *      //Loops over any selected nodes. Parameters are the
      *      //current node, current index, and the selectedNode array
      * });</code>
@@ -566,13 +566,16 @@
      *
      * @public
      * @function
+     * @type {String} type string to be checked against the node type
      * @param {Function} fn function to be called on each node
      * @returns {cracked}
      */
-    cracked.each = function (fn) {
+    cracked.each = function (type, fn) {
         if (__.isFun(fn)) {
             for (var i = 0; i < _selectedNodes.length; i++) {
-                fn(getNodeWithUUID(_selectedNodes[i]), i, _selectedNodes);
+                if (!type || (type && _selectedNodes[i].getType() === type)) {
+                    fn(getNodeWithUUID(_selectedNodes[i]), i, _selectedNodes);
+                }
             }
         }
         return cracked;

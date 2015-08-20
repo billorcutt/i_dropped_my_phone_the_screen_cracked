@@ -27,29 +27,24 @@ cracked.adsr = function (userParams) {
 
         },
         trigger: function (params) {
-            cracked.each(function (el, i, arr) {
-                //adsr nodes only
-                if (el.getType() === "adsr") {
-                    var p = makeEnv(params, el.getParams().settings.envelope);
-                    //options = attack,decay,sustain,hold,release
-                    el.ramp(
-                        [1, p[2], p[2], 0],
-                        [p[0], p[1], p[3], p[4]],
-                        "gain",
-                        null,
-                        0
-                    );
-                }
+            cracked.each("adsr", function (el, i, arr) {
+                var p = makeEnv(params, el.getParams().settings.envelope);
+                //options = attack,decay,sustain,hold,release
+                el.ramp(
+                    [1, p[2], p[2], 0],
+                    [p[0], p[1], p[3], p[4]],
+                    "gain",
+                    null,
+                    0
+                );
             });
         },
         release: function (params) {
-            cracked.each(function (el, i, arr) {
-                if (el.getType() === "adsr") {
-                    if(params && __.isNum(params)) {
-                        el.ramp(0, params, "gain");
-                    } else {
-                        el.attr({"gain":0});
-                    }
+            cracked.each("adsr", function (el, i, arr) {
+                if(params && __.isNum(params)) {
+                    el.ramp(0, params, "gain");
+                } else {
+                    el.attr({"gain":0});
                 }
             });
         }
