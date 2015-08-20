@@ -28,7 +28,7 @@ cracked.monosynth = function (params) {
             //loop thru selected nodes
             cracked.each("monosynth", function (el, index, arr) {
                 //kill anything that's running
-                cracked.exec("adsr", ["release",.006], el.search("adsr"));
+                cracked.exec("adsr", ["release",0.006], el.search("adsr"));
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
 
@@ -48,7 +48,7 @@ cracked.monosynth = function (params) {
         noteOff: function (param) {
             cracked.each("monosynth", function (el, index, arr) {
                 //call the adsr release
-                var p = param ? param : .006;
+                var p = param ? param : 0.006;
                 cracked.exec("adsr", ["release", p], el.search("adsr"));
             });
         }
