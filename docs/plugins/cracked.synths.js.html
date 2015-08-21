@@ -256,10 +256,12 @@ code {
                 cracked.exec(&quot;adsr&quot;, [&quot;trigger&quot;, env], el.search(&quot;adsr&quot;));
             });
         },
-        noteOff: function (param) {
+        noteOff: function (params) {
             cracked.each(&quot;monosynth&quot;, function (el, index, arr) {
+                params = __.ifUndef(params,0);
+                var p = __.isNum(params) ? params : __.ifUndef(params.envelope,0);
                 //call the adsr release
-                cracked.exec(&quot;adsr&quot;, [&quot;release&quot;, param], el.search(&quot;adsr&quot;));
+                cracked.exec(&quot;adsr&quot;, [&quot;release&quot;, p], el.search(&quot;adsr&quot;));
             });
         }
     };

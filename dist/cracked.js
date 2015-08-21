@@ -2531,8 +2531,9 @@ cracked.overdrive = function (userParams) {
  * [See more adsr examples](../../examples/envelopes.html)
  *
  * @plugin
+ * @param {Array} [userParams] 5 values: attack,decay,sustain,hold,release
  * @param {Array}  [userParams] 4 values: attack,decay,sustain,release
- * @param {Array} [userParams] 5 values: attack,decay,sustain,hold, release
+ * @param {Array} [userParams] 3 values: attack,decay,sustain (holds until released)
  * @param {String} [userParams] "slow" or "fast"
  * @param {Number} [userParams=0.5] length of the total envelope
  */
@@ -2558,7 +2559,7 @@ cracked.adsr = function (userParams) {
                 var p = makeEnv(params, el.getParams().settings.envelope);
                 //options = attack,decay,sustain,hold,release
                 //set to zero
-                el.ramp(0, 0.006, "gain");
+                el.ramp(0, 0.0075, "gain");
                 setTimeout(function(){
                     el.ramp(
                         [1, p[2], p[2], 0],
@@ -2572,7 +2573,7 @@ cracked.adsr = function (userParams) {
         },
         release: function (params) {
             cracked.each("adsr", function (el, i, arr) {
-                var time = params ? params : 0.006; // minimum length otherwise "clicks"
+                var time = params ? params : 0.0075; // minimum length to avoid "clicks"
                 if(time && __.isNum(time)) {
                     el.ramp(0, time, "gain");
                 }
@@ -2608,7 +2609,11 @@ cracked.adsr = function (userParams) {
             } else if (options.length === 4) {
                 var sum = options[0] + options[1] + options[3];
                 p = [options[0], options[1], options[2], (sum / 3), options[3]];
+            } else if (options.length === 3) {
+                //a,d,s, hold for two hours, r = 0
+                p = [options[0], options[1], options[2], 7200, 0];
             }
+
         } else if (__.isNum(options)) {
             segment = options / 4;
             p = [segment, segment, 0.5, segment, segment];
@@ -3226,10 +3231,12 @@ cracked.triangle = function (params) {
                 cracked.exec("adsr", ["trigger", env], el.search("adsr"));
             });
         },
-        noteOff: function (param) {
+        noteOff: function (params) {
             cracked.each("monosynth", function (el, index, arr) {
+                params = __.ifUndef(params,0);
+                var p = __.isNum(params) ? params : __.ifUndef(params.envelope,0);
                 //call the adsr release
-                cracked.exec("adsr", ["release", param], el.search("adsr"));
+                cracked.exec("adsr", ["release", p], el.search("adsr"));
             });
         }
     };

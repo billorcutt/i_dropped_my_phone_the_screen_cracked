@@ -36,10 +36,12 @@ cracked.monosynth = function (params) {
                 cracked.exec("adsr", ["trigger", env], el.search("adsr"));
             });
         },
-        noteOff: function (param) {
+        noteOff: function (params) {
             cracked.each("monosynth", function (el, index, arr) {
+                params = __.ifUndef(params,0);
+                var p = __.isNum(params) ? params : __.ifUndef(params.envelope,0);
                 //call the adsr release
-                cracked.exec("adsr", ["release", param], el.search("adsr"));
+                cracked.exec("adsr", ["release", p], el.search("adsr"));
             });
         }
     };
