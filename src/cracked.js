@@ -1169,6 +1169,7 @@
             _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
             _loopID = setInterval(checkup, (_loopInterval / 1.75));
             _isLoopRunning = true;
+            _ignoreGrid = false;
         }
     }
 
@@ -1181,6 +1182,7 @@
             clearInterval(_loopID);
             _isLoopRunning = false;
             _loopTimeToNextStep = 0;
+            _ignoreGrid = true;
         }
     }
 

@@ -55,6 +55,13 @@ module.exports = function(grunt) {
                 src: ['src/**/*.js','plugins/**/*.js'],
                 dest: 'docs'
             }
+        },
+        connect: {
+            server: {
+                options: {
+                    keepalive:true
+                }
+            }
         }
     });
 
@@ -62,6 +69,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-dox');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('default', ['jshint', 'concat', 'uglify','dox']);
 
