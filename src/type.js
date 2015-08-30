@@ -41,7 +41,7 @@ cracked.isObj = function(obj) {
  * @param {*} num thing to test
  */
 cracked.isNum = function(num) {
-    if (num === null || num === "") {
+    if (num === null || num === "" || typeof num === "undefined") {
         return false;
     } else {
         return !isNaN(num);

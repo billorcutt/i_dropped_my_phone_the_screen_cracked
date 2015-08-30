@@ -1,10 +1,9 @@
-cracked.monosynth = function (params) {
-    //do this: http://noisehack.com/how-to-build-monotron-synth-web-audio-api/
+cracked.microsynth = function (params) {
 
     var methods = {
         init: function (options) {
             //set up a basic synth: lfo, sine, lowpass, envelope
-            __().begin("monosynth", params).
+            __().begin("microsynth", params).
 
                 lfo({gain: 0}).
 
@@ -16,7 +15,7 @@ cracked.monosynth = function (params) {
 
                 gain().
 
-                end("monosynth");
+                end("microsynth");
         },
         noteOn: function (params) {
 
@@ -26,7 +25,7 @@ cracked.monosynth = function (params) {
             var env = args.envelope || 1;
 
             //loop thru selected nodes
-            cracked.each("monosynth", function (el, index, arr) {
+            cracked.each("microsynth", function (el, index, arr) {
                 //kill anything that's running
                 cracked.exec("adsr", ["release"], el.search("adsr"));
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
@@ -37,11 +36,11 @@ cracked.monosynth = function (params) {
             });
         },
         noteOff: function (params) {
-            cracked.each("monosynth", function (el, index, arr) {
+            cracked.each("microsynth", function (el, index, arr) {
                 params = __.ifUndef(params,0);
                 var p = __.isNum(params) ? params : __.ifUndef(params.envelope,0);
                 //call the adsr release
-                cracked.exec("adsr", ["release", p], el.search("adsr"));
+                cracked.exec("adsr", ["release",p], el.search("adsr"));
             });
         }
     };
@@ -55,7 +54,10 @@ cracked.monosynth = function (params) {
     return cracked;
 };
 
+/*
+
 //this is junk- just here for reference
+ //do this: http://noisehack.com/how-to-build-monotron-synth-web-audio-api/
 cracked.cracksynth = function (params) {
 
     var methods = {
@@ -121,3 +123,5 @@ cracked.cracksynth = function (params) {
 
     return cracked;
 };
+
+    */

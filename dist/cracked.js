@@ -2044,7 +2044,7 @@ cracked.isObj = function(obj) {
  * @param {*} num thing to test
  */
 cracked.isNum = function(num) {
-    if (num === null || num === "") {
+    if (num === null || num === "" || typeof num === "undefined") {
         return false;
     } else {
         return !isNaN(num);
@@ -2569,11 +2569,10 @@ cracked.adsr = function (userParams) {
                 );
             });
         },
-        release: function (params) {
+        release: function (time) {
+            time = __.ifUndef(time,0);
             cracked.each("adsr", function (el, i, arr) {
-                if(time && __.isNum(time)) {
                     el.ramp(0, time, "gain");
-                }
             });
         }
     };
@@ -3190,13 +3189,12 @@ cracked.triangle = function (params) {
     __.begin("triangle", userParams).osc(options).end("triangle");
 
     return cracked;
-};;cracked.monosynth = function (params) {
-    //do this: http://noisehack.com/how-to-build-monotron-synth-web-audio-api/
+};;cracked.microsynth = function (params) {
 
     var methods = {
         init: function (options) {
             //set up a basic synth: lfo, sine, lowpass, envelope
-            __().begin("monosynth", params).
+            __().begin("microsynth", params).
 
                 lfo({gain: 0}).
 
@@ -3208,7 +3206,7 @@ cracked.triangle = function (params) {
 
                 gain().
 
-                end("monosynth");
+                end("microsynth");
         },
         noteOn: function (params) {
 
@@ -3218,7 +3216,7 @@ cracked.triangle = function (params) {
             var env = args.envelope || 1;
 
             //loop thru selected nodes
-            cracked.each("monosynth", function (el, index, arr) {
+            cracked.each("microsynth", function (el, index, arr) {
                 //kill anything that's running
                 cracked.exec("adsr", ["release"], el.search("adsr"));
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
@@ -3229,11 +3227,11 @@ cracked.triangle = function (params) {
             });
         },
         noteOff: function (params) {
-            cracked.each("monosynth", function (el, index, arr) {
+            cracked.each("microsynth", function (el, index, arr) {
                 params = __.ifUndef(params,0);
                 var p = __.isNum(params) ? params : __.ifUndef(params.envelope,0);
                 //call the adsr release
-                cracked.exec("adsr", ["release", p], el.search("adsr"));
+                cracked.exec("adsr", ["release",p], el.search("adsr"));
             });
         }
     };
@@ -3247,7 +3245,10 @@ cracked.triangle = function (params) {
     return cracked;
 };
 
+/*
+
 //this is junk- just here for reference
+ //do this: http://noisehack.com/how-to-build-monotron-synth-web-audio-api/
 cracked.cracksynth = function (params) {
 
     var methods = {
@@ -3312,7 +3313,9 @@ cracked.cracksynth = function (params) {
     }
 
     return cracked;
-};;/**
+};
+
+    */;/**
  *
  * [See more control examples](../../examples/control.html)
  *

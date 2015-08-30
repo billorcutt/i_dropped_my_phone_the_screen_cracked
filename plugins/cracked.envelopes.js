@@ -40,11 +40,10 @@ cracked.adsr = function (userParams) {
                 );
             });
         },
-        release: function (params) {
+        release: function (time) {
+            time = __.ifUndef(time,0);
             cracked.each("adsr", function (el, i, arr) {
-                if(time && __.isNum(time)) {
                     el.ramp(0, time, "gain");
-                }
             });
         }
     };
