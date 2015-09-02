@@ -898,7 +898,7 @@
             var parentNodeID = (__.isObj(node)) ?
                 node.getMacroContainerUUID() : (__.isStr(node)) ?
                 getNodeWithUUID(node).getMacroContainerUUID() : "";
-            return parentNodeID === this.getMacroContainerUUID();
+            return parentNodeID && this.getMacroContainerUUID() && parentNodeID === this.getMacroContainerUUID();
         };
 
         //returns true if this node is (or is part of) a modulator macro
