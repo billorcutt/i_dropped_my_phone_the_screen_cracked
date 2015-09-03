@@ -3453,6 +3453,23 @@ cracked.distortion = function (userParam) {
 };
 
 /**
+ * q setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam detune frequency to set
+ */
+cracked.q = function (userParam) {
+    if (__.isNum(userParam)) {
+        cracked.attr({
+            "q": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
  * Convenient way to say start everything
  *
  * [See more control examples](../../examples/control.html)
@@ -3469,7 +3486,7 @@ cracked.play = function () {
  * @plugin
  * @param {String} type scale type
  */
-cracked.scale = function (type) {
+cracked.scales = function (type) {
     return {
         "major": [0, 2, 4, 5, 7, 9, 11],
         "minor": [0, 2, 3, 5, 7, 8, 10]
@@ -3520,6 +3537,32 @@ cracked.shuffle = function (arr) {
  */
 cracked.random = function (min, max) {
     return Math.round(min + Math.random() * (max - min));
+};
+
+/**
+ * Scale an input number between min & max to an output number between a min & max. Supports logarithmic or linear scaling.
+ * @plugin
+ * @param {Number} position
+ * @param {Number} inMin
+ * @param {Number} inMax
+ * @param {Number} outMin
+ * @param {Number} outMax
+ * @param {String} type
+ */
+cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
+    if(type === "log" || type === "logarithmic") {
+        var minVal = Math.log(outMin);
+        var maxVal = Math.log(outMax);
+        // calculate adjustment factor
+        var scale = (maxVal-minVal) / (inMax-inMin);
+        return Math.exp(minVal + scale*(position-inMin));
+    } else if(type === "linear"|| typeof type === "undefined") {
+        var result = parseFloat((((position - inMax) * (outMax - outMin)) / (inMax - inMax))  + outMin);
+        return result.toFixed(2);
+    } else {
+        console.error("scale: type "+type+" not supported.");
+        return position;
+    }
 };
 
 /**
