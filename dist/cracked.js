@@ -3489,7 +3489,12 @@ cracked.play = function () {
 cracked.scales = function (type) {
     return {
         "major": [0, 2, 4, 5, 7, 9, 11],
-        "minor": [0, 2, 3, 5, 7, 8, 10]
+        "minor": [0, 2, 3, 5, 7, 8, 10],
+        "wholetone": [0, 2, 4, 6, 8, 10],
+        "overtone":[0, 2, 4, 6, 7, 9, 10],
+        "lydian":[0, 2, 4, 6, 7, 9, 11],
+        "mixolydian": [0, 2, 4, 5, 7, 9, 10],
+        "ionian": [0, 2, 4, 5, 7, 9, 11]
     }[type];
 };
 
@@ -3562,6 +3567,20 @@ cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
     } else {
         console.error("scale: type "+type+" not supported.");
         return position;
+    }
+};
+
+/**
+ * Converts a second value to millisecond value
+ * @plugin
+ * @param {Number} second
+ */
+cracked.sec2ms = function(second) {
+    if(__.isNum(second)) {
+        return second * 1000;
+    } else {
+        console.error("sec2ms: param not number");
+        return second;
     }
 };
 
