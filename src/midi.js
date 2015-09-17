@@ -27,7 +27,7 @@ cracked.midi_receive = function(callback, id){
 // if id is omitted then sends to all outputs
 cracked.midi_send = function(data, id){
     if(__._midi_access || __.midi_init()) {
-
+        console.log("do midi stuff here");
     } else {
         console.error("midi_send: midi not available");
     }
@@ -44,7 +44,7 @@ cracked.midi_status = function() {
 };
 
 //initialize midi
-cracked.midi_init = function() {
+cracked.midi_init = function(access) {
     if(__.midi_supported && !__._midi_access) {
         navigator.requestMIDIAccess().then( function() {
             __._midi_access = access;

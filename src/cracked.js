@@ -222,7 +222,7 @@
             for (var i = 0; i < _selectedNodes.length; i++) {
                 var currNode = getNodeWithUUID(_selectedNodes[i]);
                 if (currNode && !currNode.getIsPlaying()) {
-                    currNode.start(0);
+                    currNode.start();
                 }
             }
         }
@@ -690,7 +690,8 @@
                 if (currNode && __.isFun(currNode.start)) {
                     var wrapper = getNodeWithUUID(currNode.uuid);
                     if (!wrapper.getIsPlaying()) {
-                        currNode.start(0);
+                        var offset = (currNode && currNode.loopStart && __.isNum(currNode.loopStart)) ? currNode.loopStart : 0;
+                        currNode.start(0,offset);
                         wrapper.setIsPlaying(true);
                         this.setIsPlaying(true);
                     }
