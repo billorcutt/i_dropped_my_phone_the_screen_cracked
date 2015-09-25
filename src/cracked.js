@@ -635,9 +635,10 @@
                     applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
                 }
             }
-        } else if (_context && creationParams.method && !_context[creationParams.method]) {
-            //must be "createDestination" method
+        } else if (_context && creationParams.method === "createDestination") {
             node = _context.destination;
+        } else if (_context && creationParams.method === "createOrigin") {
+            node = createMockMediaStream(creationParams);
         } else {
             //its a macro
             node = [];
@@ -936,6 +937,26 @@
         //returns a native node or an array of native nodes
         this.getNativeNode = function () {
             return nativeNode;
+        };
+
+        //replace and reconnect a single native node with a supplied node
+        this.replaceNode = function(node) {
+            var saved_buffer = nativeNode.buffer;
+            //create  a new node
+            nativeNode = node;
+            //restore uuid
+            nativeNode.uuid = this.getUUID();
+            //restore connections
+            for (var i = 0; i < nextNode.length; i++) {
+                this.connect(nextNode[i]);
+            }
+            this.connectPrevious();
+            //not playing yet so false
+            this.setIsPlaying(false);
+            //restore the buffer
+            if (saved_buffer) {
+                nativeNode.buffer = saved_buffer;
+            }
         };
 
         //reset the nodes that need to be restored after play is complete
@@ -1537,6 +1558,81 @@
         }, userParams);
         return cracked;
     };
+
+    /**
+     * Native origin, used by the adc plugin
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     */
+    cracked.origin = function (userParams) {
+        var cParams = {
+            "method": "createOrigin",
+            "settings": {}
+        };
+        //mediastream creation is async so we need to jump thru some hoops...
+        //first create a temporary imposter mediastream we get swap out later
+        var tmpNode = createNode("origin", cParams, userParams);
+        //now create the real object asynchronously and swap it in when its ready
+        createMediaStreamSourceNode(cParams,tmpNode);
+        return cracked;
+    };
+
+    /**
+     * helper function for origin method
+     * @function
+     * @private
+     */
+    function createMockMediaStream(creationParams) {
+        //create buffer-less buffer source object as our mock mediastream
+        creationParams.method = "createBufferSource";
+        var tmpnode = _context[creationParams.method].apply(_context, creationParams.methodParams || []);
+        for (var creationParam in creationParams.settings) {
+            if (creationParams.settings.hasOwnProperty(creationParam)) {
+                applyParam(tmpnode, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+            }
+        }
+        return tmpnode;
+    }
+
+    /**
+     * helper function for origin method
+     * @function
+     * @private
+     */
+    function createMediaStreamSourceNode(params,temporaryNode) {
+        //make the real mediastream and drop it into place.
+        var newNode = null;
+        navigator.getUserMedia = (navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia);
+
+        if(navigator.getUserMedia) {
+            navigator.getUserMedia(
+                {
+                    audio:true
+                },
+                (function(params){
+                    var p = params;
+                    return function(stream) {
+                        p.method = "createMediaStreamSource";
+                        p.methodParams = [stream];
+                        //made an actual media stream source
+                        newNode = audioNodeFactory(p);
+                        //update the imposter mediastream w/ the real thing
+                        getNodeWithUUID(temporaryNode.getNativeNode().uuid).replaceNode(newNode);
+                    };
+                })(params),
+                function(error) {
+                    console.error("createMediaStreamSourceNode: getUserMedia failed.");
+                }
+            );
+        } else {
+            console.error("createMediaStreamSourceNode: getUserMedia not supported.");
+        }
+
+    }
 
     /**
      * Native audio source node and buffer combined.
