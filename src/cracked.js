@@ -2155,6 +2155,9 @@
         logToConsole("connected " + vals[0] + " - " + vals[1] + " to " + vals[2] + " - " + vals[3]);
     }
 
+    //private stash
+    cracked._tmp = {};
+
     //version
     cracked.version = "0.1.0";
 
