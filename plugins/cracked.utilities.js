@@ -141,12 +141,29 @@ cracked.distortion = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
- * @param {Number} userParam detune frequency to set
+ * @param {Number} userParam q value to set
  */
 cracked.q = function (userParam) {
     if (__.isNum(userParam)) {
         cracked.attr({
             "q": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
+ * pan setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam pan value (1 to -1) to set
+ */
+cracked.pan = function (userParam) {
+    if (__.isNum(userParam)) {
+        cracked.attr({
+            "pan": userParam
         });
     }
     return cracked;
@@ -174,8 +191,8 @@ cracked.scales = function (type) {
         "major": [0, 2, 4, 5, 7, 9, 11],
         "minor": [0, 2, 3, 5, 7, 8, 10],
         "wholetone": [0, 2, 4, 6, 8, 10],
-        "overtone":[0, 2, 4, 6, 7, 9, 10],
-        "lydian":[0, 2, 4, 6, 7, 9, 11],
+        "overtone": [0, 2, 4, 6, 7, 9, 10],
+        "lydian": [0, 2, 4, 6, 7, 9, 11],
         "mixolydian": [0, 2, 4, 5, 7, 9, 10],
         "ionian": [0, 2, 4, 5, 7, 9, 11]
     }[type];

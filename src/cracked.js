@@ -1546,6 +1546,26 @@
     };
 
     /**
+     * Native stereo panner, used by panner
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     */
+    cracked.stereoPanner = function (userParams) {
+
+        userParams = userParams || {};
+        var creationParams = {
+            "mapping": {
+                "pan": "pan.value"
+            },
+            "method": "createStereoPanner",
+            "settings": {}
+        };
+        createNode("stereoPanner", creationParams, userParams);
+        return cracked;
+    };
+
+    /**
      * Native destination, used by the dac plugin
      * @function
      * @public
@@ -1560,7 +1580,8 @@
     };
 
     /**
-     * Native origin, used by the adc plugin
+     * Native sound input node, used by the adc plugin
+     * origin = opposite of destination
      * @function
      * @public
      * @param {Object} [userParams] map of optional values
@@ -1571,7 +1592,7 @@
             "settings": {}
         };
         //mediastream creation is async so we need to jump thru some hoops...
-        //first create a temporary imposter mediastream we get swap out later
+        //first create a temporary, silent imposter mediastream we get swap out later
         var tmpNode = createNode("origin", cParams, userParams);
         //now create the real object asynchronously and swap it in when its ready
         createMediaStreamSourceNode(cParams,tmpNode);
@@ -2102,6 +2123,7 @@
         }
     };
 
+    //turn on debug flag when the url param is appended
     (function () {
         if (window.location.href.indexOf("debug=true") !== -1) {
             _debugEnabled = true;
@@ -2121,7 +2143,8 @@
 
     /**
      * dump the node lookup object to the console
-     * @private
+     * debug only
+     * @public
      */
     cracked._dumpState = function () {
         console.log(_nodeLookup);
@@ -2129,9 +2152,10 @@
 
     /**
      * debug method to get a node with a uuid
+     * debug only
      * @param uuid
      * @returns {*}
-     * @private
+     * @public
      */
     cracked._getNode = function (uuid) {
         return (getNodeWithUUID(uuid));

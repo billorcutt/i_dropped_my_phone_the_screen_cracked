@@ -27,6 +27,17 @@ cracked.adc = function (params) {
 };
 
 /**
+ * Panner - simple stereo panner
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ */
+cracked.panner = function (userParams) {
+    __.begin("panner", userParams).stereoPanner(userParams).end("panner");
+    return cracked;
+};
+
+/**
  * Sampler - sound file player
  *
  * [See more sampler examples](../../examples/sampler.html)

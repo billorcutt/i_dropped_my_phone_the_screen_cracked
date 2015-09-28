@@ -1418,7 +1418,7 @@
      */
     cracked.compressor = function (userParams) {
         var mapping = {
-            "threshold": "threshold.value",
+            "threshold": "thresholdp",
             "knee": "knee.value",
             "ratio": "ratio.value",
             "attack": "attack.value",
@@ -1546,6 +1546,26 @@
     };
 
     /**
+     * Native stereo panner, used by panner
+     * @function
+     * @public
+     * @param {Object} [userParams] map of optional values
+     */
+    cracked.stereoPanner = function (userParams) {
+
+        userParams = userParams || {};
+        var creationParams = {
+            "mapping": {
+                "pan": "pan.value"
+            },
+            "method": "createStereoPanner",
+            "settings": {}
+        };
+        createNode("stereoPanner", creationParams, userParams);
+        return cracked;
+    };
+
+    /**
      * Native destination, used by the dac plugin
      * @function
      * @public
@@ -1560,7 +1580,8 @@
     };
 
     /**
-     * Native origin, used by the adc plugin
+     * Native sound input node, used by the adc plugin
+     * origin = opposite of destination
      * @function
      * @public
      * @param {Object} [userParams] map of optional values
@@ -1571,7 +1592,7 @@
             "settings": {}
         };
         //mediastream creation is async so we need to jump thru some hoops...
-        //first create a temporary imposter mediastream we get swap out later
+        //first create a temporary, silent imposter mediastream we get swap out later
         var tmpNode = createNode("origin", cParams, userParams);
         //now create the real object asynchronously and swap it in when its ready
         createMediaStreamSourceNode(cParams,tmpNode);
@@ -1992,7 +2013,7 @@
     };
 
     /**
-     * Midi input. Invoke callback when midi received.
+     * Midi input. Bind handler for the onMIDIMessage event.
      * @param {Function} callback
      * @public
      */
@@ -2102,6 +2123,7 @@
         }
     };
 
+    //turn on debug flag when the url param is appended
     (function () {
         if (window.location.href.indexOf("debug=true") !== -1) {
             _debugEnabled = true;
@@ -2121,7 +2143,8 @@
 
     /**
      * dump the node lookup object to the console
-     * @private
+     * debug only
+     * @public
      */
     cracked._dumpState = function () {
         console.log(_nodeLookup);
@@ -2129,9 +2152,10 @@
 
     /**
      * debug method to get a node with a uuid
+     * debug only
      * @param uuid
      * @returns {*}
-     * @private
+     * @public
      */
     cracked._getNode = function (uuid) {
         return (getNodeWithUUID(uuid));
@@ -3027,6 +3051,17 @@ cracked.adc = function (params) {
 };
 
 /**
+ * Panner - simple stereo panner
+ *
+ * @plugin
+ * @param {Object} [userParams] map of optional values
+ */
+cracked.panner = function (userParams) {
+    __.begin("panner", userParams).stereoPanner(userParams).end("panner");
+    return cracked;
+};
+
+/**
  * Sampler - sound file player
  *
  * [See more sampler examples](../../examples/sampler.html)
@@ -3568,12 +3603,29 @@ cracked.distortion = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
- * @param {Number} userParam detune frequency to set
+ * @param {Number} userParam q value to set
  */
 cracked.q = function (userParam) {
     if (__.isNum(userParam)) {
         cracked.attr({
             "q": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
+ * pan setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam pan value (1 to -1) to set
+ */
+cracked.pan = function (userParam) {
+    if (__.isNum(userParam)) {
+        cracked.attr({
+            "pan": userParam
         });
     }
     return cracked;
@@ -3601,8 +3653,8 @@ cracked.scales = function (type) {
         "major": [0, 2, 4, 5, 7, 9, 11],
         "minor": [0, 2, 3, 5, 7, 8, 10],
         "wholetone": [0, 2, 4, 6, 8, 10],
-        "overtone":[0, 2, 4, 6, 7, 9, 10],
-        "lydian":[0, 2, 4, 6, 7, 9, 11],
+        "overtone": [0, 2, 4, 6, 7, 9, 10],
+        "lydian": [0, 2, 4, 6, 7, 9, 11],
         "mixolydian": [0, 2, 4, 5, 7, 9, 10],
         "ionian": [0, 2, 4, 5, 7, 9, 11]
     }[type];
