@@ -1992,7 +1992,7 @@
     };
 
     /**
-     * Midi input. Invoke callback when midi received.
+     * Midi input. Bind handler for the onMIDIMessage event.
      * @param {Function} callback
      * @public
      */
