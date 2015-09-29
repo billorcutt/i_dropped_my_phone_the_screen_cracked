@@ -13,8 +13,7 @@ var _isLoopRunning = false,
     _loopStepSize = 16,
     _loopInterval = 100,
     _loopID = 0,
-    _loopCB = function () {
-    },
+    _loopCB = null,
     _loopData = [],
     _loopIndex = -1,
     _loopListeners = [],
@@ -59,6 +58,9 @@ cracked.loop = function () {
             //configure loop with options
             //set data & callback
             configureLoop(arguments[0], arguments[1], arguments[2]);
+        } else if(__.isNum(arguments[0])) {
+            //tempo only
+            configureLoop(arguments[0]);
         }
     }
     return cracked;
@@ -109,8 +111,7 @@ function resetLoop() {
     _loopInterval = 100;
     _ignoreGrid = true;
     _loopID = 0;
-    _loopCB = function () {
-    };
+    _loopCB = null;
     _loopData = [];
     _loopListeners = [];
     _loopIndex = -1;
@@ -126,9 +127,13 @@ function resetLoop() {
  * @private
  */
 function configureLoop(opts, fn, data) {
-    if (opts) {
+    if (opts && typeof opts === 'object') {
         _loopStepSize = opts.steps || 16;
         _loopInterval = opts.interval || 100;
+    } else if(opts && __.isNum(opts) && !fn && !data) {
+        //just configuring tempo only
+        _loopStepSize = 0;
+        _loopInterval = opts;
     }
     if (__.isFun(fn)) {
         _loopCB = fn;
@@ -158,15 +163,28 @@ function checkup() {
  * @private
  */
 function loopStep() {
-    _loopIndex = (_loopIndex < (_loopStepSize - 1)) ? _loopIndex + 1 : 0;
+    //if step size is configured globally
+    if(_loopStepSize) {
+        _loopIndex = (_loopIndex < (_loopStepSize - 1)) ? _loopIndex + 1 : 0;
+    }
+    //global callback
     if (__.isFun(_loopCB)) {
         _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData);
     }
+    //loop thru any bound step event listeners
     for (var i = 0; i < _loopListeners.length; i++) {
-        var listener = _loopListeners[i];
-        var tmp = _selectedNodes;
+        var listener = _loopListeners[i],
+            tmp = _selectedNodes,
+            index = listener.loopIndex,
+            stepSize = listener.loopStepSize,
+            data = listener.data;
+        //if step size not configured globally
+        if(!_loopStepSize && stepSize) {
+            listener.loopIndex = (index < (stepSize - 1)) ? index + 1 : 0;
+        }
         _selectedNodes = listener.selection;
-        listener.callback(_loopIndex, cracked.ifUndef(listener.data[_loopIndex], null), listener.data);
+        //run the callback
+        listener.callback(index, cracked.ifUndef(data[index], null), data);
         _selectedNodes = tmp;
     }
 }
@@ -185,6 +203,8 @@ cracked.bind = function (eventType, fn, data) {
             eventType: eventType,
             callback: fn,
             data: data || [],
+            loopStepSize : data.length || 0,
+            loopIndex : -1,
             selection: _selectedNodes.slice(0),
             selector: _currentSelector
         });
