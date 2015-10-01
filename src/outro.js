@@ -1,6 +1,3 @@
-//private stash
-cracked._tmp = {};
-
 //version
 cracked.version = "0.1.0";
 

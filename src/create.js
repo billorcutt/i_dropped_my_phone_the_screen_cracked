@@ -1,5 +1,8 @@
 /**
  * #Audio Node Creation#
+ *
+ * Audio node wrapper class, methods for node manufacture
+ *
  */
 
 /**
