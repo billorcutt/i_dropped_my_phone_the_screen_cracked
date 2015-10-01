@@ -15,7 +15,7 @@ cracked.lfo = function (userParams) {
     params.modulates = params.modulates || "frequency";
 
     if (params.type === "white" || params.type === "pink" || params.type === "brown") {
-        __().
+        __.
             begin("lfo", params).
             noise({
                 "type": (params.type || "white"),
@@ -27,7 +27,7 @@ cracked.lfo = function (userParams) {
             }).
             end("lfo");
     } else {
-        __().
+        __.
             begin("lfo", params).
             osc({
                 "type": (params.type || "sawtooth"),
