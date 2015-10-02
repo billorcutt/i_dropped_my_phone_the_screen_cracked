@@ -223,12 +223,7 @@ code {
     var methods = {
         init: function (options) {
 
-            var opts = options || {};</code></pre></div></div></div></article><article class="comment"><header></header><ul class="no-bullet tags"></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>expected format<br />            {<br />                lfo_type:&quot;sawtooth&quot;,<br />                lfo_intensity:0,<br />                lfo_speed:5<br />                osc_type:&quot;sine&quot;,<br />                osc_frequency:440,<br />                osc_detune:0</p><pre><code>            lp_q:0,
-            lp_frequency:440
-            adsr_envelope:0.5
-            gain_volume:1
-        }
-</code></pre></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">//set up a basic synth: lfo, sine, lowpass, envelope
+            var opts = options || {};</code></pre></div></div></div></article><article class="comment"><header></header><ul class="no-bullet tags"></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>expected format<br />            {<br />                lfo_type:&quot;sawtooth&quot;,<br />                lfo_intensity:0,<br />                lfo_speed:5<br />                osc_type:&quot;sine&quot;,<br />                osc_frequency:440,<br />                osc_detune:0<br />                lp_q:0,<br />                lp_frequency:440<br />                adsr_envelope:0.5<br />                gain_volume:1<br />            }</p></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">//set up a basic synth: lfo, sine, lowpass, envelope
             //options:
             //lfo- type, intensity, speed
             //osc- type, frequency, detune
@@ -280,6 +275,7 @@ code {
             //process incoming arguments for this note
             var args = params || {};
             var freq = __.isNum(params) ? __.pitch2freq(params) : __.pitch2freq(args.pitch);
+            var vel = __.isNum(args.velocity) ? args.velocity/127 : 0.5;
             var env = args.envelope || [0.01,0.1,0.5];
 
             //loop thru selected nodes
@@ -289,6 +285,8 @@ code {
                 //select any internal sine nodes the monosynth contains (using &quot;el.search(sine)&quot;)
                 //and then call frequency() passing in the pitch argument we got w noteOn.
                 cracked.exec(&quot;frequency&quot;, [freq], el.search(&quot;osc&quot;));
+                //apply the velocity to the output gain
+                cracked.exec(&quot;volume&quot;, [vel], el.search(&quot;gain&quot;));
                 //wait til the previous note is over
                 setTimeout(function(){
                     //grab internal adsr and call trigger, pass the envelope parameter we received

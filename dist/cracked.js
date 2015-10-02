@@ -3481,7 +3481,6 @@ cracked.microsynth = function (params) {
                 osc_type:"sine",
                 osc_frequency:440,
                 osc_detune:0
-
                 lp_q:0,
                 lp_frequency:440
                 adsr_envelope:0.5
@@ -3541,6 +3540,7 @@ cracked.microsynth = function (params) {
             //process incoming arguments for this note
             var args = params || {};
             var freq = __.isNum(params) ? __.pitch2freq(params) : __.pitch2freq(args.pitch);
+            var vel = __.isNum(args.velocity) ? args.velocity/127 : 0.5;
             var env = args.envelope || [0.01,0.1,0.5];
 
             //loop thru selected nodes
@@ -3550,6 +3550,8 @@ cracked.microsynth = function (params) {
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
                 cracked.exec("frequency", [freq], el.search("osc"));
+                //apply the velocity to the output gain
+                cracked.exec("volume", [vel], el.search("gain"));
                 //wait til the previous note is over
                 setTimeout(function(){
                     //grab internal adsr and call trigger, pass the envelope parameter we received
