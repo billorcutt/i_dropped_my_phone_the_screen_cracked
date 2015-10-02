@@ -4,17 +4,17 @@
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Boolean} [userParams.reverse=false] reverse reverb
- * @param {String} [userParams.path] path to impulse file. if no path, impulse is generated.
- * @param {Number} [userParams.seconds=3] if generated impulse, length in seconds.
- * @param {Number} [userParams.decay=2] if generated impulse, length of decay in seconds
- * @param {Function} [userParams.fn=buildImpulse] custom function to generate an impulse buffer
+ * @param {Object} [params] map of optional values
+ * @param {Boolean} [params.reverse=false] reverse reverb
+ * @param {String} [params.path] path to impulse file. if no path, impulse is generated.
+ * @param {Number} [params.seconds=3] if generated impulse, length in seconds.
+ * @param {Number} [params.decay=2] if generated impulse, length of decay in seconds
+ * @param {Function} [params.fn=buildImpulse] custom function to generate an impulse buffer
  */
 
-cracked.reverb = function (userParams) {
+cracked.reverb = function (params) {
 
-    var params = __.ifUndef(userParams, {});
+    params = __.ifUndef(params, {});
 
     //if there's no path to an impulse
     //then generate our own
@@ -59,19 +59,19 @@ cracked.reverb = function (userParams) {
  * [See more delay examples](../../examples/delay.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.delay=1] delay time in seconds
- * @param {Number} [userParams.damping=0.84] feedback input gain
- * @param {Number} [userParams.cutoff=1500] frequency of lowpass filtering on feedback loop
- * @param {Number} [userParams.feedback=0.5] feedback gain output
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.delay=1] delay time in seconds
+ * @param {Number} [params.damping=0.84] feedback input gain
+ * @param {Number} [params.cutoff=1500] frequency of lowpass filtering on feedback loop
+ * @param {Number} [params.feedback=0.5] feedback gain output
  */
 
-cracked.delay = function (userParams) {
+cracked.delay = function (params) {
 
-    userParams = __.ifUndef(userParams, {});
-    var time = __.isObj(userParams) ? (__.ifUndef(userParams.delay, 1)) : userParams;
+    params = __.ifUndef(params, {});
+    var time = __.isObj(params) ? (__.ifUndef(params.delay, 1)) : params;
 
-    __.begin("delay", userParams);
+    __.begin("delay", params);
 
     __.gain({
         id: "delay-input"
@@ -87,7 +87,7 @@ cracked.delay = function (userParams) {
 
         gain({
             id: "delay-damping",
-            gain: __.ifUndef(userParams.damping, 0.84),
+            gain: __.ifUndef(params.damping, 0.84),
             mapping: {
                 "damping": "gain.value"
             }
@@ -95,7 +95,7 @@ cracked.delay = function (userParams) {
 
         lowpass({
             id: "delay-cutoff",
-            frequency: __.ifUndef(userParams.cutoff, 1500),
+            frequency: __.ifUndef(params.cutoff, 1500),
             mapping: {
                 "cutoff": "frequency.value"
             }
@@ -103,7 +103,7 @@ cracked.delay = function (userParams) {
 
         gain({
             id: "delay-feedback",
-            gain: __.ifUndef(userParams.feedback, 0.5),
+            gain: __.ifUndef(params.feedback, 0.5),
             mapping: {
                 "feedback": "gain.value"
             }
@@ -129,11 +129,11 @@ cracked.delay = function (userParams) {
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.delay=0.027] delay time in seconds
- * @param {Number} [userParams.damping=0.84] feedback input gain
- * @param {Number} [userParams.cutoff=3000] frequency of lowpass filtering on feedback loop
- * @param {Number} [userParams.feedback=0.84] feedback gain output
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.delay=0.027] delay time in seconds
+ * @param {Number} [params.damping=0.84] feedback input gain
+ * @param {Number} [params.cutoff=3000] frequency of lowpass filtering on feedback loop
+ * @param {Number} [params.feedback=0.84] feedback gain output
  */
 cracked.comb = function (params) {
 //adapted from https://github.com/web-audio-components

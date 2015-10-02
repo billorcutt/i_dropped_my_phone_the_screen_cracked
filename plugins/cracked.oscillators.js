@@ -6,10 +6,10 @@
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.sine = function (params) {
 
@@ -31,10 +31,10 @@ cracked.sine = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.square = function (params) {
 
@@ -56,10 +56,10 @@ cracked.square = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.saw = function (params) {
 
@@ -81,10 +81,10 @@ cracked.saw = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.triangle = function (params) {
 

@@ -187,7 +187,7 @@ cracked.exec = function (method, args, nodes) {
  *
  * @public
  * @function
- * @type {String} type string to be checked against the node type
+ * @param {String} type string to be checked against the node type
  * @param {Function} fn function to be called on each node
  * @returns {cracked}
  */
@@ -221,7 +221,6 @@ cracked.each = function (type, fn) {
  *
  * @public
  * @function
- * @param {String} selector selector expression
  * @returns {Array}
  */
 cracked.filter = function () {
@@ -2306,17 +2305,17 @@ cracked.isFun = function(fn) {
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Boolean} [userParams.reverse=false] reverse reverb
- * @param {String} [userParams.path] path to impulse file. if no path, impulse is generated.
- * @param {Number} [userParams.seconds=3] if generated impulse, length in seconds.
- * @param {Number} [userParams.decay=2] if generated impulse, length of decay in seconds
- * @param {Function} [userParams.fn=buildImpulse] custom function to generate an impulse buffer
+ * @param {Object} [params] map of optional values
+ * @param {Boolean} [params.reverse=false] reverse reverb
+ * @param {String} [params.path] path to impulse file. if no path, impulse is generated.
+ * @param {Number} [params.seconds=3] if generated impulse, length in seconds.
+ * @param {Number} [params.decay=2] if generated impulse, length of decay in seconds
+ * @param {Function} [params.fn=buildImpulse] custom function to generate an impulse buffer
  */
 
-cracked.reverb = function (userParams) {
+cracked.reverb = function (params) {
 
-    var params = __.ifUndef(userParams, {});
+    params = __.ifUndef(params, {});
 
     //if there's no path to an impulse
     //then generate our own
@@ -2361,19 +2360,19 @@ cracked.reverb = function (userParams) {
  * [See more delay examples](../../examples/delay.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.delay=1] delay time in seconds
- * @param {Number} [userParams.damping=0.84] feedback input gain
- * @param {Number} [userParams.cutoff=1500] frequency of lowpass filtering on feedback loop
- * @param {Number} [userParams.feedback=0.5] feedback gain output
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.delay=1] delay time in seconds
+ * @param {Number} [params.damping=0.84] feedback input gain
+ * @param {Number} [params.cutoff=1500] frequency of lowpass filtering on feedback loop
+ * @param {Number} [params.feedback=0.5] feedback gain output
  */
 
-cracked.delay = function (userParams) {
+cracked.delay = function (params) {
 
-    userParams = __.ifUndef(userParams, {});
-    var time = __.isObj(userParams) ? (__.ifUndef(userParams.delay, 1)) : userParams;
+    params = __.ifUndef(params, {});
+    var time = __.isObj(params) ? (__.ifUndef(params.delay, 1)) : params;
 
-    __.begin("delay", userParams);
+    __.begin("delay", params);
 
     __.gain({
         id: "delay-input"
@@ -2389,7 +2388,7 @@ cracked.delay = function (userParams) {
 
         gain({
             id: "delay-damping",
-            gain: __.ifUndef(userParams.damping, 0.84),
+            gain: __.ifUndef(params.damping, 0.84),
             mapping: {
                 "damping": "gain.value"
             }
@@ -2397,7 +2396,7 @@ cracked.delay = function (userParams) {
 
         lowpass({
             id: "delay-cutoff",
-            frequency: __.ifUndef(userParams.cutoff, 1500),
+            frequency: __.ifUndef(params.cutoff, 1500),
             mapping: {
                 "cutoff": "frequency.value"
             }
@@ -2405,7 +2404,7 @@ cracked.delay = function (userParams) {
 
         gain({
             id: "delay-feedback",
-            gain: __.ifUndef(userParams.feedback, 0.5),
+            gain: __.ifUndef(params.feedback, 0.5),
             mapping: {
                 "feedback": "gain.value"
             }
@@ -2431,11 +2430,11 @@ cracked.delay = function (userParams) {
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.delay=0.027] delay time in seconds
- * @param {Number} [userParams.damping=0.84] feedback input gain
- * @param {Number} [userParams.cutoff=3000] frequency of lowpass filtering on feedback loop
- * @param {Number} [userParams.feedback=0.84] feedback gain output
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.delay=0.027] delay time in seconds
+ * @param {Number} [params.damping=0.84] feedback input gain
+ * @param {Number} [params.cutoff=3000] frequency of lowpass filtering on feedback loop
+ * @param {Number} [params.feedback=0.84] feedback gain output
  */
 cracked.comb = function (params) {
 //adapted from https://github.com/web-audio-components
@@ -2699,18 +2698,18 @@ cracked.ring = function (params) {
  * @param {Number} [params.color=800]
  * @param {Number} [params.postCut=3000]
  */
-cracked.overdrive = function (userParams) {
+cracked.overdrive = function (params) {
 
-    userParams = userParams || {};
-    var drive = __.isObj(userParams) ? __.ifUndef(userParams.drive, 0.5) : userParams;
+    params = params || {};
+    var drive = __.isObj(params) ? __.ifUndef(params.drive, 0.5) : params;
 
-    __.begin("overdrive", userParams);
+    __.begin("overdrive", params);
 
     __.gain({
         id: "input"
     }).
         bandpass({
-            frequency: __.ifUndef(userParams.color, 800),
+            frequency: __.ifUndef(params.color, 800),
             mapping: {
                 "color": "frequency.value"
             }
@@ -2727,7 +2726,7 @@ cracked.overdrive = function (userParams) {
             }
         }).
         lowpass({
-            frequency: __.ifUndef(userParams.postCut, 3000),
+            frequency: __.ifUndef(params.postCut, 3000),
             mapping: {
                 "postCut": "frequency.value"
             }
@@ -2737,8 +2736,6 @@ cracked.overdrive = function (userParams) {
         });
 
     __.end("overdrive");
-
-    return cracked;
 
     function makeCurve(value) {
         var k = value * 100,
@@ -2752,6 +2749,8 @@ cracked.overdrive = function (userParams) {
         }
         return curve;
     }
+
+    return cracked;
 
 };
 
@@ -2864,9 +2863,9 @@ cracked.adsr = function (userParams) {
  * [See more lowpass examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
  */
 cracked.lowpass = function (params) {
 
@@ -2889,9 +2888,9 @@ cracked.lowpass = function (params) {
  * [See more highpass examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
  */
 cracked.highpass = function (params) {
 
@@ -2914,9 +2913,9 @@ cracked.highpass = function (params) {
  * [See more bandpass examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
  */
 cracked.bandpass = function (params) {
 
@@ -2939,10 +2938,10 @@ cracked.bandpass = function (params) {
  * [See more lowshelf examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
- * @param {Number} [userParams.gain=0] gain
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
+ * @param {Number} [params.gain=0] gain
  */
 cracked.lowshelf = function (params) {
 
@@ -2966,10 +2965,10 @@ cracked.lowshelf = function (params) {
  * [See more highshelf examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
- * @param {Number} [userParams.gain=0] gain
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
+ * @param {Number} [params.gain=0] gain
  */
 cracked.highshelf = function (params) {
 
@@ -2993,10 +2992,10 @@ cracked.highshelf = function (params) {
  * [See more peaking examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
- * @param {Number} [userParams.gain=0] gain
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
+ * @param {Number} [params.gain=0] gain
  */
 cracked.peaking = function (params) {
 
@@ -3020,9 +3019,9 @@ cracked.peaking = function (params) {
  * [See more notch examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
  */
 cracked.notch = function (params) {
 
@@ -3045,9 +3044,9 @@ cracked.notch = function (params) {
  * [See more allpass examples](../../examples/filters.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440] frequency
- * @param {Number} [userParams.q=0] Q
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440] frequency
+ * @param {Number} [params.q=0] Q
  */
 cracked.allpass = function (params) {
 
@@ -3173,8 +3172,8 @@ cracked.lfo = function (userParams) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {String} [userParams.type=white]
+ * @param {Object} [params] map of optional values
+ * @param {String} [params.type=white]
  */
 cracked.noise = function (params) {
     var userParams = params || {};
@@ -3194,9 +3193,9 @@ cracked.noise = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.channels=1]
- * @param {Number} [userParams.length=1]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
  */
 cracked.pink = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
@@ -3270,9 +3269,9 @@ cracked.pink = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.channels=1]
- * @param {Number} [userParams.length=1]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
  */
 cracked.white = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
@@ -3312,9 +3311,9 @@ cracked.white = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.channels=1]
- * @param {Number} [userParams.length=1]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
  */
 cracked.brown = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
@@ -3360,10 +3359,10 @@ cracked.brown = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.sine = function (params) {
 
@@ -3385,10 +3384,10 @@ cracked.sine = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.square = function (params) {
 
@@ -3410,10 +3409,10 @@ cracked.square = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.saw = function (params) {
 
@@ -3435,10 +3434,10 @@ cracked.saw = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.frequency=440]
- * @param {Number} [userParams.detune=0]
- * @param {String} [userParams.type=sine]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
  */
 cracked.triangle = function (params) {
 
@@ -3455,6 +3454,16 @@ cracked.triangle = function (params) {
     return cracked;
 };
 
+/**
+ * Microsynth
+ *
+ * Simple monophonic synth
+ *
+ * [See more synth examples](../../examples/synth.html)
+ *
+ * @plugin
+ * @param {Object} [params] nested map of optional values
+ */
 cracked.microsynth = function (params) {
 
     var methods = {

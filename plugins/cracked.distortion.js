@@ -210,18 +210,18 @@ cracked.ring = function (params) {
  * @param {Number} [params.color=800]
  * @param {Number} [params.postCut=3000]
  */
-cracked.overdrive = function (userParams) {
+cracked.overdrive = function (params) {
 
-    userParams = userParams || {};
-    var drive = __.isObj(userParams) ? __.ifUndef(userParams.drive, 0.5) : userParams;
+    params = params || {};
+    var drive = __.isObj(params) ? __.ifUndef(params.drive, 0.5) : params;
 
-    __.begin("overdrive", userParams);
+    __.begin("overdrive", params);
 
     __.gain({
         id: "input"
     }).
         bandpass({
-            frequency: __.ifUndef(userParams.color, 800),
+            frequency: __.ifUndef(params.color, 800),
             mapping: {
                 "color": "frequency.value"
             }
@@ -238,7 +238,7 @@ cracked.overdrive = function (userParams) {
             }
         }).
         lowpass({
-            frequency: __.ifUndef(userParams.postCut, 3000),
+            frequency: __.ifUndef(params.postCut, 3000),
             mapping: {
                 "postCut": "frequency.value"
             }
@@ -248,8 +248,6 @@ cracked.overdrive = function (userParams) {
         });
 
     __.end("overdrive");
-
-    return cracked;
 
     function makeCurve(value) {
         var k = value * 100,
@@ -263,5 +261,7 @@ cracked.overdrive = function (userParams) {
         }
         return curve;
     }
+
+    return cracked;
 
 };

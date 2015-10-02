@@ -1,3 +1,13 @@
+/**
+ * Microsynth
+ *
+ * Simple monophonic synth
+ *
+ * [See more synth examples](../../examples/synth.html)
+ *
+ * @plugin
+ * @param {Object} [params] nested map of optional values
+ */
 cracked.microsynth = function (params) {
 
     var methods = {
