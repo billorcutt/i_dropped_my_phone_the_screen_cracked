@@ -187,7 +187,7 @@ cracked.exec = function (method, args, nodes) {
  *
  * @public
  * @function
- * @param {String} type string to be checked against the node type
+ * @type {String} type string to be checked against the node type
  * @param {Function} fn function to be called on each node
  * @returns {cracked}
  */
@@ -221,6 +221,7 @@ cracked.each = function (type, fn) {
  *
  * @public
  * @function
+ * @param {String} selector selector expression
  * @returns {Array}
  */
 cracked.filter = function () {
@@ -3462,7 +3463,7 @@ cracked.triangle = function (params) {
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
- * @param {Object} [params] nested map of optional values
+ * @param {Object} [params] map of optional values
  */
 cracked.microsynth = function (params) {
 
@@ -3473,28 +3474,19 @@ cracked.microsynth = function (params) {
 
             /*
                 expected format
-                {
-                    lfo:{
-                        type:"sawtooth",
-                        intensity:0,
-                        speed:5
-                    },
-                    osc: {
-                         type:"sine",
-                         frequency:440,
-                         detune:0
-                    },
-                    lp: {
-                        q:0,
-                        frequency:440
-                    },
-                    adsr: {
-                        envelope:0.5
-                    },
-                    gain: {
-                        volume:1
-                    }
-                }
+            {
+                lfo_type:"sawtooth",
+                lfo_intensity:0,
+                lfo_speed:5
+                osc_type:"sine",
+                osc_frequency:440,
+                osc_detune:0
+
+                lp_q:0,
+                lp_frequency:440
+                adsr_envelope:0.5
+                gain_volume:1
+            }
              */
 
             //set up a basic synth: lfo, sine, lowpass, envelope
@@ -3505,16 +3497,16 @@ cracked.microsynth = function (params) {
             //adsr- envelope
             //gain- volume
 
-            var lfo_type        = opts.lfo.type         || "sawtooth",
-                lfo_intensity   = opts.lfo.intensity    || 0,
-                lfo_speed       = opts.lfo.speed        || 5,
-                osc_type        = opts.osc.type         || "sine",
-                osc_frequency   = opts.osc.frequency    || 440,
-                osc_detune      = opts.osc.detune       || 0,
-                lp_q            = opts.lp.q             || 0,
-                lp_frequency    = opts.lp.frequency     || 440,
-                adsr_envelope   = opts.adsr.envelope    || 0.5,
-                gain_volume     = opts.gain.volume      || 1;
+            var lfo_type        = opts.lfo_type         || "sawtooth",
+                lfo_intensity   = opts.lfo_intensity    || 0,
+                lfo_speed       = opts.lfo_speed        || 5,
+                osc_type        = opts.osc_type         || "sine",
+                osc_frequency   = opts.osc_frequency    || 440,
+                osc_detune      = opts.osc_detune       || 0,
+                lp_q            = opts.lp_q             || 0,
+                lp_frequency    = opts.lp_frequency     || 440,
+                adsr_envelope   = opts.adsr_envelope    || 0.5,
+                gain_volume     = opts.gain_volume      || 1;
 
             __().begin("microsynth", params).
 
@@ -3557,7 +3549,7 @@ cracked.microsynth = function (params) {
                 cracked.exec("adsr", ["release",0.01], el.search("adsr"));
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
-                cracked.exec("frequency", [freq], el.search("sine"));
+                cracked.exec("frequency", [freq], el.search("osc"));
                 //wait til the previous note is over
                 setTimeout(function(){
                     //grab internal adsr and call trigger, pass the envelope parameter we received

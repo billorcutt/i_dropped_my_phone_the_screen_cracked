@@ -92,7 +92,7 @@ cracked.microsynth = function (params) {
                 cracked.exec("adsr", ["release",0.01], el.search("adsr"));
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
-                cracked.exec("frequency", [freq], el.search("sine"));
+                cracked.exec("frequency", [freq], el.search("osc"));
                 //wait til the previous note is over
                 setTimeout(function(){
                     //grab internal adsr and call trigger, pass the envelope parameter we received
