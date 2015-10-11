@@ -136,6 +136,23 @@ cracked.distortion = function (userParam) {
 };
 
 /**
+ * Drive setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam drive to set
+ */
+cracked.drive = function (userParam) {
+    if (__.isNum(userParam)) {
+        cracked.attr({
+            "drive": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
  * q setter convenience method
  *
  * [See more control examples](../../examples/control.html)
