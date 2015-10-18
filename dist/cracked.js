@@ -1608,6 +1608,31 @@ cracked.unbind = function (eventType) {
 };
 
 /**
+ * run a map method against an array of data, calling the function at some interval
+ * @public
+ * @param {Function} callback to be invoked at every interval
+ * @param {Number} interval. period to execute callback
+ * @param {Array} data should the same length as the number of steps
+ */
+cracked.mapper = function(callback,interval,data) {
+    if(typeof callback === "function" && typeof interval === "number") {
+        (function(){
+            var index = 0;
+            var id = setInterval((function(fn,d,i){
+                return function()  {
+                    if(typeof d[i] !== "undefined") {
+                        fn(d[i]);
+                        i++;
+                    } else {
+                        clearInterval(id);
+                    }
+                }
+            })(callback,data,index,id),interval);
+        })();
+    }
+};
+
+/**
  * #Model#
  */
 
@@ -3888,5 +3913,28 @@ cracked.sec2ms = function(second) {
  */
 cracked.isSupported = function() {
     return ("AudioContext" in window || "webkitAudioContext" in window);
+};
+
+cracked.key_receive = function(callback) {
+    if(typeof callback === "function") {
+        window.addEventListener("keydown", function (event) {
+            var handled = false;
+            if (event.key !== undefined) {
+                // Handle the event with KeyboardEvent.key and set handled true.
+                callback(event);
+            } else if (event.keyIdentifier !== undefined) {
+                // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+                callback(event);
+            } else if (event.keyCode !== undefined) {
+                // Handle the event with KeyboardEvent.keyCode and set handled true.
+                callback(event);
+            }
+
+            if (handled) {
+                // Suppress "double action" if event handled
+                event.preventDefault();
+            }
+        }, true);
+    }
 };
 })();
