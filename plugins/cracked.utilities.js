@@ -309,3 +309,26 @@ cracked.sec2ms = function(second) {
 cracked.isSupported = function() {
     return ("AudioContext" in window || "webkitAudioContext" in window);
 };
+
+cracked.key_receive = function(callback) {
+    if(typeof callback === "function") {
+        window.addEventListener("keydown", function (event) {
+            var handled = false;
+            if (event.key !== undefined) {
+                // Handle the event with KeyboardEvent.key and set handled true.
+                callback(event);
+            } else if (event.keyIdentifier !== undefined) {
+                // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+                callback(event);
+            } else if (event.keyCode !== undefined) {
+                // Handle the event with KeyboardEvent.keyCode and set handled true.
+                callback(event);
+            }
+
+            if (handled) {
+                // Suppress "double action" if event handled
+                event.preventDefault();
+            }
+        }, true);
+    }
+};
