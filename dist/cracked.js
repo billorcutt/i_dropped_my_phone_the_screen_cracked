@@ -3917,7 +3917,13 @@ cracked.isSupported = function() {
 
 cracked.key_receive = function(callback) {
     if(typeof callback === "function") {
-        window.addEventListener("keypress", function (event) {
+        window.addEventListener("keyup", function (event) {
+            if (event.keyCode !== undefined) {
+                callback(event);
+                event.preventDefault();
+            }
+        }, true);
+        window.addEventListener("keydown", function (event) {
             if (event.keyCode !== undefined) {
                 callback(event);
                 event.preventDefault();
