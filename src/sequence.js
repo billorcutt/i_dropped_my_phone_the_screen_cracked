@@ -248,7 +248,7 @@ cracked.mapper = function(callback,interval,data) {
                     } else {
                         clearInterval(id);
                     }
-                }
+                };
             })(callback,data,index,id),interval);
         })();
     }

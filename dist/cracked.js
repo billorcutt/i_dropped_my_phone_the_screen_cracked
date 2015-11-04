@@ -1626,7 +1626,7 @@ cracked.mapper = function(callback,interval,data) {
                     } else {
                         clearInterval(id);
                     }
-                }
+                };
             })(callback,data,index,id),interval);
         })();
     }
@@ -3913,22 +3913,5 @@ cracked.sec2ms = function(second) {
  */
 cracked.isSupported = function() {
     return ("AudioContext" in window || "webkitAudioContext" in window);
-};
-
-cracked.key_receive = function(callback) {
-    if(typeof callback === "function") {
-        window.addEventListener("keyup", function (event) {
-            if (event.keyCode !== undefined) {
-                callback(event);
-                event.preventDefault();
-            }
-        }, true);
-        window.addEventListener("keydown", function (event) {
-            if (event.keyCode !== undefined) {
-                callback(event);
-                event.preventDefault();
-            }
-        }, true);
-    }
 };
 })();
