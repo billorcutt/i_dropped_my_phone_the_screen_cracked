@@ -1350,8 +1350,8 @@ function loadBufferFromFile(path_to_soundfile, buffersrc) {
             _context.decodeAudioData(sndArray, function (buf) {
                 buffersrc.buffer = buf;
                 logToConsole("sound loaded");
-            }, function () {
-                logToConsole("Couldn't load audio");
+            }, function (e) {
+                logToConsole("Couldn't load audio " + e.err);
             });
         });
     }
