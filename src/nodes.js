@@ -417,7 +417,7 @@ function fetchSoundFile(path, callback) {
         request.onload = function () {
             logToConsole(request.status);
             logToConsole(request.statusText);
-            logToConsole(request.response.length);
+            logToConsole(request.response);
             if (__.isFun(callback)) {
                 callback(request.response);
             }
