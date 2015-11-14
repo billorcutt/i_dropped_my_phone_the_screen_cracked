@@ -1347,6 +1347,7 @@ function loadBufferWithData(dataFunction, buffersrc) {
 function loadBufferFromFile(path_to_soundfile, buffersrc) {
     if (path_to_soundfile && buffersrc) {
         fetchSoundFile(path_to_soundfile, function (sndArray) {
+            logToConsole(sndArray);
             _context.decodeAudioData(sndArray, function (buf) {
                 buffersrc.buffer = buf;
                 logToConsole("sound loaded");
