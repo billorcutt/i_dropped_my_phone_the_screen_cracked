@@ -394,12 +394,11 @@ function loadBufferWithData(dataFunction, buffersrc) {
 function loadBufferFromFile(path_to_soundfile, buffersrc) {
     if (path_to_soundfile && buffersrc) {
         fetchSoundFile(path_to_soundfile, function (sndArray) {
-            logToConsole(sndArray);
             _context.decodeAudioData(sndArray, function (buf) {
                 buffersrc.buffer = buf;
                 logToConsole("sound loaded");
-            }, function (e) {
-                logToConsole("Couldn't load audio " + e);
+            }, function () {
+                logToConsole("Couldn't load audio");
             });
         });
     }
@@ -415,8 +414,10 @@ function fetchSoundFile(path, callback) {
         var request = new XMLHttpRequest();
         request.open("GET", path, true); // Path to Audio File
         request.responseType = "arraybuffer"; // Read as Binary Data
-        request.onload = function (e) {
-            logToConsole(e);
+        request.onload = function () {
+            logToConsole(request.status);
+            logToConsole(request.statusText);
+            logToConsole(request.response.length);
             if (__.isFun(callback)) {
                 callback(request.response);
             }
