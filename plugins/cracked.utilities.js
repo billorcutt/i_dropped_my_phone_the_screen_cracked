@@ -273,13 +273,13 @@ cracked.random = function (min, max) {
  */
 cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
     if(type === "log" || type === "logarithmic") {
-        var minVal = Math.log(outMin);
-        var maxVal = Math.log(outMax);
+        var minVal = Math.log(outMin || 1);
+        var maxVal = Math.log(outMax || 1);
         // calculate adjustment factor
         var scale = (maxVal-minVal) / (inMax-inMin);
         return Math.exp(minVal + scale*(position-inMin));
     } else if(type === "linear"|| typeof type === "undefined") {
-        var result = parseFloat((((position - inMax) * (outMax - outMin)) / (inMax - inMax))  + outMin);
+        var result = parseFloat((((position - inMin) * (outMax - outMin)) / (inMax - inMin))  + outMin);
         return result.toFixed(2);
     } else {
         console.error("scale: type "+type+" not supported.");
