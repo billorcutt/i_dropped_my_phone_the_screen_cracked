@@ -431,6 +431,24 @@ function AudioNode(type, creationParams, userSettings) {
 
     // Connection
 
+    //wrapper node disconnect method
+    this.disconnect = function(nodeParam) {
+        var currNode = nodeParam || nativeNode;
+        if (__.isArr(currNode)) {
+            currNode.forEach(function (_node, _i, _array) {
+                //recurse
+                that.disconnect(_node);
+            });
+        } else {
+            if (currNode && __.isFun(currNode.disconnect)) {
+                var wrapper = getNodeWithUUID(currNode.uuid);
+                currNode.disconnect();
+                wrapper.setIsPlaying(false);
+                this.setIsPlaying(false);
+            }
+        }
+    };
+
     //public connection method
     this.connect = function (nodeToConnect) {
         if (nodeToConnect && this.getUUID() !== nodeToConnect.getUUID()) {

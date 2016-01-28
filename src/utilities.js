@@ -66,6 +66,21 @@ function setter(map, key, value) {
     }
 }
 
+function unsetter(map, key, value) {
+    if(__.isNotUndef(map[key])) {
+        if(__.isArr(map[key])) {
+            map[key] = map[key].filter(function(val){
+                return value != val;
+            });
+            if(map[key].length===0) {
+                delete map[key];
+            }
+        } else {
+            delete map[key];
+        }
+    }
+}
+
 /**
  * adds and overwrites properties from the src obect to the target object
  * @private

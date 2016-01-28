@@ -678,6 +678,24 @@ function AudioNode(type, creationParams, userSettings) {
 
     // Connection
 
+    //wrapper node disconnect method
+    this.disconnect = function(nodeParam) {
+        var currNode = nodeParam || nativeNode;
+        if (__.isArr(currNode)) {
+            currNode.forEach(function (_node, _i, _array) {
+                //recurse
+                that.disconnect(_node);
+            });
+        } else {
+            if (currNode && __.isFun(currNode.disconnect)) {
+                var wrapper = getNodeWithUUID(currNode.uuid);
+                currNode.disconnect();
+                wrapper.setIsPlaying(false);
+                this.setIsPlaying(false);
+            }
+        }
+    };
+
     //public connection method
     this.connect = function (nodeToConnect) {
         if (nodeToConnect && this.getUUID() !== nodeToConnect.getUUID()) {
@@ -1666,28 +1684,54 @@ function setNode(node) {
 function setNodeLookup(node) {
     var params = node.getParams().settings;
     var prefix = getCurrentMacroNamespace();
+    var selector_array = [];
     if (__.isObj(params)) {
         for (var x in params) {
             if (x === "id") {
+                selector_array.push((prefix + "#" + params[x]));
                 setter(_nodeLookup, (prefix + "#" + params[x]), node.getUUID());
             } else if (x === "class") {
                 var classArr = params[x].split(",");
                 classArr.forEach(function () {
+                    selector_array.push((prefix + "." + params[x]));
                     setter(_nodeLookup, (prefix + "." + params[x]), node.getUUID());
                 });
             }
         }
     }
+    selector_array.push("*");
     setter(_nodeLookup, "*", node.getUUID()); //everything
-    setter(_nodeLookup, prefix + node.getType(), node.getUUID());
+    selector_array.push((prefix + node.getType()));
+    setter(_nodeLookup, (prefix + node.getType()), node.getUUID());
+    node.selector_array = selector_array;
 }
+
+cracked.removeModelReferences = function() {
+    _selectedNodes.forEach(removeReferences);
+    function removeReferences(node) {
+        var uuid = node;
+        node = getNodeWithUUID(uuid);
+        var arr = node.selector_array;
+        if(__.isArr(arr)) {
+            arr.forEach(function(selector){
+                unsetter(_nodeLookup,selector,uuid);
+            });
+        }
+        if(node.isMacro()) {
+            var natives = node.getNativeNode();
+            natives.forEach(function(nativeNode){
+                removeReferences(nativeNode.uuid);
+            });
+        }
+    }
+};
 
 /**
  * remove references to selected nodes tbd - need to do this for
  * real works ok right now for top level macros
- * @private
+ * Not/never used
  */
-cracked.remove = function () {
+cracked.removeNodeOld = function () {
     var arr = _currentSelector.split(",");
     //iterate over selectors
     for (var i = 0; i < arr.length; i++) {
@@ -2012,8 +2056,22 @@ cracked.connect = function () {
     return cracked;
 };
 
+//disconnects and removes all references to selected nodes
+cracked.remove = function() {
+    _selectedNodes.forEach(function (node, i, array) {
+        node = getNodeWithUUID(node);
+        if (node) {
+            node.stop();
+            node.disconnect();
+        }
+    });
+    cracked.removeModelReferences();
+};
+
+
+
 /**
- * helper for above
+ * helper for connect method
  * @function
  * @private
  */
@@ -2094,6 +2152,21 @@ function setter(map, key, value) {
             map[key].push(value);
         } else {
             map[key] = [value];
+        }
+    }
+}
+
+function unsetter(map, key, value) {
+    if(__.isNotUndef(map[key])) {
+        if(__.isArr(map[key])) {
+            map[key] = map[key].filter(function(val){
+                return value != val;
+            });
+            if(map[key].length===0) {
+                delete map[key];
+            }
+        } else {
+            delete map[key];
         }
     }
 }
