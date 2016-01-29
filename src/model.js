@@ -63,6 +63,7 @@ cracked.removeModelReferences = function() {
         if(__.isArr(arr)) {
             arr.forEach(function(selector){
                 unsetter(_nodeLookup,selector,uuid);
+                unsetter(_nodeStore,uuid,null);
             });
         }
         if(node.isMacro()) {

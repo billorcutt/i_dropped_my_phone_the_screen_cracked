@@ -416,11 +416,11 @@ function AudioNode(type, creationParams, userSettings) {
                 ) {
                     for (var i = 0; i < target.length; i++) {
                         prevTime = __.isUndef(time[i - 1]) ? 0 : (time[i - 1] + prevTime);
-                        logToConsole(" target " + target[i] + " time " + (_context.currentTime + prevTime + time[i]));
+                        logToConsole(" target " + target[i] + " time " + (_context.currentTime + prevTime + time[i]) + " current time " + (_context.currentTime));
                         currNode[paramToRamp].linearRampToValueAtTime(target[i], (now + prevTime + time[i]));
                     }
                 } else {
-                    logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time));
+                    logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time) + " current time " + (_context.currentTime));
                     currNode[paramToRamp].linearRampToValueAtTime(target, (now + time));
                 }
             }
@@ -1715,6 +1715,7 @@ cracked.removeModelReferences = function() {
         if(__.isArr(arr)) {
             arr.forEach(function(selector){
                 unsetter(_nodeLookup,selector,uuid);
+                unsetter(_nodeStore,uuid,null);
             });
         }
         if(node.isMacro()) {
@@ -2068,8 +2069,6 @@ cracked.remove = function() {
     cracked.removeModelReferences();
 };
 
-
-
 /**
  * helper for connect method
  * @function
@@ -2281,7 +2280,7 @@ function logToConsole(msg) {
  * @public
  */
 cracked._dumpState = function () {
-    console.log(_nodeLookup);
+    console.log(_nodeLookup,_nodeStore);
 };
 
 /**
@@ -2857,6 +2856,11 @@ cracked.overdrive = function (params) {
  * Attack Decay Sustain Release envelope
  *
  * [See more adsr examples](../../examples/envelopes.html)
+ *
+ * Attack time is the time taken for initial run-up of level from nil to peak, beginning when the key is first pressed.
+ * Decay time is the time taken for the subsequent run down from the attack level to the designated sustain level.
+ * Sustain level is the level during the main sequence of the sound's duration, until the key is released.
+ * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
  *
  * @plugin
  * @param {Array} [userParams] 5 values: attack,decay,sustain,hold,release

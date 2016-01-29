@@ -90,7 +90,7 @@ function logToConsole(msg) {
  * @public
  */
 cracked._dumpState = function () {
-    console.log(_nodeLookup);
+    console.log(_nodeLookup,_nodeStore);
 };
 
 /**

@@ -169,11 +169,11 @@ function AudioNode(type, creationParams, userSettings) {
                 ) {
                     for (var i = 0; i < target.length; i++) {
                         prevTime = __.isUndef(time[i - 1]) ? 0 : (time[i - 1] + prevTime);
-                        logToConsole(" target " + target[i] + " time " + (_context.currentTime + prevTime + time[i]));
+                        logToConsole(" target " + target[i] + " time " + (_context.currentTime + prevTime + time[i]) + " current time " + (_context.currentTime));
                         currNode[paramToRamp].linearRampToValueAtTime(target[i], (now + prevTime + time[i]));
                     }
                 } else {
-                    logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time));
+                    logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time) + " current time " + (_context.currentTime));
                     currNode[paramToRamp].linearRampToValueAtTime(target, (now + time));
                 }
             }

@@ -3,6 +3,11 @@
  *
  * [See more adsr examples](../../examples/envelopes.html)
  *
+ * Attack time is the time taken for initial run-up of level from nil to peak, beginning when the key is first pressed.
+ * Decay time is the time taken for the subsequent run down from the attack level to the designated sustain level.
+ * Sustain level is the level during the main sequence of the sound's duration, until the key is released.
+ * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
+ *
  * @plugin
  * @param {Array} [userParams] 5 values: attack,decay,sustain,hold,release
  * @param {Array}  [userParams] 4 values: attack,decay,sustain,release
