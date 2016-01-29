@@ -37,20 +37,8 @@ cracked.connect = function () {
     return cracked;
 };
 
-//disconnects and removes all references to selected nodes
-cracked.remove = function() {
-    _selectedNodes.forEach(function (node, i, array) {
-        node = getNodeWithUUID(node);
-        if (node) {
-            node.stop();
-            node.disconnect();
-        }
-    });
-    cracked.removeModelReferences();
-};
-
 /**
- * helper for connect method
+ * helper for connect method above
  * @function
  * @private
  */
@@ -66,3 +54,15 @@ function connectPreviousToSelected() {
         }
     });
 }
+
+//disconnects and removes all references to selected nodes
+cracked.remove = function() {
+    _selectedNodes.forEach(function (node, i, array) {
+        node = getNodeWithUUID(node);
+        if (node) {
+            node.stop();
+            node.disconnect();
+        }
+    });
+    cracked.removeModelReferences();
+};
