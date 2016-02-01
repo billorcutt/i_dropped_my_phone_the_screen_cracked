@@ -56,13 +56,20 @@ function connectPreviousToSelected() {
 }
 
 //disconnects and removes all references to selected nodes
-cracked.remove = function() {
-    _selectedNodes.forEach(function (node, i, array) {
-        node = getNodeWithUUID(node);
-        if (node) {
-            node.stop();
-            node.disconnect();
-        }
-    });
-    cracked.removeModelReferences();
+cracked.remove = function(time) {
+    var nodesToRemove = _selectedNodes.slice();
+    var when = __.isNum(time) ? time : 0;
+    setTimeout(function(){
+        _remove(nodesToRemove);
+    },when);
+    function _remove(nodes) {
+        nodes.forEach(function (node, i, array) {
+            node = getNodeWithUUID(node);
+            if (node) {
+                node.stop();
+                node.disconnect();
+            }
+        });
+        cracked.removeModelReferences(nodes);
+    }
 };

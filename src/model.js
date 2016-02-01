@@ -54,8 +54,9 @@ function setNodeLookup(node) {
     node.selector_array = selector_array;
 }
 
-cracked.removeModelReferences = function() {
-    _selectedNodes.forEach(removeReferences);
+cracked.removeModelReferences = function(nodes) {
+    var nodesToRemove = nodes || _selectedNodes;
+    nodesToRemove.forEach(removeReferences);
     function removeReferences(node) {
         var uuid = node;
         node = getNodeWithUUID(uuid);
