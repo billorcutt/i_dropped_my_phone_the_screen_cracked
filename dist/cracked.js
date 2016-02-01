@@ -3248,10 +3248,14 @@ cracked.adc = function (params) {
  * Panner - simple stereo panner
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
+ * @param {Object} [params] map of optional values
  */
-cracked.panner = function (userParams) {
-    __.begin("panner", userParams).stereoPanner(userParams).end("panner");
+cracked.panner = function (params) {
+    var pan = __.isNum(params) ? params : params.pan ? params.pan : 0;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.mapping = userParams.mapping || {};
+    __.begin("panner", userParams).stereoPanner(pan).end("panner");
     return cracked;
 };
 
