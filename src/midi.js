@@ -21,24 +21,6 @@ cracked.midi_supported = function(){
 };
 
 /**
- * Midi input. Bind handler for the onMIDIMessage event.
- * @param {Function} callback
- * @public
- */
-cracked.midi_receive = function(callback){
-    if(_midi_access && __.isFun(callback)) {
-        var inputs = _midi_inputs.values();
-        // loop over all available inputs and listen for any MIDI input
-        for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-            // each time there is a midi message call the onMIDIMessage function
-            input.value.onmidimessage = callback;
-        }
-    } else {
-        console.error("midi_receive: midi not available");
-    }
-};
-
-/**
  * Initialize midi. Callback is invoked when ready.
  * @param {Function} callback
  * @public
@@ -62,3 +44,61 @@ cracked.midi_init = function(callback) {
         callback.apply(cracked,[false]);
     }
 };
+
+/**
+ * Midi input. Bind handler for the onMIDIMessage event.
+ * @param {Function} callback
+ * @public
+ */
+cracked.midi_receive = function(callback){
+    if(_midi_access && __.isFun(callback)) {
+        var inputs = _midi_inputs.values();
+        // loop over all available inputs and listen for any MIDI input
+        for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+            // each time there is a midi message call the onMIDIMessage function
+            input.value.onmidimessage = callback;
+        }
+    } else {
+        console.error("midi_receive: midi not available");
+    }
+};
+
+/**
+ * Midi input. Shorthand binding for note ons
+ * @param {Function} callback
+ * @public
+ */
+cracked.midi_noteon = function(callback) {
+    cracked.midi_receive(function(ev){
+        if(ev.data && ev.data[0]===144) {
+            callback(ev.data);
+        }
+    });
+};
+
+/**
+ * Midi input. Shorthand binding for note offs
+ * @param {Function} callback
+ * @public
+ */
+cracked.midi_noteoff = function(callback) {
+    cracked.midi_receive(function(ev){
+        if(ev.data && ev.data[0]===128) {
+            callback(ev.data);
+        }
+    });
+};
+
+/**
+ * Midi input. Shorthand binding for midi control messages
+ * @param {Function} callback
+ * @public
+ */
+cracked.midi_control = function(callback) {
+    cracked.midi_receive(function(ev){
+        if(ev.data && ev.data[0]===176) {
+            callback(ev.data);
+        }
+    });
+};
+
