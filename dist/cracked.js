@@ -3255,7 +3255,7 @@ cracked.panner = function (params) {
     var userParams = __.isObj(params) ? params : {};
     var options = {};
     options.mapping = userParams.mapping || {};
-    __.begin("panner", userParams).stereoPanner(pan).end("panner");
+    __.begin("panner", userParams).stereoPanner({'pan':pan}).end("panner");
     return cracked;
 };
 
