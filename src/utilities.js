@@ -70,7 +70,7 @@ function unsetter(map, key, value) {
     if(__.isNotUndef(map[key])) {
         if(__.isArr(map[key])) {
             map[key] = map[key].filter(function(val){
-                return value != val;
+                return value !== val;
             });
             if(map[key].length===0) {
                 delete map[key];
