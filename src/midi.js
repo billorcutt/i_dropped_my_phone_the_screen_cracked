@@ -59,13 +59,21 @@ cracked.midi_receive = function(callback){
         for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
             // each time there is a midi message call the onMIDIMessage function
             input.value.onmidimessage = function(ev){
-                fun(ev);
-                if(ev.data && ev.data[0]===144) {
-                    _midi_callbacks.noteon(ev.data);
-                } else if(ev.data && ev.data[0]===128) {
-                    _midi_callbacks.noteoff(ev.data);
-                } else if(ev.data && ev.data[0]===176) {
-                    _midi_callbacks.control(ev.data);
+                if(ev.data) {
+                    //general midi receive
+                    fun(ev);
+                    //note on/off/control methods
+                    switch(ev.data[0]) {
+                        case 144:
+                            _midi_callbacks.noteon(ev.data);
+                            break;
+                        case 128:
+                            _midi_callbacks.noteoff(ev.data);
+                            break;
+                        case 176:
+                            _midi_callbacks.control(ev.data);
+                            break;
+                    }
                 }
             }
         }
@@ -101,5 +109,6 @@ cracked.midi_noteoff = function(callback) {
  */
 cracked.midi_control = function(callback) {
     _midi_callbacks.control = callback;
+    cracked.midi_receive();
 };
 
