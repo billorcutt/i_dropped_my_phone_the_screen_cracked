@@ -2044,8 +2044,10 @@ cracked.midi_receive = function(callback){
  * @public
  */
 cracked.midi_noteon = function(callback) {
-    _midi_callbacks.noteon = callback;
-    cracked.midi_receive();
+    if(__.isFun(callback)) {
+        _midi_callbacks.noteon = callback;
+        cracked.midi_receive();
+    }
 };
 
 /**
@@ -2054,8 +2056,10 @@ cracked.midi_noteon = function(callback) {
  * @public
  */
 cracked.midi_noteoff = function(callback) {
-    _midi_callbacks.noteoff = callback;
-    cracked.midi_receive();
+    if(__.isFun(callback)) {
+        _midi_callbacks.noteoff = callback;
+        cracked.midi_receive();
+    }
 };
 
 /**
@@ -2064,8 +2068,10 @@ cracked.midi_noteoff = function(callback) {
  * @public
  */
 cracked.midi_control = function(callback) {
-    _midi_callbacks.control = callback;
-    cracked.midi_receive();
+    if(__.isFun(callback)) {
+        _midi_callbacks.control = callback;
+        cracked.midi_receive();
+    }
 };
 
 
