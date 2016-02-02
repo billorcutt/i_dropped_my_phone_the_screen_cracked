@@ -1965,7 +1965,8 @@ function getCurrentMacroNamespace() {
  */
 var _midi_access = null,
     _midi_inputs = null,
-    _midi_outputs = null;
+    _midi_outputs = null,
+    _midi_callbacks = {noteon:function(){},noteoff:function(){},control:function(){}};
 
 /**
  * Is midi supported?
@@ -2012,7 +2013,16 @@ cracked.midi_receive = function(callback){
         // loop over all available inputs and listen for any MIDI input
         for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
             // each time there is a midi message call the onMIDIMessage function
-            input.value.onmidimessage = callback;
+            input.value.onmidimessage = function(ev){
+                callback(ev);
+                if(ev.data && ev.data[0]===144) {
+                    _midi_callbacks.noteon(ev.data);
+                } else if(ev.data && ev.data[0]===128) {
+                    _midi_callbacks.noteoff(ev.data);
+                } else if(ev.data && ev.data[0]===176) {
+                    _midi_callbacks.control(ev.data);
+                }
+            }
         }
     } else {
         console.error("midi_receive: midi not available");
@@ -2025,11 +2035,7 @@ cracked.midi_receive = function(callback){
  * @public
  */
 cracked.midi_noteon = function(callback) {
-    cracked.midi_receive(function(ev){
-        if(ev.data && ev.data[0]===144) {
-            callback(ev.data);
-        }
-    });
+    _midi_callbacks.noteon = callback;
 };
 
 /**
@@ -2038,11 +2044,7 @@ cracked.midi_noteon = function(callback) {
  * @public
  */
 cracked.midi_noteoff = function(callback) {
-    cracked.midi_receive(function(ev){
-        if(ev.data && ev.data[0]===128) {
-            callback(ev.data);
-        }
-    });
+    _midi_callbacks.noteoff = callback;
 };
 
 /**
@@ -2051,11 +2053,7 @@ cracked.midi_noteoff = function(callback) {
  * @public
  */
 cracked.midi_control = function(callback) {
-    cracked.midi_receive(function(ev){
-        if(ev.data && ev.data[0]===176) {
-            callback(ev.data);
-        }
-    });
+    _midi_callbacks.control = callback;
 };
 
 
