@@ -2008,13 +2008,14 @@ cracked.midi_init = function(callback) {
  * @public
  */
 cracked.midi_receive = function(callback){
-    if(_midi_access && __.isFun(callback)) {
+    if(_midi_access) {
+        var fun = __.isFun(callback) ? callback : function(){};
         var inputs = _midi_inputs.values();
         // loop over all available inputs and listen for any MIDI input
         for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
             // each time there is a midi message call the onMIDIMessage function
             input.value.onmidimessage = function(ev){
-                callback(ev);
+                fun(ev);
                 if(ev.data && ev.data[0]===144) {
                     _midi_callbacks.noteon(ev.data);
                 } else if(ev.data && ev.data[0]===128) {
@@ -2036,6 +2037,7 @@ cracked.midi_receive = function(callback){
  */
 cracked.midi_noteon = function(callback) {
     _midi_callbacks.noteon = callback;
+    cracked.midi_receive();
 };
 
 /**
@@ -2045,6 +2047,7 @@ cracked.midi_noteon = function(callback) {
  */
 cracked.midi_noteoff = function(callback) {
     _midi_callbacks.noteoff = callback;
+    cracked.midi_receive();
 };
 
 /**
