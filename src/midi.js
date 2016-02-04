@@ -10,7 +10,7 @@
 var _midi_access = null,
     _midi_inputs = null,
     _midi_outputs = null,
-    _midi_callbacks = {noteon:function(){},noteoff:function(){},control:function(){}};
+    _midi_callbacks = {noteon:function(){},noteoff:function(){},control:function(){}},
     _midi_noteons = {};
 
 /**
