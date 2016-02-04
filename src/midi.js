@@ -93,7 +93,7 @@ cracked.midi_receive = function(callback){
                             break;
                     }
                 }
-            }
+            };
         }
     } else {
         console.error("midi_receive: midi not available");

@@ -240,34 +240,66 @@ code {
         callback.apply(cracked,[false]);
     }
 };</code></pre></div></div></div></article><article class="comment"><header><h1 id="midi_receive">midi_receive</h1><h5 class="subheader"><div class="label radius ctx-type">method</div>cracked.midi_receive()</h5></header><ul class="no-bullet tags"><li class="tag"><span class="type">@param: </span><span class="types">{Function}</span><span class="name">callback</span><span class="description"></span></li><li class="tag"><span class="type">@public: </span><span class="visibility">public</span></li></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>Midi input. Bind handler for the onMIDIMessage event.</p></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">cracked.midi_receive = function(callback){
-    if(_midi_access &amp;&amp; __.isFun(callback)) {
+    if(_midi_access) {
+        var fun = __.isFun(callback) ? callback : function(){};
         var inputs = _midi_inputs.values();
         // loop over all available inputs and listen for any MIDI input
         for (var input = inputs.next(); input &amp;&amp; !input.done; input = inputs.next()) {
             // each time there is a midi message call the onMIDIMessage function
-            input.value.onmidimessage = callback;
+            input.value.onmidimessage = function(ev){
+                if(ev.data) {
+
+                    //data
+                    var status=ev.data[0],
+                        pitch=ev.data[1],
+                        velocity=ev.data[2],
+                        note_data = [status,pitch,velocity];
+
+                    //general midi receive
+                    fun(ev);
+
+                    //note on/off/control methods
+                    switch(status) {
+                        case 144:
+                            if(velocity &gt; 0) {
+                                if(!_midi_noteons[pitch]) {
+                                    _midi_noteons[pitch]=pitch;
+                                    _midi_callbacks.noteon(note_data);
+                                }
+                            } else {
+                                _midi_callbacks.noteoff(note_data);
+                                delete _midi_noteons[pitch];
+                            }
+                            break;
+                        case 128:
+                            _midi_callbacks.noteoff(note_data);
+                            delete _midi_noteons[pitch];
+                            break;
+                        case 176:
+                            _midi_callbacks.control(note_data);
+                            break;
+                    }
+                }
+            };
         }
     } else {
         console.error(&quot;midi_receive: midi not available&quot;);
     }
 };</code></pre></div></div></div></article><article class="comment"><header><h1 id="midi_noteon">midi_noteon</h1><h5 class="subheader"><div class="label radius ctx-type">method</div>cracked.midi_noteon()</h5></header><ul class="no-bullet tags"><li class="tag"><span class="type">@param: </span><span class="types">{Function}</span><span class="name">callback</span><span class="description"></span></li><li class="tag"><span class="type">@public: </span><span class="visibility">public</span></li></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>Midi input. Shorthand binding for note ons</p></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">cracked.midi_noteon = function(callback) {
-    cracked.midi_receive(function(ev){
-        if(ev.data &amp;&amp; ev.data[0]===144) {
-            callback(ev.data);
-        }
-    });
+    if(__.isFun(callback)) {
+        _midi_callbacks.noteon = callback;
+        cracked.midi_receive();
+    }
 };</code></pre></div></div></div></article><article class="comment"><header><h1 id="midi_noteoff">midi_noteoff</h1><h5 class="subheader"><div class="label radius ctx-type">method</div>cracked.midi_noteoff()</h5></header><ul class="no-bullet tags"><li class="tag"><span class="type">@param: </span><span class="types">{Function}</span><span class="name">callback</span><span class="description"></span></li><li class="tag"><span class="type">@public: </span><span class="visibility">public</span></li></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>Midi input. Shorthand binding for note offs</p></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">cracked.midi_noteoff = function(callback) {
-    cracked.midi_receive(function(ev){
-        if(ev.data &amp;&amp; ev.data[0]===128) {
-            callback(ev.data);
-        }
-    });
+    if(__.isFun(callback)) {
+        _midi_callbacks.noteoff = callback;
+        cracked.midi_receive();
+    }
 };</code></pre></div></div></div></article><article class="comment"><header><h1 id="midi_control">midi_control</h1><h5 class="subheader"><div class="label radius ctx-type">method</div>cracked.midi_control()</h5></header><ul class="no-bullet tags"><li class="tag"><span class="type">@param: </span><span class="types">{Function}</span><span class="name">callback</span><span class="description"></span></li><li class="tag"><span class="type">@public: </span><span class="visibility">public</span></li></ul><div data-section="accordian" data-options="one_up: false;" class="section-container code auto"><div class="section"><p data-section-title class="title"><a href="#">Description</a></p><div data-section-content class="content description"><p>Midi input. Shorthand binding for midi control messages</p></div></div><div class="section"><p data-section-title class="title"><a href="#">Source</a></p><div data-section-content class="content"><pre><code class="language-javascript">cracked.midi_control = function(callback) {
-    cracked.midi_receive(function(ev){
-        if(ev.data &amp;&amp; ev.data[0]===176) {
-            callback(ev.data);
-        }
-    });
+    if(__.isFun(callback)) {
+        _midi_callbacks.control = callback;
+        cracked.midi_receive();
+    }
 };</code></pre></div></div></div></article></div></div><!-- Foundation JS--><script type="text/javascript">document.write('<script src=' +
 ('__proto__' in {} ? 'http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min' : 'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min') +
 '.js><\/script>')
