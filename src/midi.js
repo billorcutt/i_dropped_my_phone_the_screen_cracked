@@ -11,6 +11,7 @@ var _midi_access = null,
     _midi_inputs = null,
     _midi_outputs = null,
     _midi_callbacks = {noteon:function(){},noteoff:function(){},control:function(){}};
+    _midi_noteons = {};
 
 /**
  * Is midi supported?
@@ -60,18 +61,35 @@ cracked.midi_receive = function(callback){
             // each time there is a midi message call the onMIDIMessage function
             input.value.onmidimessage = function(ev){
                 if(ev.data) {
+
+                    //data
+                    var status=ev.data[0],
+                        pitch=ev.data[1],
+                        velocity=ev.data[2],
+                        note_data = [status,pitch,velocity];
+
                     //general midi receive
                     fun(ev);
+
                     //note on/off/control methods
-                    switch(ev.data[0]) {
+                    switch(status) {
                         case 144:
-                            _midi_callbacks.noteon(ev.data);
+                            if(velocity > 0) {
+                                if(!_midi_noteons[pitch]) {
+                                    _midi_noteons[pitch]=pitch;
+                                    _midi_callbacks.noteon(note_data);
+                                }
+                            } else {
+                                _midi_callbacks.noteoff(note_data);
+                                delete _midi_noteons[pitch];
+                            }
                             break;
                         case 128:
-                            _midi_callbacks.noteoff(ev.data);
+                            _midi_callbacks.noteoff(note_data);
+                            delete _midi_noteons[pitch];
                             break;
                         case 176:
-                            _midi_callbacks.control(ev.data);
+                            _midi_callbacks.control(note_data);
                             break;
                     }
                 }
