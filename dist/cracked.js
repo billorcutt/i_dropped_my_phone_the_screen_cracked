@@ -3645,7 +3645,7 @@ cracked.triangle = function (params) {
 };
 
 /**
- * Microsynth
+ * monosynth
  *
  * Simple monophonic synth
  *
@@ -3654,7 +3654,7 @@ cracked.triangle = function (params) {
  * @plugin
  * @param {Object} [params] map of optional values
  */
-cracked.microsynth = function (params) {
+cracked.monosynth = function (params) {
 
     var methods = {
         init: function (options) {
@@ -3662,19 +3662,19 @@ cracked.microsynth = function (params) {
             var opts = options || {};
 
             /*
-                expected format
-            {
-                lfo_type:"sawtooth",
-                lfo_intensity:0,
-                lfo_speed:5
-                osc_type:"sine",
-                osc_frequency:440,
-                osc_detune:0
-                lp_q:0,
-                lp_frequency:440
-                adsr_envelope:0.5
-                gain_volume:1
-            }
+             expected format
+             {
+             lfo_type:"sawtooth",
+             lfo_intensity:0,
+             lfo_speed:5
+             osc_type:"sine",
+             osc_frequency:440,
+             osc_detune:0
+             lp_q:0,
+             lp_frequency:440
+             adsr_envelope:0.5
+             gain_volume:1
+             }
              */
 
             //set up a basic synth: lfo, sine, lowpass, envelope
@@ -3696,7 +3696,7 @@ cracked.microsynth = function (params) {
                 adsr_envelope   = opts.adsr_envelope    || 0.5,
                 gain_volume     = opts.gain_volume      || 1;
 
-            __().begin("microsynth", params).
+            __().begin("monosynth", params).
 
                 lfo({
                     gain:lfo_intensity,
@@ -3723,7 +3723,7 @@ cracked.microsynth = function (params) {
                     gain:gain_volume
                 }).
 
-                end("microsynth");
+                end("monosynth");
         },
         noteOn: function (params) {
             //process incoming arguments for this note
@@ -3733,23 +3733,18 @@ cracked.microsynth = function (params) {
             var env = args.envelope || [0.01,0.1,0.5];
 
             //loop thru selected nodes
-            cracked.each("microsynth", function (el, index, arr) {
-                //kill anything that's running
-                cracked.exec("adsr", ["release",0.01], el.search("adsr"));
+            cracked.each("monosynth", function (el, index, arr) {
                 //select any internal sine nodes the monosynth contains (using "el.search(sine)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
                 cracked.exec("frequency", [freq], el.search("osc"));
                 //apply the velocity to the output gain
                 cracked.exec("volume", [vel], el.search("gain"));
-                //wait til the previous note is over
-                setTimeout(function(){
-                    //grab internal adsr and call trigger, pass the envelope parameter we received
-                    cracked.exec("adsr", ["trigger", env], el.search("adsr"));
-                },10);
+                //grab internal adsr and call trigger, pass the envelope parameter we received
+                cracked.exec("adsr", ["trigger", env], el.search("adsr"));
             });
         },
         noteOff: function (params) {
-            cracked.each("microsynth", function (el, index, arr) {
+            cracked.each("monosynth", function (el, index, arr) {
                 params = __.ifUndef(params,0.1);
                 var p = __.isNum(params) ? params : __.ifUndef(params.envelope,0.1);
                 //call the adsr release
