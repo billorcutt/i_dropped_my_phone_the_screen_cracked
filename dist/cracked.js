@@ -449,6 +449,7 @@ function AudioNode(type, creationParams, userSettings) {
         }
     };
 
+    //search the macro wrapper for nodes matching this selector
     this.search = function (str) {
         var nodes = [];
         if (str) {
