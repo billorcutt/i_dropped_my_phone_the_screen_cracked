@@ -123,6 +123,8 @@ function findInMacro() {
     }
 }
 
+//helper method used above and in cracked.find()
+//prepends macro name to incoming selectors
 function processSelectorForMacro(selector) {
     //look for the macro namespace in the incoming selector
     //if its there, do nothing, else add it.
