@@ -64,9 +64,14 @@ function find() {
             findInMacro(arguments[0]);
         } else {
             //search everywhere
-            var selector = arguments[0];
-            _currentSelector = selector;
-            _selectedNodes = getNodesWithSelector(selector);
+            if(__.isStr(arguments[0])) {
+                var selector = arguments[0];
+                _currentSelector = selector;
+                _selectedNodes = getNodesWithSelector(selector);
+            } else if(__.isObj(arguments[0]) && arguments[0].constructor.name === "AudioNode") {
+                _currentSelector = arguments[0].getType();
+                _selectedNodes = [arguments[0].getUUID()];
+            }
         }
     } else {
         //if there are no arguments
@@ -85,33 +90,42 @@ function find() {
  */
 function findInMacro() {
     if (arguments && arguments.length) {
-        //look for the macro namespace in the incoming selector
-        //if its there, do nothing, else add it.
-        var selectorArr = arguments[0].split(","),
-            prefix = getCurrentMacroNamespace(),
-            macroUUID = getCurrentMacro().getUUID(),
-            selector;
-        //insert the prefix
-        //use a loop to handle comma delimited selectors
-        for (var i = 0; i < selectorArr.length; i++) {
-            selectorArr[i] = (selectorArr[i].indexOf(prefix) !== -1) ?
-                selectorArr[i] : prefix + selectorArr[i];
+        if(__.isStr(arguments[0])) {
+            var macroUUID = getCurrentMacro().getUUID();
+            //update the shared _currentSelector variable
+            //then find the nodes
+            _currentSelector = processSelectorForMacro(arguments[0]);
+            //update selectedNodes
+            _selectedNodes = getNodesWithSelector(_currentSelector);
+            //strip out anything we found that's not part of this
+            //container macro
+            _selectedNodes.forEach(function (el, i, arr) {
+                if (el && getNodeWithUUID(el).getMacroContainerUUID() !== macroUUID) {
+                    arr.splice(i, 1);
+                }
+            });
+        } else if(__.isObj(arguments[0]) && arguments[0].constructor.name === "AudioNode") {
+            _currentSelector = getCurrentMacroNamespace()+" "+arguments[0].getType();
+            _selectedNodes = [arguments[0].getUUID()];
         }
-        //re-join the now prefixed selectors
-        selector = selectorArr.join(",");
-        //update the shared _currentSelector variable
-        //then find the nodes
-        _currentSelector = selector;
-        //update selectedNodes
-        _selectedNodes = getNodesWithSelector(selector);
-        //strip out anything we found that's not part of this
-        //container macro
-        _selectedNodes.forEach(function (el, i, arr) {
-            if (el && getNodeWithUUID(el).getMacroContainerUUID() !== macroUUID) {
-                arr.splice(i, 1);
-            }
-        });
     }
+}
+
+//helper method used above and in cracked.find()
+//prepends macro name to incoming selectors
+function processSelectorForMacro(selector) {
+    //look for the macro namespace in the incoming selector
+    //if its there, do nothing, else add it.
+    var selectorArr = selector.split(","),
+        prefix = getCurrentMacroNamespace();
+    //insert the prefix
+    //use a loop to handle comma delimited selectors
+    for (var i = 0; i < selectorArr.length; i++) {
+        selectorArr[i] = (selectorArr[i].indexOf(prefix) !== -1) ?
+            selectorArr[i] : prefix + selectorArr[i];
+    }
+    //re-join the now prefixed selectors and return
+    return selectorArr.join(",");
 }
 
 /**
@@ -230,4 +244,28 @@ cracked.filter = function () {
         });
     }
     return tmp;
+};
+
+/**
+ * Find nodes with a selector
+ * returns node array that can used with exec()
+ * <code>
+ *
+ * //find all the sines in the patch and
+ * //execute the frequency method against those nodes.
+ * //the internal _selectedNodes array remains unchanged
+ * cracked.exec(
+ *    "frequency",
+ *    200,
+ *    cracked.find("sine")
+ * );</code>
+ *
+ * @public
+ * @function
+ * @param {String} selector selector expression
+ * @returns {Array}
+ */
+cracked.find = function () {
+    var selector = recordingMacro() ? processSelectorForMacro(arguments[0]) : arguments[0];
+    return getNodesWithSelector(selector);
 };
