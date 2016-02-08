@@ -415,7 +415,7 @@ code {
                     //call the adsr release
                     cracked.exec(&quot;adsr&quot;, [&quot;release&quot;, release], __.find(&quot;#&quot;+instance_id+&quot;_adsr&quot;));
                     //schedule the removal of the voice after it's done playing
-                    cracked.exec(&quot;remove&quot;, [(release+250)], __.find(&quot;.&quot;+instance_id+&quot;_class&quot;));
+                    cracked.exec(&quot;remove&quot;, [((release*1000)+250)], __.find(&quot;.&quot;+instance_id+&quot;_class&quot;));
                     //clear the active status so it can be run again
                     delete voices[note_number];
                 }

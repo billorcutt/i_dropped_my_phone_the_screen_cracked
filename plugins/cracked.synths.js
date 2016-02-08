@@ -254,7 +254,7 @@ cracked.polysynth = function (params) {
                     //call the adsr release
                     cracked.exec("adsr", ["release", release], __.find("#"+instance_id+"_adsr"));
                     //schedule the removal of the voice after it's done playing
-                    cracked.exec("remove", [(release+250)], __.find("."+instance_id+"_class"));
+                    cracked.exec("remove", [((release*1000)+250)], __.find("."+instance_id+"_class"));
                     //clear the active status so it can be run again
                     delete voices[note_number];
                 }
