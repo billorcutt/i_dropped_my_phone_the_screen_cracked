@@ -3893,6 +3893,7 @@ cracked.polysynth = function (params) {
                             type:settings.lfo_type,
                             gain:settings.lfo_intensity,
                             frequency:settings.lfo_speed,
+                            id:instance_id+"_lfo",
                             class:instance_id+"_class",
                             modulates:"frequency"
                         }).osc({
@@ -3906,6 +3907,7 @@ cracked.polysynth = function (params) {
                             id:instance_id+"_adsr",
                             class:instance_id+"_class"
                         }).lowpass({
+                            id:instance_id+"_lp",
                             class:instance_id+"_class",
                             frequency:settings.lp_frequency,
                             q:settings.lp_q
@@ -3943,6 +3945,58 @@ cracked.polysynth = function (params) {
                     //clear the active status so it can be run again
                     delete voices[note_number];
                 }
+
+            });
+        },
+        update:function (params) {
+            cracked.each("polysynth", function (el, index, arr) {
+
+                //get the active voices map
+                var settings = el.getParams().settings;
+                var voices = el.getParams().settings.active_voices;
+
+                //iterate over the node's params and update with any new values
+                //any new voices will created with these values
+                Object.keys(params).map(function(setting,index,arr){
+                    settings[setting]=params[setting];
+                });
+
+                /*
+                     expected format
+                     {
+                         lfo_type:"sawtooth",
+                         lfo_intensity:0,
+                         lfo_speed:5
+                         osc_type:"sine",
+                         osc_frequency:440,
+                         osc_detune:0
+                         lp_q:0,
+                         lp_frequency:440
+                         adsr_envelope:0.5
+                         gain_volume:1
+                     }
+                 */
+
+                //iterate over the voices currently playing and update their values
+                Object.keys(voices).map(function(pitch,index,arr){
+                    var instance_id = voices[pitch];
+                    Object.keys(params).map(function(param,index,arr){
+                        switch (param) {
+                            case "lfo_speed":
+                                cracked.exec("frequency", [params[param]], __.find("#"+instance_id+"_lfo"));
+                                break;
+                            case "lfo_intensity":
+                                cracked.exec("gain", [params[param]], __.find("#"+instance_id+"_lfo"));
+                                break;
+                            case "lp_frequency":
+                                cracked.exec("frequency", [params[param]], __.find("#"+instance_id+"_lp"));
+                                break;
+                            case "lp_q":
+                                cracked.exec("q", [params[param]], __.find("#"+instance_id+"_lp"));
+                                break;
+                        }
+                    });
+                });
 
             });
         }
@@ -4089,23 +4143,6 @@ cracked.distortion = function (userParam) {
     if (__.isNum(userParam)) {
         cracked.attr({
             "distortion": userParam
-        });
-    }
-    return cracked;
-};
-
-/**
- * Drive setter convenience method
- *
- * [See more control examples](../../examples/control.html)
- *
- * @plugin
- * @param {Number} userParam drive to set
- */
-cracked.drive = function (userParam) {
-    if (__.isNum(userParam)) {
-        cracked.attr({
-            "drive": userParam
         });
     }
     return cracked;
