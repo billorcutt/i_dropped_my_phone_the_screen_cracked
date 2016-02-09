@@ -301,7 +301,7 @@ cracked.polysynth = function (params) {
                                 cracked.exec("frequency", [params[param]], __.find("#"+instance_id+"_lfo"));
                                 break;
                             case "lfo_intensity":
-                                cracked.exec("gain", [params[param]], __.find("#"+instance_id+"_lfo"));
+                                cracked.exec("volume", [params[param]], __.find("#"+instance_id+"_lfo"));
                                 break;
                             case "lp_frequency":
                                 cracked.exec("frequency", [params[param]], __.find("#"+instance_id+"_lp"));
