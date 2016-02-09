@@ -137,16 +137,16 @@ cracked.polysynth = function (params) {
             /*
              expected format
              {
-             lfo_type:"sawtooth",
-             lfo_intensity:0,
-             lfo_speed:5
-             osc_type:"sine",
-             osc_frequency:440,
-             osc_detune:0
-             lp_q:0,
-             lp_frequency:440
-             adsr_envelope:0.5
-             gain_volume:1
+                 lfo_type:"sawtooth",
+                 lfo_intensity:0,
+                 lfo_speed:5
+                 osc_type:"sine",
+                 osc_frequency:440,
+                 osc_detune:0
+                 lp_q:0,
+                 lp_frequency:440
+                 adsr_envelope:0.5
+                 gain_volume:1
              }
              */
 
@@ -264,6 +264,7 @@ cracked.polysynth = function (params) {
             });
         },
         update:function (params) {
+            //update synth params from control
             cracked.each("polysynth", function (el, index, arr) {
 
                 //get the active voices map
@@ -275,22 +276,6 @@ cracked.polysynth = function (params) {
                 Object.keys(params).map(function(setting,index,arr){
                     settings[setting]=params[setting];
                 });
-
-                /*
-                     expected format
-                     {
-                         lfo_type:"sawtooth",
-                         lfo_intensity:0,
-                         lfo_speed:5
-                         osc_type:"sine",
-                         osc_frequency:440,
-                         osc_detune:0
-                         lp_q:0,
-                         lp_frequency:440
-                         adsr_envelope:0.5
-                         gain_volume:1
-                     }
-                 */
 
                 //iterate over the voices currently playing and update their values
                 Object.keys(voices).map(function(pitch,index,arr){
