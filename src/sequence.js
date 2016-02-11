@@ -10,7 +10,7 @@
 
 var _isLoopRunning = false,
     _ignoreGrid = true,
-    _loopStepSize = 16,
+    _loopStepSize,
     _loopInterval = 100,
     _loopID = 0,
     _loopCB = null,
@@ -107,7 +107,7 @@ function stopLoop() {
  * @private
  */
 function resetLoop() {
-    _loopStepSize = 16;
+    _loopStepSize = undefined;
     _loopInterval = 100;
     _ignoreGrid = true;
     _loopID = 0;
@@ -128,11 +128,10 @@ function resetLoop() {
  */
 function configureLoop(opts, fn, data) {
     if (opts && typeof opts === 'object') {
-        _loopStepSize = opts.steps || 16;
-        _loopInterval = opts.interval || 100;
+        _loopStepSize = opts.steps;
+        _loopInterval = opts.interval || 200;
     } else if(opts && __.isNum(opts) && !fn && !data) {
         //just configuring tempo only
-        _loopStepSize = 0;
         _loopInterval = opts;
     }
     if (__.isFun(fn)) {
@@ -163,14 +162,17 @@ function checkup() {
  * @private
  */
 function loopStep() {
-    //if step size is configured globally
+
+    //globals- tbd deprecate. step size should just be based on available data
     if(_loopStepSize) {
+        //if a step size is configured globally, increment the index
         _loopIndex = (_loopIndex < (_loopStepSize - 1)) ? _loopIndex + 1 : 0;
     }
     //global callback
     if (__.isFun(_loopCB)) {
         _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData);
     }
+
     //loop thru any bound step event listeners
     for (var i = 0; i < _loopListeners.length; i++) {
         var listener = _loopListeners[i],
@@ -178,13 +180,17 @@ function loopStep() {
             index = listener.loopIndex,
             stepSize = listener.loopStepSize,
             data = listener.data;
+
         //if step size not configured globally
-        if(!_loopStepSize && stepSize) {
-            listener.loopIndex = (index < (stepSize - 1)) ? index + 1 : 0;
-        }
+        listener.loopIndex = (index < (stepSize - 1)) ? index + 1 : 0;
+
+        //load up the selected nodes for this listener
         _selectedNodes = listener.selection;
+
         //run the callback
-        listener.callback(index, cracked.ifUndef(data[index], null), data);
+        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data);
+
+        //put the nodes back in place
         _selectedNodes = tmp;
     }
 }
