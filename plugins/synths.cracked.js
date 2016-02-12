@@ -203,6 +203,9 @@ cracked.polysynth = function (params) {
                 //if not currently active
                 if(!voices[note_number]) {
 
+                    //ignore the grid while we're creating the voice
+                    __.loop("toggle_grid");
+
                     //create a new voice
                     __().lfo({
                             type:settings.lfo_type,
@@ -232,10 +235,14 @@ cracked.polysynth = function (params) {
                             gain:vel
                         }).connect(el);
 
+                    //flip it back before we start it up
+                    __.loop("toggle_grid");
+
                     //start it up
                     cracked.exec("start", [], __.find("."+instance_id+"_class"));
                     //trigger the envelope
                     cracked.exec("adsr", ["trigger", env], __.find("#"+instance_id+"_adsr"));
+
                     voices[note_number]=instance_id;
                 }
 
