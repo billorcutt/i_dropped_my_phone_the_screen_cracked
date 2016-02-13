@@ -3330,7 +3330,7 @@ cracked.adc = function (params) {
  * @param {Object} [params] map of optional values
  */
 cracked.panner = function (params) {
-    var pan = __.isNum(params) ? params : params.pan ? params.pan : 0;
+    var pan = __.isNum(params) ? params : (__.isObj(params) && params.pan) ? params.pan : 0;
     var userParams = __.isObj(params) ? params : {};
     var options = {};
     options.mapping = userParams.mapping || {};
@@ -3709,16 +3709,16 @@ cracked.monosynth = function (params) {
             /*
              expected format
              {
-             lfo_type:"sawtooth",
-             lfo_intensity:0,
-             lfo_speed:5
-             osc_type:"sine",
-             osc_frequency:440,
-             osc_detune:0
-             lp_q:0,
-             lp_frequency:440
-             adsr_envelope:0.5
-             gain_volume:1
+                 lfo_type:"sawtooth",
+                 lfo_intensity:0,
+                 lfo_speed:5
+                 osc_type:"sine",
+                 osc_frequency:440,
+                 osc_detune:0
+                 lp_q:0,
+                 lp_frequency:440
+                 adsr_envelope:0.5
+                 gain_volume:1
              }
              */
 
@@ -3779,7 +3779,7 @@ cracked.monosynth = function (params) {
 
             //loop thru selected nodes
             cracked.each("monosynth", function (el, index, arr) {
-                //select any internal sine nodes the monosynth contains (using "el.search(sine)")
+                //select any internal oscillator nodes the monosynth contains (using "el.search(osc)")
                 //and then call frequency() passing in the pitch argument we got w noteOn.
                 cracked.exec("frequency", [freq], el.search("osc"));
                 //apply the velocity to the output gain

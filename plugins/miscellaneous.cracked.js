@@ -33,7 +33,7 @@ cracked.adc = function (params) {
  * @param {Object} [params] map of optional values
  */
 cracked.panner = function (params) {
-    var pan = __.isNum(params) ? params : params.pan ? params.pan : 0;
+    var pan = __.isNum(params) ? params : (__.isObj(params) && params.pan) ? params.pan : 0;
     var userParams = __.isObj(params) ? params : {};
     var options = {};
     options.mapping = userParams.mapping || {};
