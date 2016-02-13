@@ -1,6 +1,6 @@
 /**
  * #Connecting#
- * Methods for the connecting nodes
+ * Methods for connecting and removing nodes
  *
  */
 
@@ -56,6 +56,21 @@ function connectPreviousToSelected() {
 }
 
 //disconnects and removes all references to selected nodes
+/**
+ * chainable method to stop, disconnect and remove
+ * the currently selected nodes. Takes a time in ms to
+ * schedule the node removal.
+ * <code>
+ *     //create and connect sine->lowpass->dac
+ *     \_\_().sine().lowpass().dac();
+ *     //remove the lowpass instantiated above in 100ms
+ *     \_\_("lowpass").remove(100);</code>
+ *
+ * @public
+ * @function
+ * @param {Number} time in ms to schedule node removal
+ * @return cracked
+ */
 cracked.remove = function(time) {
     var nodesToRemove = _selectedNodes.slice();
     var when = __.isNum(time) ? time : 0;
@@ -70,6 +85,6 @@ cracked.remove = function(time) {
                 node.disconnect();
             }
         });
-        cracked.removeModelReferences(nodes);
+        removeModelReferences(nodes);
     }
 };

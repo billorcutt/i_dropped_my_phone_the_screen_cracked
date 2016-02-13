@@ -66,6 +66,13 @@ function setter(map, key, value) {
     }
 }
 
+/**
+ * helper function to remove values in a map
+ * @param {Object} map
+ * @param {string} key
+ * @param {*} value
+ * @private
+ */
 function unsetter(map, key, value) {
     if(__.isNotUndef(map[key])) {
         if(__.isArr(map[key])) {

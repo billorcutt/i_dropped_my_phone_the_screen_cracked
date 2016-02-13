@@ -834,7 +834,7 @@ function AudioNode(type, creationParams, userSettings) {
 /**
  * #Controlling#
  *
- * Medthods for controlling nodes
+ * Methods for controlling nodes
  */
 
 /**
@@ -891,7 +891,7 @@ cracked.stop = function () {
 
 /**
  * Public method to ramp a parameter on currently selected nodes
- * Value & Endtime parameters can be numbers or arrays of numbers
+ * Target & timeToRamp parameters can be numbers or arrays of numbers
  * for multisegement ramps. Initial value param is optional, if
  * omitted, then the current value is used as the initial value.
  * If loop is running, then ramp start times are snapped to the
@@ -906,17 +906,17 @@ cracked.stop = function () {
  *
  * @function
  * @public
- * @param {Number|Array} value target value to ramp to
- * @param {Number|Array} endtime length of ramp in seconds
+ * @param {Number|Array} target value to ramp to
+ * @param {Number|Array} timeToRamp length of ramp in seconds
  * @param {String} paramToRamp name of parameter to ramp
  * @param {Number} initial value to start the ramp at
  *
  */
-cracked.ramp = function (value, endtime, paramToRamp, initial) {
+cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
     for (var i = 0; i < _selectedNodes.length; i++) {
         var currNode = getNodeWithUUID(_selectedNodes[i]);
         if (currNode) {
-            currNode.ramp(value, endtime, paramToRamp, null, initial);
+            currNode.ramp(target, timeToRamp, paramToRamp, null, initial);
         }
     }
     return cracked;
@@ -952,7 +952,7 @@ cracked.attr = function (userParams) {
 };
 
 /**
- * parses the dot separated keys in the param string and sets the value on the node helper for the above
+ * parses the dot separated keys in the param string and sets the value on the node. helper for the above
  * @private
  * @param {Object} node native node we are setting on
  * @param {String} keyStr unresolved parameter name
@@ -1751,7 +1751,13 @@ function setNodeLookup(node) {
     node.selector_array = selector_array;
 }
 
-cracked.removeModelReferences = function(nodes) {
+/**
+ * remove nodes from the model
+ * @param nodes to remove. optional. if not
+ * supplied currently selected nodes are used.
+ * @private
+ */
+function removeModelReferences(nodes) {
     var nodesToRemove = nodes || _selectedNodes;
     nodesToRemove.forEach(removeReferences);
     function removeReferences(node) {
@@ -1771,38 +1777,7 @@ cracked.removeModelReferences = function(nodes) {
             });
         }
     }
-};
-
-/**
- * remove references to selected nodes tbd - need to do this for
- * real works ok right now for top level macros
- * Not/never used
- */
-cracked.removeNodeOld = function () {
-    var arr = _currentSelector.split(",");
-    //iterate over selectors
-    for (var i = 0; i < arr.length; i++) {
-        //if we have a top level match
-        if (_nodeLookup[arr[i]]) {
-            var keyArr = Object.keys(_nodeLookup);
-            for (var j = 0; j < keyArr.length; j++) {
-                var re = new RegExp(arr[i] + "\\s*");
-                //get all the child nodes of this macro
-                if (keyArr[j].match(re)) {
-                    var tmp = _nodeLookup[keyArr[j]];
-                    for (var k = 0; k < tmp.length; k++) {
-                        delete _nodeStore[[keyArr[j]][k]];
-                        var index = _nodeLookup["*"].indexOf(_nodeLookup[keyArr[j]][k]);
-                        if (index > -1) {
-                            _nodeLookup["*"].splice(index, 1);
-                        }
-                    }
-                    delete _nodeLookup[keyArr[j]];
-                }
-            }
-        }
-    }
-};
+}
 
 /**
  * get node with a uuid returns a AudioNode instance
@@ -2141,7 +2116,7 @@ cracked.midi_control = function(callback) {
 
 /**
  * #Connecting#
- * Methods for the connecting nodes
+ * Methods for connecting and removing nodes
  *
  */
 
@@ -2197,6 +2172,21 @@ function connectPreviousToSelected() {
 }
 
 //disconnects and removes all references to selected nodes
+/**
+ * chainable method to stop, disconnect and remove
+ * the currently selected nodes. Takes a time in ms to
+ * schedule the node removal.
+ * <code>
+ *     //create and connect sine->lowpass->dac
+ *     \_\_().sine().lowpass().dac();
+ *     //remove the lowpass instantiated above in 100ms
+ *     \_\_("lowpass").remove(100);</code>
+ *
+ * @public
+ * @function
+ * @param {Number} time in ms to schedule node removal
+ * @return cracked
+ */
 cracked.remove = function(time) {
     var nodesToRemove = _selectedNodes.slice();
     var when = __.isNum(time) ? time : 0;
@@ -2211,7 +2201,7 @@ cracked.remove = function(time) {
                 node.disconnect();
             }
         });
-        cracked.removeModelReferences(nodes);
+        removeModelReferences(nodes);
     }
 };
 
@@ -2283,6 +2273,13 @@ function setter(map, key, value) {
     }
 }
 
+/**
+ * helper function to remove values in a map
+ * @param {Object} map
+ * @param {string} key
+ * @param {*} value
+ * @private
+ */
 function unsetter(map, key, value) {
     if(__.isNotUndef(map[key])) {
         if(__.isArr(map[key])) {
@@ -2440,9 +2437,6 @@ function logConnections(nodeToConnect, node) {
     logToConsole("connected " + vals[0] + " - " + vals[1] + " to " + vals[2] + " - " + vals[3]);
 }
 
-
-//version
-cracked.version = "0.1.0";
 
 //set the global entry points
 window.cracked = cracked;

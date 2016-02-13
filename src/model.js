@@ -54,7 +54,13 @@ function setNodeLookup(node) {
     node.selector_array = selector_array;
 }
 
-cracked.removeModelReferences = function(nodes) {
+/**
+ * remove nodes from the model
+ * @param nodes to remove. optional. if not
+ * supplied currently selected nodes are used.
+ * @private
+ */
+function removeModelReferences(nodes) {
     var nodesToRemove = nodes || _selectedNodes;
     nodesToRemove.forEach(removeReferences);
     function removeReferences(node) {
@@ -74,38 +80,7 @@ cracked.removeModelReferences = function(nodes) {
             });
         }
     }
-};
-
-/**
- * remove references to selected nodes tbd - need to do this for
- * real works ok right now for top level macros
- * Not/never used
- */
-cracked.removeNodeOld = function () {
-    var arr = _currentSelector.split(",");
-    //iterate over selectors
-    for (var i = 0; i < arr.length; i++) {
-        //if we have a top level match
-        if (_nodeLookup[arr[i]]) {
-            var keyArr = Object.keys(_nodeLookup);
-            for (var j = 0; j < keyArr.length; j++) {
-                var re = new RegExp(arr[i] + "\\s*");
-                //get all the child nodes of this macro
-                if (keyArr[j].match(re)) {
-                    var tmp = _nodeLookup[keyArr[j]];
-                    for (var k = 0; k < tmp.length; k++) {
-                        delete _nodeStore[[keyArr[j]][k]];
-                        var index = _nodeLookup["*"].indexOf(_nodeLookup[keyArr[j]][k]);
-                        if (index > -1) {
-                            _nodeLookup["*"].splice(index, 1);
-                        }
-                    }
-                    delete _nodeLookup[keyArr[j]];
-                }
-            }
-        }
-    }
-};
+}
 
 /**
  * get node with a uuid returns a AudioNode instance

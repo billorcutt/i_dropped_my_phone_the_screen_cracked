@@ -1,7 +1,7 @@
 /**
  * #Controlling#
  *
- * Medthods for controlling nodes
+ * Methods for controlling nodes
  */
 
 /**
@@ -58,7 +58,7 @@ cracked.stop = function () {
 
 /**
  * Public method to ramp a parameter on currently selected nodes
- * Value & Endtime parameters can be numbers or arrays of numbers
+ * Target & timeToRamp parameters can be numbers or arrays of numbers
  * for multisegement ramps. Initial value param is optional, if
  * omitted, then the current value is used as the initial value.
  * If loop is running, then ramp start times are snapped to the
@@ -73,17 +73,17 @@ cracked.stop = function () {
  *
  * @function
  * @public
- * @param {Number|Array} value target value to ramp to
- * @param {Number|Array} endtime length of ramp in seconds
+ * @param {Number|Array} target value to ramp to
+ * @param {Number|Array} timeToRamp length of ramp in seconds
  * @param {String} paramToRamp name of parameter to ramp
  * @param {Number} initial value to start the ramp at
  *
  */
-cracked.ramp = function (value, endtime, paramToRamp, initial) {
+cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
     for (var i = 0; i < _selectedNodes.length; i++) {
         var currNode = getNodeWithUUID(_selectedNodes[i]);
         if (currNode) {
-            currNode.ramp(value, endtime, paramToRamp, null, initial);
+            currNode.ramp(target, timeToRamp, paramToRamp, null, initial);
         }
     }
     return cracked;
@@ -119,7 +119,7 @@ cracked.attr = function (userParams) {
 };
 
 /**
- * parses the dot separated keys in the param string and sets the value on the node helper for the above
+ * parses the dot separated keys in the param string and sets the value on the node. helper for the above
  * @private
  * @param {Object} node native node we are setting on
  * @param {String} keyStr unresolved parameter name
