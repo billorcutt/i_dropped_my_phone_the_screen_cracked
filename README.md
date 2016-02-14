@@ -34,7 +34,7 @@ Audio node chains can be encapsulated as units using macros
 
 ```javascript
 //define a simple macro named "microsynth"
-__().begin("microsynth").sine().gain(0).dac().end("microsynth");
+__().begin("microsynth").sine().gain().end("microsynth").dac();
 
 //change the frequency of the sine
 __("microsynth").frequency(100);
@@ -48,10 +48,10 @@ nest them within other macros, etc.
 ```javascript
 //define a plugin called microsynth
 cracked.microsynth = function(params) {
-//pass any params to begin() so they can associated with the instance
-__().begin("microsynth",params).sine().gain(0).end("microsynth");
-//return cracked so we can chain methods
-return cracked;
+    //pass any params to begin() so they can associated with the instance
+    __().begin("microsynth",params).sine().gain(0).end("microsynth");
+    //return cracked so we can chain methods
+    return cracked;
 }
 
 //create two instances with different ids
