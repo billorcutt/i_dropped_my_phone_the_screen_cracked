@@ -3,6 +3,16 @@
  */
 
 /**
+ * Resets Model
+ * @param node
+ * @private
+ */
+function resetModel() {
+    _nodeStore = {};
+    _nodeLookup = {};
+}
+
+/**
  * Squirrel away nodes for winter
  * @param node
  * @private
@@ -66,21 +76,54 @@ function removeModelReferences(nodes) {
     function removeReferences(node) {
         var uuid = node;
         node = getNodeWithUUID(uuid);
-        var arr = node.selector_array;
-        if(__.isArr(arr)) {
-            arr.forEach(function(selector){
-                unsetter(_nodeLookup,selector,uuid);
-                unsetter(_nodeStore,uuid,null);
-            });
-        }
-        if(node.isMacro()) {
-            var natives = node.getNativeNode();
-            natives.forEach(function(nativeNode){
-                removeReferences(nativeNode.uuid);
-            });
+        if(node) {
+            var arr = node.selector_array;
+            if(__.isArr(arr)) {
+                arr.forEach(function(selector){
+                    unsetter(_nodeLookup,selector,uuid);
+                    unsetter(_nodeStore,uuid,null);
+                });
+            }
+            if(node.isMacro()) {
+                var natives = node.getNativeNode();
+                natives.forEach(function(nativeNode){
+                    removeReferences(nativeNode.uuid);
+                });
+            }
         }
     }
 }
+
+/**
+ * remove references to selected nodes tbd - need to do this for
+ * * real works ok right now for top level macros
+ * @private
+ */
+cracked.removeMacros = function () {
+    var arr = _currentSelector.split(",");
+    //iterate over selectors
+    for (var i = 0; i < arr.length; i++) {
+        //if we have a top level match
+        if (_nodeLookup[arr[i]]) {
+            var keyArr = Object.keys(_nodeLookup);
+            for (var j = 0; j < keyArr.length; j++) {
+                var re = new RegExp(arr[i] + "\\s*");
+                //get all the child nodes of this macro
+                if (keyArr[j].match(re)) {
+                    var tmp = _nodeLookup[keyArr[j]];
+                    for (var k = 0; k < tmp.length; k++) {
+                        delete _nodeStore[[keyArr[j]][k]];
+                        var index = _nodeLookup["*"].indexOf(_nodeLookup[keyArr[j]][k]);
+                        if (index > -1) {
+                            _nodeLookup["*"].splice(index, 1);
+                        }
+                    }
+                    delete _nodeLookup[keyArr[j]];
+                }
+            }
+        }
+    }
+};
 
 /**
  * get node with a uuid returns a AudioNode instance

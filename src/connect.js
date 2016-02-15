@@ -74,9 +74,15 @@ function connectPreviousToSelected() {
 cracked.remove = function(time) {
     var nodesToRemove = _selectedNodes.slice();
     var when = __.isNum(time) ? time : 0;
-    setTimeout(function(){
+
+    if(when) {
+        setTimeout(function(){
+            _remove(nodesToRemove);
+        },when);
+    } else {
         _remove(nodesToRemove);
-    },when);
+    }
+
     function _remove(nodes) {
         nodes.forEach(function (node, i, array) {
             node = getNodeWithUUID(node);

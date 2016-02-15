@@ -150,6 +150,22 @@ function resetSelection() {
 }
 
 /**
+ * resets everything to its initial state
+ *
+ * @public
+ * @function
+ * @returns {cracked}
+ */
+cracked.reset = function() {
+    __("*").remove();
+    resetMacro();
+    reset();
+    resetModel();
+    resetLoop();
+    return cracked;
+};
+
+/**
  * executes a method with a specific set of selected nodes
  * without modifying the internal selectedNodes array
  * <code>

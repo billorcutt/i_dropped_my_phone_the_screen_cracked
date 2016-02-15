@@ -111,3 +111,12 @@ function getCurrentMacroNamespace() {
     }
     return arr.join("");
 }
+
+/**
+ * resets the current Macro;
+ * @function
+ * @private
+ */
+function resetMacro() {
+    _currentMacro = [];
+}
