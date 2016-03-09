@@ -27,6 +27,36 @@ cracked.adc = function (params) {
 };
 
 /**
+ * System out - destination with a master volume
+ * Alias for dac
+ * @plugin
+ * @param {Number} [params=1] system out gain
+ */
+cracked.out = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.mapping = userParams.mapping || {};
+    __.begin("out", userParams).gain(gain).destination().end("out");
+    return cracked;
+};
+
+/**
+ * System in - input with a master volume
+ * Alias for adc
+ * @plugin
+ * @param {Number} [params=1] system in gain
+ */
+cracked.in = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.mapping = userParams.mapping || {};
+    __.begin("in", userParams).origin().gain(gain).end("in");
+    return cracked;
+};
+
+/**
  * Panner - simple stereo panner
  *
  * @plugin
