@@ -81,6 +81,7 @@ cracked.panner = function (params) {
  * @param {Number} [userParams.speed=1]
  * @param {Number} [userParams.start=1]
  * @param {Number} [userParams.end=1]
+ * @param {String} [userParams.path=''] path to sound file to play
  * @param {Boolean} [userParams.loop=false]
  */
 cracked.sampler = function (userParams) {
