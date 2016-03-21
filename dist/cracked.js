@@ -1687,31 +1687,6 @@ cracked.unbind = function (eventType) {
 };
 
 /**
- * run a map method against an array of data, calling the function at some interval
- * @public
- * @param {Function} callback to be invoked at every interval
- * @param {Number} interval. period to execute callback
- * @param {Array} data should the same length as the number of steps
- */
-cracked.mapper = function(callback,interval,data) {
-    if(typeof callback === "function" && typeof interval === "number") {
-        (function(){
-            var index = 0;
-            var id = setInterval((function(fn,d,i){
-                return function()  {
-                    if(typeof d[i] !== "undefined") {
-                        fn(d[i]);
-                        i++;
-                    } else {
-                        clearInterval(id);
-                    }
-                };
-            })(callback,data,index,id),interval);
-        })();
-    }
-};
-
-/**
  * #Model#
  */
 
@@ -3446,6 +3421,7 @@ cracked.panner = function (params) {
  * @param {Number} [userParams.speed=1]
  * @param {Number} [userParams.start=1]
  * @param {Number} [userParams.end=1]
+ * @param {String} [userParams.path=''] path to sound file to play
  * @param {Boolean} [userParams.loop=false]
  */
 cracked.sampler = function (userParams) {
@@ -4400,5 +4376,53 @@ cracked.sec2ms = function(second) {
  */
 cracked.isSupported = function() {
     return ("AudioContext" in window || "webkitAudioContext" in window);
+};
+
+/**
+ * run a map method against an array of data, calling the function at some interval
+ * @public
+ * @param {Function} callback to be invoked at every interval
+ * @param {Number} interval. period to execute callback
+ * @param {Array} data should the same length as the number of steps
+ */
+cracked.mapper = function(callback,interval,data) {
+    if(typeof callback === "function" && typeof interval === "number") {
+        (function(){
+            var index = 0;
+            var id = setInterval((function(fn,d,i){
+                return function()  {
+                    if(typeof d[i] !== "undefined") {
+                        fn(d[i]);
+                        i++;
+                    } else {
+                        clearInterval(id);
+                    }
+                };
+            })(callback,data,index,id),interval);
+        })();
+    }
+};
+
+/**
+ * execute a callback at a series of random intervals
+ * @public
+ * @param {Function} callback to be invoked at every interval
+ * @param {Number} minTime. minimum value for the random interval
+ * @param {Number} maxTime. maximum value for the random interval
+ */
+cracked.random_interval = function(callback, minTime, maxTime) {
+
+    function set_timeout(callback, minTime, maxTime,ran) {
+        var nextRan = cracked.random(minTime, maxTime);
+        setTimeout(function(){
+            callback(nextRan);
+            set_timeout(callback, minTime, maxTime,nextRan);
+        },ran);
+    }
+
+    if(typeof callback === "function" && __.isNum(minTime) && __.isNum(maxTime)) {
+        set_timeout(callback, minTime, maxTime,cracked.random(minTime, maxTime));
+    }
+
 };
 })();
