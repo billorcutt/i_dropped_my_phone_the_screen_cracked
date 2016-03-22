@@ -300,7 +300,7 @@ cracked.isSupported = function() {
  * @param {Number} interval. period to execute callback
  * @param {Array} data should the same length as the number of steps
  */
-cracked.mapper = function(callback,interval,data) {
+cracked.one_shot = function(callback,interval,data) {
     if(typeof callback === "function" && typeof interval === "number") {
         (function(){
             var index = 0;
