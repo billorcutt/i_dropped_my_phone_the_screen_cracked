@@ -3663,19 +3663,15 @@ cracked.brown = function (params) {
 
 };
 
-
 /**
- * White Noise
+ * Stepper
  *
- * [See more noise examples](../../examples/noise.html)
+ * fill an audio buffer with steps of values
  *
  * @plugin
  * @param {Object} [params] map of optional values
- * @param {Number} [params.channels=1]
- * @param {Number} [params.length=1]
  */
 cracked.stepper = function (params) {
-//http://noisehack.com/generate-noise-web-audio-api/
     var userParams = params || {};
     var channels = userParams.channels || 1;
     var length = userParams.length || 1;
