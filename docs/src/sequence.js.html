@@ -229,13 +229,16 @@ code {
             resetLoop();
         } else if (arguments[0] === &quot;toggle_grid&quot;) {
             toggleGrid();
-        } else if (arguments[0] &amp;&amp; __.isObj(arguments[0])) {
+        } else if (arguments.length === 3 &amp;&amp; __.isObj(arguments[0]) &amp;&amp; __.isFun(arguments[1])  &amp;&amp; __.isArr(arguments[2])) {
             //configure loop with options
             //set data &amp; callback
             configureLoop(arguments[0], arguments[1], arguments[2]);
-        } else if(__.isNum(arguments[0])) {
+        } else if(arguments.length === 1 &amp;&amp; __.isNum(arguments[0])) {
             //tempo only
             configureLoop(arguments[0]);
+        } else if(arguments.length === 2 &amp;&amp; __.isNum(arguments[0]) &amp;&amp; __.isFun(arguments[1])) {
+            //configure loop
+            configureLoop({interval:arguments[0]}, arguments[1], []);
         }
     }
     return cracked;
