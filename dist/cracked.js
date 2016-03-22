@@ -3663,6 +3663,52 @@ cracked.brown = function (params) {
 
 };
 
+
+/**
+ * White Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
+ * @plugin
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
+ */
+cracked.stepper = function (params) {
+//http://noisehack.com/generate-noise-web-audio-api/
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
+    var steps = userParams.steps || 8;
+
+    __().begin("stepper", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("stepper");
+
+    return cracked;
+
+    function buildBuffer(audioContext) {
+        var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buflen = buffer.length;
+        var bufNum = buffer.numberOfChannels;
+        var buffArr = []; //call only once and cache
+        var stepSize = parseInt(buflen/steps);
+
+        for (var k = 0; k < bufNum; k++) {
+            buffArr.push(buffer.getChannelData(k));
+        }
+
+        for (var i = 0; i < buflen; i++) {
+            var value = (!i || i % stepSize === 0) ?  (__.random(-100,100)/100) : value;
+            for (var j = 0; j < bufNum; j++) {
+                buffArr[j][i] = value;
+            }
+        }
+        return buffer;
+    }
+};
+
 //need a custom wave osc
 
 /**
