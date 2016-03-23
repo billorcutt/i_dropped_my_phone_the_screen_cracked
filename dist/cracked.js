@@ -3506,13 +3506,14 @@ cracked.stepper = function (params) {
         var bufNum = buffer.numberOfChannels;
         var buffArr = []; //call only once and cache
         var stepSize = Math.floor(buflen/steps);
+        var stepCount = 0;
 
         for (var k = 0; k < bufNum; k++) {
             buffArr.push(buffer.getChannelData(k));
         }
 
         for (var i = 0; i < buflen; i++) {
-            var value = (!i || i % stepSize === 0 && buffArr.length < steps) ?  fn() : value;
+            var value = (!i || i % stepSize === 0 && stepCount < steps) ?  (function(){ stepCount++; return fn(); })() : value;
             for (var j = 0; j < bufNum; j++) {
                 buffArr[j][i] = value;
             }
