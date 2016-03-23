@@ -3481,7 +3481,7 @@ cracked.lfo = function (userParams) {
 /**
  * Stepper
  *
- * fill an audio buffer with steps of values
+ * fill an audio buffer with a series of values
  *
  * @plugin
  * @param {Object} [params] map of optional values
@@ -3491,6 +3491,7 @@ cracked.stepper = function (params) {
     var channels = userParams.channels || 1;
     var length = userParams.length || 1;
     var steps = userParams.steps || 8;
+    var fn = userParams.fn || function(){return (__.random(-100,100)/100);};
 
     __().begin("stepper", userParams).buffer({
         fn: buildBuffer,
@@ -3511,7 +3512,7 @@ cracked.stepper = function (params) {
         }
 
         for (var i = 0; i < buflen; i++) {
-            var value = (!i || i % stepSize === 0) ?  (__.random(-100,100)/100) : value;
+            var value = (!i || i % stepSize === 0) ?  fn() : value;
             for (var j = 0; j < bufNum; j++) {
                 buffArr[j][i] = value;
             }
