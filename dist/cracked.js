@@ -1512,6 +1512,9 @@ cracked.loop = function () {
         } else if(arguments.length === 1 && __.isNum(arguments[0])) {
             //tempo only
             configureLoop(arguments[0]);
+        } else if(arguments.length === 1 && __.isObj(arguments[0])) {
+            //just an options object
+            configureLoop(arguments[0]);
         } else if(arguments.length === 2 && __.isNum(arguments[0]) && __.isFun(arguments[1])) {
             //configure loop
             configureLoop({interval:arguments[0]}, arguments[1], []);

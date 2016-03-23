@@ -236,6 +236,9 @@ code {
         } else if(arguments.length === 1 &amp;&amp; __.isNum(arguments[0])) {
             //tempo only
             configureLoop(arguments[0]);
+        } else if(arguments.length === 1 &amp;&amp; __.isObj(arguments[0])) {
+            //just an options object
+            configureLoop(arguments[0]);
         } else if(arguments.length === 2 &amp;&amp; __.isNum(arguments[0]) &amp;&amp; __.isFun(arguments[1])) {
             //configure loop
             configureLoop({interval:arguments[0]}, arguments[1], []);
