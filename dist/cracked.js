@@ -3459,7 +3459,7 @@ cracked.lfo = function (userParams) {
             begin("lfo", params).
             noise({
                 "type": (params.type || "white"),
-                "channels": (params.channels || 1),
+                "channels": 1,
                 "length": (params.length || 1)
             }).
             gain({
@@ -3484,42 +3484,47 @@ cracked.lfo = function (userParams) {
 /**
  * Stepper
  *
- * fill an audio buffer with a series of values
+ * fill an audio buffer with a series of discrete values
  *
  * @plugin
  * @param {Object} [params] map of optional values
+ * @param {String} [params.modulates=frequency]
+ * @param {Function} [params.fn=function to generate values (if not supplied, then random values between -1 & 1)]
+ * @param {Number} [params.steps=number of steps in the buffer]
+ * @param {Number} [params.length=length of the buffer in seconds]
+ * @param {Number} [params.gain=1000]
  */
 cracked.stepper = function (params) {
     var userParams = params || {};
-    var channels = userParams.channels || 1;
     var length = userParams.length || 1;
     var steps = userParams.steps || 8;
     var fn = userParams.fn || function(){return (__.random(-100,100)/100);};
+    userParams.modulates = params.modulates || "frequency";
 
     __().begin("stepper", userParams).buffer({
         fn: buildBuffer,
         loop: true
-    }).end("stepper");
+    }).
+    gain({
+        "gain": __.ifUndef(params.gain, 1000)
+    }).
+    end("stepper");
 
     return cracked;
 
     function buildBuffer(audioContext) {
-        var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buffer = audioContext.createBuffer(1, (length * audioContext.sampleRate), audioContext.sampleRate);
         var buflen = buffer.length;
-        var bufNum = buffer.numberOfChannels;
-        var buffArr = []; //call only once and cache
+        var buffArr = [];
         var stepSize = Math.floor(buflen/steps);
         var stepCount = 0;
+        var value = 0;
 
-        for (var k = 0; k < bufNum; k++) {
-            buffArr.push(buffer.getChannelData(k));
-        }
+        buffArr.push(buffer.getChannelData(0)); //call only once and cache
 
         for (var i = 0; i < buflen; i++) {
-            var value = (!i || i % stepSize === 0 && stepCount < steps) ?  (function(){ stepCount++; return fn(); })() : value;
-            for (var j = 0; j < bufNum; j++) {
-                buffArr[j][i] = value;
-            }
+            value = (!i || i % stepSize === 0 && stepCount < steps) ?  (function(){ stepCount++; return fn(); })() : value;
+            buffArr[0][i] = value;
         }
         return buffer;
     }
