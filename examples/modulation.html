@@ -132,7 +132,7 @@ __().
 __("sine,lfo").start();</div>
         <p><button class="play" data-id="editor9">START</button></p>
 
-        <div id="editor10" class="tiny editor">//set up a sine with a delay
+        <div id="editor10" class="small editor">//set up a sine with a delay
 __().sine(300).delay().dac(.25);
 
 //lfo modulating the delay time & feedback parameters of the delay
@@ -142,8 +142,19 @@ __().lfo({type:"sine",modulates:"delay",frequency:15,gain:.015}).connect("delay"
 __("sine,lfo").start();
         </div>
         <p><button class="play" data-id="editor10">START</button></p>
+
+        <div id="editor11" class="tiny editor">//create saw->panner->dac
+__().saw().panner().dac(0.25);
+//create an lfo and connect it to modulate the panner
+__().lfo({type:"square", modulates:"pan", frequency:1}).connect("panner").play();
+        </div>
+        <p><button class="play" data-id="editor11">START</button></p>
+
+
     </div>
 </div>
+
+
 <!-- Foundation JS-->
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>

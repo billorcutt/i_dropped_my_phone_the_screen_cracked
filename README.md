@@ -30,11 +30,11 @@ __("compressor").attr("ratio",12);
 //start the sine and the sawtooth
 __("sine,saw").start();
 ```
-Audio node chains can be encapsulated as units using macros.
+Audio node chains can be encapsulated as units using macros
 
 ```javascript
 //define a simple macro named "microsynth"
-__().begin("microsynth").sine().gain(0).dac().end("microsynth");
+__().begin("microsynth").sine().gain().end("microsynth").dac();
 
 //change the frequency of the sine
 __("microsynth").frequency(100);
@@ -48,10 +48,10 @@ nest them within other macros, etc.
 ```javascript
 //define a plugin called microsynth
 cracked.microsynth = function(params) {
-//pass any params to begin() so they can associated with the instance
-__().begin("microsynth",params).sine().gain(0).end("microsynth");
-//return cracked so we can chain methods
-return cracked;
+    //pass any params to begin() so they can associated with the instance
+    __().begin("microsynth",params).sine().gain(0).end("microsynth");
+    //return cracked so we can chain methods
+    return cracked;
 }
 
 //create two instances with different ids
@@ -66,9 +66,9 @@ __("#micro2").frequency(600);
 //set the gain in both and start them
 __("microsynth").volume(1).start();
 ```
-Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making development as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
+Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
 
-If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full code [documentation](http://www.tumblr.com) and a playground to [try it all out](http://www.tumblr.com). 
+If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full source [documentation](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/src/cracked.js.html) and a playground to [try it all out](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/). 
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
 

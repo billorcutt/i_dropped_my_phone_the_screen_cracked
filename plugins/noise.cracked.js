@@ -4,8 +4,8 @@
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {String} [userParams.type=white]
+ * @param {Object} [params] map of optional values
+ * @param {String} [params.type=white]
  */
 cracked.noise = function (params) {
     var userParams = params || {};
@@ -25,9 +25,9 @@ cracked.noise = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.channels=1]
- * @param {Number} [userParams.length=1]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
  */
 cracked.pink = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
@@ -101,9 +101,9 @@ cracked.pink = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.channels=1]
- * @param {Number} [userParams.length=1]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
  */
 cracked.white = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/
@@ -143,9 +143,9 @@ cracked.white = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
- * @param {Object} [userParams] map of optional values
- * @param {Number} [userParams.channels=1]
- * @param {Number} [userParams.length=1]
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
  */
 cracked.brown = function (params) {
 //http://noisehack.com/generate-noise-web-audio-api/

@@ -3,9 +3,15 @@
  *
  * [See more adsr examples](../../examples/envelopes.html)
  *
+ * Attack time is the time taken for initial run-up of level from nil to peak, beginning when the key is first pressed.
+ * Decay time is the time taken for the subsequent run down from the attack level to the designated sustain level.
+ * Sustain level is the level during the main sequence of the sound's duration, until the key is released.
+ * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
+ *
  * @plugin
+ * @param {Array} [userParams] 5 values: attack,decay,sustain,hold,release
  * @param {Array}  [userParams] 4 values: attack,decay,sustain,release
- * @param {Array} [userParams] 5 values: attack,decay,sustain,hold, release
+ * @param {Array} [userParams] 3 values: attack,decay,sustain (holds until released)
  * @param {String} [userParams] "slow" or "fast"
  * @param {Number} [userParams=0.5] length of the total envelope
  */
@@ -27,27 +33,22 @@ cracked.adsr = function (userParams) {
 
         },
         trigger: function (params) {
-            cracked.each(function (el, i, arr) {
-                //adsr nodes only
-                if (el.getType() === "adsr") {
-                    var p = makeEnv(params, el.getParams().settings.envelope);
-                    //options = attack,decay,sustain,hold,release
-                    el.ramp(
-                        [1, p[2], p[2], 0],
-                        [p[0], p[1], p[3], p[4]],
-                        "gain",
-                        null,
-                        0
-                    );
-                }
+            cracked.each("adsr", function (el, i, arr) {
+                var p = makeEnv(params, el.getParams().settings.envelope);
+                //options = attack,decay,sustain,hold,release
+                el.ramp(
+                    [1, p[2], p[2], 0],
+                    [p[0], p[1], p[3], p[4]],
+                    "gain",
+                    null,
+                    0
+                );
             });
         },
-        release: function () {
-            cracked.each(function (el, i, arr) {
-                if (el.getType() === "adsr") {
-                    //hard code 100 ms release for now
-                    el.ramp(0, 0.1, "gain");
-                }
+        release: function (time) {
+            time = __.ifUndef(time,0);
+            cracked.each("adsr", function (el, i, arr) {
+                    el.ramp(0, time, "gain");
             });
         }
     };
@@ -80,7 +81,11 @@ cracked.adsr = function (userParams) {
             } else if (options.length === 4) {
                 var sum = options[0] + options[1] + options[3];
                 p = [options[0], options[1], options[2], (sum / 3), options[3]];
+            } else if (options.length === 3) {
+                //a,d,s, hold for two hours, r = 0
+                p = [options[0], options[1], options[2], 7200, 0];
             }
+
         } else if (__.isNum(options)) {
             segment = options / 4;
             p = [segment, segment, 0.5, segment, segment];

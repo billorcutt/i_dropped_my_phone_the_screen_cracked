@@ -4,10 +4,18 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         concat: {
             options: {
-                separator: ';'
+                separator: '\n\n',
+                banner:'(function () {\n',
+                footer:'\n})();\n'
             },
             dist: {
-                src: ['src/**/*.js','plugins/**/*.js'],
+                src: [
+                    'src/intro.js','src/find.js','src/create.js',
+                    'src/control.js','src/nodes.js','src/sequence.js',
+                    'src/model.js','src/macro.js','src/midi.js','src/connect.js',
+                    'src/utilities.js','src/debug.js','src/outro.js',
+                    'src/type.js', 'plugins/**/*.js'
+                ],
                 dest: 'dist/cracked.js'
             }
         },
@@ -22,7 +30,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js', 'plugins/**/*.js'],
+            files: ['Gruntfile.js', 'dist/cracked.js'],
             options: {
                 // options here to override JSHint defaults
                 nonew:true,
@@ -55,6 +63,13 @@ module.exports = function(grunt) {
                 src: ['src/**/*.js','plugins/**/*.js'],
                 dest: 'docs'
             }
+        },
+        connect: {
+            server: {
+                options: {
+                    keepalive:true
+                }
+            }
         }
     });
 
@@ -62,7 +77,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-dox');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify','dox']);
+    grunt.registerTask('default', ['concat', 'jshint', 'uglify','dox']);
 
 };

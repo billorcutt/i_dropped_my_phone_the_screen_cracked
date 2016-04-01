@@ -136,6 +136,40 @@ cracked.distortion = function (userParam) {
 };
 
 /**
+ * q setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam q value to set
+ */
+cracked.q = function (userParam) {
+    if (__.isNum(userParam)) {
+        cracked.attr({
+            "q": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
+ * pan setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {Number} userParam pan value (1 to -1) to set
+ */
+cracked.pan = function (userParam) {
+    if (__.isNum(userParam)) {
+        cracked.attr({
+            "pan": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
  * Convenient way to say start everything
  *
  * [See more control examples](../../examples/control.html)
@@ -152,10 +186,15 @@ cracked.play = function () {
  * @plugin
  * @param {String} type scale type
  */
-cracked.scale = function (type) {
+cracked.scales = function (type) {
     return {
         "major": [0, 2, 4, 5, 7, 9, 11],
-        "minor": [0, 2, 3, 5, 7, 8, 10]
+        "minor": [0, 2, 3, 5, 7, 8, 10],
+        "wholetone": [0, 2, 4, 6, 8, 10],
+        "overtone": [0, 2, 4, 6, 7, 9, 10],
+        "lydian": [0, 2, 4, 6, 7, 9, 11],
+        "mixolydian": [0, 2, 4, 5, 7, 9, 10],
+        "ionian": [0, 2, 4, 5, 7, 9, 11]
     }[type];
 };
 
@@ -206,10 +245,90 @@ cracked.random = function (min, max) {
 };
 
 /**
+ * Scale an input number between min & max to an output number between a min & max. Supports logarithmic or linear scaling.
+ * @plugin
+ * @param {Number} position
+ * @param {Number} inMin
+ * @param {Number} inMax
+ * @param {Number} outMin
+ * @param {Number} outMax
+ * @param {String} type
+ */
+cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
+    if(type === "log" || type === "logarithmic") {
+        var minVal = Math.log(outMin || 1);
+        var maxVal = Math.log(outMax || 1);
+        // calculate adjustment factor
+        var scale = (maxVal-minVal) / (inMax-inMin);
+        return Math.exp(minVal + scale*(position-inMin));
+    } else if(type === "linear"|| typeof type === "undefined") {
+        var result = parseFloat((((position - inMin) * (outMax - outMin)) / (inMax - inMin))  + outMin);
+        return result.toFixed(2);
+    } else {
+        console.error("scale: type "+type+" not supported.");
+        return position;
+    }
+};
+
+/**
+ * Converts a second value to millisecond value
+ * @plugin
+ * @param {Number} second
+ */
+cracked.sec2ms = function(second) {
+    if(__.isNum(second)) {
+        return second * 1000;
+    } else {
+        console.error("sec2ms: param not number");
+        return second;
+    }
+};
+
+/**
  * Returns a boolean true if the browser supports
  * web audio
  * @plugin
  */
 cracked.isSupported = function() {
     return ("AudioContext" in window || "webkitAudioContext" in window);
+};
+
+/**
+ * execute a callback at random intervals
+ * @public
+ * @param {Function} callback to be invoked at every interval
+ * @param {Number} minTime. minimum value for the random interval
+ * @param {Number} maxTime. maximum value for the random interval
+ */
+cracked.random_interval = function(callback, minTime, maxTime) {
+
+    function set_timeout(callback, minTime, maxTime,ran) {
+        var nextRan = cracked.random(minTime, maxTime);
+        setTimeout(function(){
+            callback(nextRan);
+            set_timeout(callback, minTime, maxTime,nextRan);
+        },ran);
+    }
+
+    if(typeof callback === "function" && __.isNum(minTime) && __.isNum(maxTime)) {
+        set_timeout(callback, minTime, maxTime,cracked.random(minTime, maxTime));
+    }
+
+};
+
+/**
+ * fill an random with some values
+ * @public
+ * @param {Number} size of the array to be filled
+ * @param {Function} fn to provide the value, if absent then array is filled with 0's.
+ */
+cracked.fill_array = function(size,fn) {
+    var tmp = [];
+    if(__.isNum(size)) {
+        var fun = __.isFun(fn) ? fn : function(){return 0;};
+        for(var i=0;i<size;i++) {
+            tmp.push(fun.apply(this,[]));
+        }
+    }
+    return tmp;
 };
