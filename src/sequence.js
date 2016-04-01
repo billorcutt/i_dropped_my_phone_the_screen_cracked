@@ -32,7 +32,6 @@ var _isLoopRunning = false,
  * \_\_.loop("stop");
  * //reset the loop params
  * \_\_.loop("reset");
- *
  * </code>
  *
  * [See sequencing examples](../../examples/sequencing.html)
