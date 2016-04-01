@@ -2090,7 +2090,8 @@ cracked.midi_init = function(callback) {
  * //when midi is ready...
  * \_\_.midi_init(function(){
  *
- *      \_\_.midi_receive(function(midiEvent){
+ *      __.midi_receive(function(midiEvent){
+ *
  *      //handle incoming raw midi events here...
  *
  *  });
