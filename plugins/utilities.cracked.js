@@ -294,31 +294,6 @@ cracked.isSupported = function() {
 };
 
 /**
- * run a map method against an array of data, calling the function at some interval
- * @public
- * @param {Function} callback to be invoked at every interval
- * @param {Number} interval. period to execute callback
- * @param {Array} data should the same length as the number of steps
- */
-cracked.one_shot = function(callback,interval,data) {
-    if(typeof callback === "function" && typeof interval === "number") {
-        (function(){
-            var index = 0;
-            var id = setInterval((function(fn,d,i){
-                return function()  {
-                    if(typeof d[i] !== "undefined") {
-                        fn(d[i]);
-                        i++;
-                    } else {
-                        clearInterval(id);
-                    }
-                };
-            })(callback,data,index,id),interval);
-        })();
-    }
-};
-
-/**
  * execute a callback at random intervals
  * @public
  * @param {Function} callback to be invoked at every interval
