@@ -2088,9 +2088,11 @@ cracked.midi_init = function(callback) {
  * Midi input. Bind handler for the onMIDIMessage event.
  * <code>
  * //when midi is ready...
- * \_\_.midi_init(function(){ *
-    *  _\_.midi_receive(function(midiEvent){
-    *      //handle incoming raw midi events here...
+ * \_\_.midi_init(function(){
+ *
+ *      \_\_.midi_receive(function(midiEvent){
+ *      //handle incoming raw midi events here...
+ *
  *  });
  * });
  * </code>
