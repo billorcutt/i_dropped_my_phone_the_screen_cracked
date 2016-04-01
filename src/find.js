@@ -151,13 +151,12 @@ function resetSelection() {
 
 /**
  * resets everything to its initial state
- *
+ * <code>
+ *  //reset state for the entire app
+ *  cracked.reset();</code>
  * @public
  * @function
  * @returns {cracked}
- * <code>
- * //reset state for the entire app
- * cracked.reset();</code>
  */
 cracked.reset = function() {
     __("*").remove();

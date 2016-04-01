@@ -163,13 +163,12 @@ function resetSelection() {
 
 /**
  * resets everything to its initial state
- *
+ * <code>
+ *  //reset state for the entire app
+ *  cracked.reset();</code>
  * @public
  * @function
  * @returns {cracked}
- * <code>
- * //reset state for the entire app
- * cracked.reset();</code>
  */
 cracked.reset = function() {
     __("*").remove();
@@ -2042,13 +2041,13 @@ var _midi_access = null,
 
 /**
  * Is midi supported?
- * @public
- * @returns {boolean}
  * <code>
  * if(__.midi_supported()) {
  *      //do midi stuffs here
  *      //cuz it's supported
  * }</code>
+ * @public
+ * @returns {boolean}
  */
 cracked.midi_supported = function(){
     return typeof navigator.requestMIDIAccess === "function";
@@ -2056,14 +2055,14 @@ cracked.midi_supported = function(){
 
 /**
  * Initialize midi. Callback is invoked when ready.
- * @param {Function} callback
- * @public
  * <code>
  * //when midi is ready...
  * __.midi_init(function(){
  *  //...call this function
  * });
  * </code>
+ * @param {Function} callback
+ * @public
  */
 cracked.midi_init = function(callback) {
     if(_midi_access) {
@@ -2087,8 +2086,6 @@ cracked.midi_init = function(callback) {
 
 /**
  * Midi input. Bind handler for the onMIDIMessage event.
- * @param {Function} callback
- * @public
  * <code>
  * //when midi is ready...
  * __.midi_init(function(){
@@ -2097,6 +2094,8 @@ cracked.midi_init = function(callback) {
  *  });
  * });
  * </code>
+ * @param {Function} callback
+ * @public
  */
 cracked.midi_receive = function(callback){
     if(_midi_access) {
@@ -2148,8 +2147,6 @@ cracked.midi_receive = function(callback){
 
 /**
  * Midi input. Shorthand binding for note ons
- * @param {Function} callback
- * @public
  * <code>
  * //when midi is ready...
  * __.midi_init(function(){
@@ -2160,6 +2157,8 @@ cracked.midi_receive = function(callback){
  *  });
  * });
  * </code>
+ * @param {Function} callback
+ * @public
  */
 cracked.midi_noteon = function(callback) {
     if(__.isFun(callback)) {
@@ -2170,8 +2169,6 @@ cracked.midi_noteon = function(callback) {
 
 /**
  * Midi input. Shorthand binding for note offs
- * @param {Function} callback
- * @public
  * <code>
  * //when midi is ready...
  * __.midi_init(function(){
@@ -2182,6 +2179,8 @@ cracked.midi_noteon = function(callback) {
  *  });
  * });
  * </code>
+ * @param {Function} callback
+ * @public
  */
 cracked.midi_noteoff = function(callback) {
     if(__.isFun(callback)) {
@@ -2192,8 +2191,6 @@ cracked.midi_noteoff = function(callback) {
 
 /**
  * Midi input. Shorthand binding for midi control messages
- * @param {Function} callback
- * @public
  * <code>
  * //when midi is ready...
  * __.midi_init(function(){
@@ -2204,6 +2201,8 @@ cracked.midi_noteoff = function(callback) {
  *  });
  * });
  * </code>
+ * @param {Function} callback
+ * @public
  */
 cracked.midi_control = function(callback) {
     if(__.isFun(callback)) {
