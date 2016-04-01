@@ -2089,12 +2089,9 @@ cracked.midi_init = function(callback) {
  * <code>
  * //when midi is ready...
  * \_\_.midi_init(function(){
- *
  *      __.midi_receive(function(midiEvent){
- *
- *      //handle incoming raw midi events here...
- *
- *  });
+ *          //handle incoming raw midi events here...
+ *      });
  * });
  * </code>
  * @param {Function} callback
@@ -2154,10 +2151,10 @@ cracked.midi_receive = function(callback){
  * //when midi is ready...
  * \_\_.midi_init(function(){
  * //get midi noteon events
- *  _\_.midi_noteon(function(noteData){
- *      //note data = [status,pitch,velocity]
- *      //handle midi note ons...
- *  });
+ *      __.midi_noteon(function(noteData){
+ *          //note data = [status,pitch,velocity]
+ *          //handle midi note ons...
+ *      });
  * });
  * </code>
  * @param {Function} callback
@@ -2175,11 +2172,11 @@ cracked.midi_noteon = function(callback) {
  * <code>
  * //when midi is ready...
  * \_\_.midi_init(function(){
- * //get midi noteoff events
- *  _\_.midi_noteoff(function(noteData){
- *      //note data = [status,pitch,velocity]
- *      //handle midi note offs...
- *  });
+ *      //get midi noteoff events
+ *      __.midi_noteoff(function(noteData){
+ *          //note data = [status,pitch,velocity]
+ *          //handle midi note offs...
+ *      });
  * });
  * </code>
  * @param {Function} callback
@@ -2194,16 +2191,18 @@ cracked.midi_noteoff = function(callback) {
 
 /**
  * Midi input. Shorthand binding for midi control messages
+ * <pre>
  * <code>
  * //when midi is ready...
  * \_\_.midi_init(function(){
  * //get midi control events
- *  _\_.midi_control(function(noteData){
- *      //note data = [status,pitch,velocity]
- *      //handle midi control events...
- *  });
+ *      __.midi_control(function(noteData){
+ *          //note data = [status,pitch,velocity]
+ *          //handle midi control events...
+ *      });
  * });
  * </code>
+ * </pre>
  * @param {Function} callback
  * @public
  */
