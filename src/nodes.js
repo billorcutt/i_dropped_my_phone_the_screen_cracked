@@ -280,11 +280,11 @@ cracked.origin = function (userParams) {
     return cracked;
 };
 
-/**
- * helper function for origin method
- * @function
- * @private
- */
+///**
+// * helper function for origin method
+// * @function
+// * @private
+// */
 function createMockMediaStream(creationParams) {
     //create buffer-less buffer source object as our mock mediastream
     creationParams.method = "createBufferSource";
@@ -297,11 +297,11 @@ function createMockMediaStream(creationParams) {
     return tmpnode;
 }
 
-/**
- * helper function for origin method
- * @function
- * @private
- */
+///**
+// * helper function for origin method
+// * @function
+// * @private
+// */
 function createMediaStreamSourceNode(params,temporaryNode) {
     //make the real mediastream and drop it into place.
     var newNode = null;
@@ -362,11 +362,11 @@ cracked.buffer = function (userParams) {
     return cracked;
 };
 
-/**
- * helper function for buffer & reverb
- * @function
- * @private
- */
+///**
+// * helper function for buffer & reverb
+// * @function
+// * @private
+// */
 function loadBuffer(userParams, node) {
     if (userParams && userParams.path && node) {
         loadBufferFromFile(userParams.path, node.getNativeNode());
@@ -375,22 +375,22 @@ function loadBuffer(userParams, node) {
     }
 }
 
-/**
- * helper function for buffer & reverb
- * @function
- * @private
- */
+///**
+// * helper function for buffer & reverb
+// * @function
+// * @private
+// */
 function loadBufferWithData(dataFunction, buffersrc) {
     if (dataFunction && buffersrc) {
         buffersrc.buffer = dataFunction(_context);
     }
 }
 
-/**
- * helper function for buffer & reverb
- * @function
- * @private
- */
+///**
+// * helper function for buffer & reverb
+// * @function
+// * @private
+// */
 function loadBufferFromFile(path_to_soundfile, buffersrc) {
     if (path_to_soundfile && buffersrc) {
         fetchSoundFile(path_to_soundfile, function (sndArray) {
@@ -404,11 +404,11 @@ function loadBufferFromFile(path_to_soundfile, buffersrc) {
     }
 }
 
-/**
- * asynchronously fetches a file for the buffer and returns an arraybuffer
- * @function
- * @private
- */
+///**
+// * asynchronously fetches a file for the buffer and returns an arraybuffer
+// * @function
+// * @private
+// */
 function fetchSoundFile(path, callback) {
     if (path && callback) {
         var request = new XMLHttpRequest();

@@ -21,12 +21,12 @@ cracked.log = function () {
     console.log(arr);
 };
 
-/**
- * helper for above
- * @private
- * @param node
- * @param arr
- */
+///**
+// * helper for above
+// * @private
+// * @param node
+// * @param arr
+// */
 function logNodes(node, arr) {
     if (_currentSelector) {
         var nodes = arr || [];
@@ -73,11 +73,11 @@ cracked.size = function () {
     }
 })();
 
-/**
- * print a ton of shit to the console
- * @private
- * @param msg
- */
+///**
+// * print a ton of shit to the console
+// * @private
+// * @param msg
+// */
 function logToConsole(msg) {
     if (_debugEnabled) {
         console.log(msg);
@@ -104,12 +104,12 @@ cracked._getNode = function (uuid) {
     return (getNodeWithUUID(uuid));
 };
 
-/**
- * log connections
- * @param nodeToConnect
- * @param node
- * @private
- */
+///**
+// * log connections
+// * @param nodeToConnect
+// * @param node
+// * @private
+// */
 function logConnections(nodeToConnect, node) {
 
     var vals = [

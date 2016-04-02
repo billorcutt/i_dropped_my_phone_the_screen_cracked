@@ -5,14 +5,14 @@
  *
  */
 
-/**
- * node factory -  create, configure and connect new nodes. returns an instance of audio node wrapper class
- * @private
- * @param {String} type
- * @param {Object} creationParams hash of params supplied by the invoking factory method
- * @param {Object} userSettings user supplied params
- * @returns {AudioNode}
- */
+///**
+// * node factory -  create, configure and connect new nodes. returns an instance of audio node wrapper class
+// * @private
+// * @param {String} type
+// * @param {Object} creationParams hash of params supplied by the invoking factory method
+// * @param {Object} userSettings user supplied params
+// * @returns {AudioNode}
+// */
 function createNode(type, creationParams, userSettings) {
     var node = new AudioNode(type, creationParams, userSettings || {});
     saveNode(node);
@@ -41,12 +41,12 @@ function createNode(type, creationParams, userSettings) {
     return node;
 }
 
-/**
- * Native audio nodes are made here.
- * @param {Object} creationParams
- * @private
- * @returns {*}
- */
+///**
+// * Native audio nodes are made here.
+// * @param {Object} creationParams
+// * @private
+// * @returns {*}
+// */
 function audioNodeFactory(creationParams) {
     var node;
     if (_context && creationParams.method && _context[creationParams.method]) {
@@ -68,15 +68,15 @@ function audioNodeFactory(creationParams) {
     return node;
 }
 
-/**
- * wrapper class for audio nodes
- * @private
- * @param {String} type audio node type
- * @param {Object} creationParams app supplied params
- * @param {Object} userSettings user supplied params
- * @type {AudioNode}
- * @constructor
- */
+///**
+// * wrapper class for audio nodes
+// * @private
+// * @param {String} type audio node type
+// * @param {Object} creationParams app supplied params
+// * @param {Object} userSettings user supplied params
+// * @type {AudioNode}
+// * @constructor
+// */
 function AudioNode(type, creationParams, userSettings) {
 
     var uuid,
