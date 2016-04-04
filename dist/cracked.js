@@ -416,7 +416,15 @@ function AudioNode(type, creationParams, userSettings) {
                 var wrapper = getNodeWithUUID(currNode.uuid);
                 if (!wrapper.getIsPlaying()) {
                     var offset = (currNode && currNode.loopStart && __.isNum(currNode.loopStart)) ? currNode.loopStart : 0;
-                    currNode.start(0,offset);
+                    var duration = (currNode && currNode.loopEnd && __.isNum(currNode.loopEnd)) ? currNode.loopEnd - offset : 0;
+                    var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+                    /*if(offset && duration) {
+                        currNode.start(time,offset,duration);
+                    } else*/ if(offset) {
+                        currNode.start(time,offset);
+                    } else {
+                        currNode.start(time);
+                    }
                     wrapper.setIsPlaying(true);
                     this.setIsPlaying(true);
                 }
@@ -436,7 +444,8 @@ function AudioNode(type, creationParams, userSettings) {
             if (currNode && __.isFun(currNode.stop)) {
                 var wrapper = getNodeWithUUID(currNode.uuid);
                 if (wrapper.getIsPlaying()) {
-                    currNode.stop(0);
+                    var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+                    currNode.stop(time);
                     this.resetNode(currNode);
                     wrapper.setIsPlaying(false);
                     this.setIsPlaying(false);
@@ -455,7 +464,7 @@ function AudioNode(type, creationParams, userSettings) {
                 that.ramp(target, time, paramToRamp, _node, initial);
             });
         } else {
-            var now = _isLoopRunning ? _loopTimeToNextStep : _context.currentTime;
+            var now = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
             if (
                 currNode &&
                 currNode[paramToRamp] &&
