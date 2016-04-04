@@ -2,11 +2,11 @@
  * #Sequencing#
  */
 
-/**
- * global vars for loop
- * @type {boolean}
- * @private
- */
+///**
+// * global vars for loop
+// * @type {boolean}
+// * @private
+// */
 
 var _isLoopRunning = false,
     _ignoreGrid = true,
@@ -71,20 +71,20 @@ cracked.loop = function () {
     return cracked;
 };
 
-/**
- * Toggles the state of the _ignoreGrid variable
- * @private
- */
+///**
+// * Toggles the state of the _ignoreGrid variable
+// * @private
+// */
 function toggleGrid() {
     if (_isLoopRunning) {
         _ignoreGrid = !_ignoreGrid;
     }
 }
 
-/**
- * Starts the loop
- * @private
- */
+///**
+// * Starts the loop
+// * @private
+// */
 function startLoop() {
     if (!_isLoopRunning) {
         _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
@@ -94,10 +94,10 @@ function startLoop() {
     }
 }
 
-/**
- * Stops the loop
- * @private
- */
+///**
+// * Stops the loop
+// * @private
+// */
 function stopLoop() {
     if (_isLoopRunning) {
         clearInterval(_loopID);
@@ -107,10 +107,10 @@ function stopLoop() {
     }
 }
 
-/**
- * Resets the loop to defaults
- * @private
- */
+///**
+// * Resets the loop to defaults
+// * @private
+// */
 function resetLoop() {
     _loopStepSize = undefined;
     _loopInterval = 100;
@@ -124,13 +124,13 @@ function resetLoop() {
     _loopTimeToNextStep = 0;
 }
 
-/**
- * configure the loop options
- * @param {Object} opts configuration object
- * @param {Function} fn global callback
- * @param {Array} data array of data to be passed to the global callback
- * @private
- */
+///**
+// * configure the loop options
+// * @param {Object} opts configuration object
+// * @param {Function} fn global callback
+// * @param {Array} data array of data to be passed to the global callback
+// * @private
+// */
 function configureLoop(opts, fn, data) {
     if (opts && typeof opts === 'object') {
         _loopStepSize = opts.steps;
@@ -149,10 +149,10 @@ function configureLoop(opts, fn, data) {
     }
 }
 
-/**
- * called by setInterval - sets the time to next step
- * @private
- */
+///**
+// * called by setInterval - sets the time to next step
+// * @private
+// */
 function checkup() {
     var now = _context.currentTime,
         timeAtPreviousStep = _loopTimeToNextStep - _loopInterval / 1000;
@@ -162,10 +162,10 @@ function checkup() {
     }
 }
 
-/**
- * call on every step
- * @private
- */
+///**
+// * call on every step
+// * @private
+// */
 function loopStep() {
 
     //globals- tbd deprecate. step size should just be based on available data

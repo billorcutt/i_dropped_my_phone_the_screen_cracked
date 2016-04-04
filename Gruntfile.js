@@ -60,7 +60,9 @@ module.exports = function(grunt) {
                 title: "Cracked Documentation"
             },
             files: {
-                src: ['src/**/*.js','plugins/**/*.js'],
+                src: ['src/find.js','src/control.js','src/nodes.js','src/sequence.js',
+                    'src/macro.js','src/midi.js','src/connect.js','src/debug.js',
+                    'src/type.js', 'plugins/**/*.js'],
                 dest: 'docs'
             }
         },

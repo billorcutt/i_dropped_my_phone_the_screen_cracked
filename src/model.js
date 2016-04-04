@@ -2,43 +2,43 @@
  * #Model#
  */
 
-/**
- * Resets Model
- * @param node
- * @private
- */
+///**
+// * Resets Model
+// * @param node
+// * @private
+// */
 function resetModel() {
     _nodeStore = {};
     _nodeLookup = {};
 }
 
-/**
- * Squirrel away nodes for winter
- * @param node
- * @private
- */
+///**
+// * Squirrel away nodes for winter
+// * @param node
+// * @private
+// */
 function saveNode(node) {
     updateMacro(node);
     setNode(node);
     setNodeLookup(node);
 }
 
-/**
- * add node to the master list
- * @param node
- * @private
- */
+///**
+// * add node to the master list
+// * @param node
+// * @private
+// */
 function setNode(node) {
     _nodeStore[node.getUUID()] = node;
 }
 
-/**
- * save node for lookup table setting references using node type,
- * class & id. tbd - fix bug - when saving node must walk up the
- * macro array to get the complete namespace #11
- * @param node
- * @private
- */
+///**
+// * save node for lookup table setting references using node type,
+// * class & id. tbd - fix bug - when saving node must walk up the
+// * macro array to get the complete namespace #11
+// * @param node
+// * @private
+// */
 function setNodeLookup(node) {
     var params = node.getParams().settings;
     var prefix = getCurrentMacroNamespace();
@@ -64,12 +64,12 @@ function setNodeLookup(node) {
     node.selector_array = selector_array;
 }
 
-/**
- * remove nodes from the model
- * @param nodes to remove. optional. if not
- * supplied currently selected nodes are used.
- * @private
- */
+///**
+// * remove nodes from the model
+// * @param nodes to remove. optional. if not
+// * supplied currently selected nodes are used.
+// * @private
+// */
 function removeModelReferences(nodes) {
     var nodesToRemove = nodes || _selectedNodes;
     nodesToRemove.forEach(removeReferences);
@@ -94,11 +94,11 @@ function removeModelReferences(nodes) {
     }
 }
 
-/**
- * remove references to selected nodes tbd - need to do this for
- * * real works ok right now for top level macros
- * @private
- */
+///**
+// * remove references to selected nodes tbd - need to do this for
+// * * real works ok right now for top level macros
+// * @private
+// */
 cracked.removeMacros = function () {
     var arr = _currentSelector.split(",");
     //iterate over selectors
@@ -125,14 +125,14 @@ cracked.removeMacros = function () {
     }
 };
 
-/**
- * get node with a uuid returns a AudioNode instance
- * says uuid but actually works with a variety of input
- * tbd - refactor this to getNode() or something
- * @param {*} uuid
- * @private
- * @returns {*}
- */
+///**
+// * get node with a uuid returns a AudioNode instance
+// * says uuid but actually works with a variety of input
+// * tbd - refactor this to getNode() or something
+// * @private
+// * @param {*} uuid
+// * @returns {*}
+// */
 function getNodeWithUUID(uuid) {
     if (uuid && _nodeStore[uuid]) {
         return _nodeStore[uuid];
@@ -150,13 +150,13 @@ function getNodeWithUUID(uuid) {
     }
 }
 
-/**
- * get node reference, supports comma delimited selectors node
- * type, id or class returns array of node ids
- * @param {String} selector
- * @private
- * @returns {Array}
- */
+///**
+// * get node reference, supports comma delimited selectors node
+// * type, id or class returns array of node ids
+// * @param {String} selector
+// * @returns {Array}
+// * @private
+// */
 function getNodesWithSelector(selector) {
     var selector_array = selector.split(","),
         nodes = [];
@@ -176,32 +176,32 @@ function getNodesWithSelector(selector) {
     return nodes;
 }
 
-/**
- * Get previous node
- * @private
- * @returns {*}
- */
+///**
+// * Get previous node
+// * @private
+// * @returns {*}
+// */
 function getPreviousNode() {
     return _previousNode;
 }
 
-/**
- * Sets previous node
- * @private
- * @param {Object} node
- */
+///**
+// * Sets previous node
+// * @private
+// * @param {Object} node
+// */
 function setPreviousNode(node) {
     if (node) {
         _previousNode = node;
     }
 }
 
-/**
- * Returns selector type: class, id or type
- * @private
- * @param {String} str
- * @returns {string}
- */
+///**
+// * Returns selector type: class, id or type
+// * @private
+// * @param {String} str
+// * @returns {string}
+// */
 function getSelectorType(str) {
     return str.match(/^\./) ? "class" : str.match(/^\#/) ? "id" : "type";
 }

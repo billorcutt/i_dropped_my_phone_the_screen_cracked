@@ -1,6 +1,6 @@
 /**
  * #Finding#
- * Methods for finding/selecting and working with audio nodes
+ * Methods for selecting & working with audio nodes
  */
 
 /**
@@ -8,7 +8,7 @@
  * nodes matching the selector provided. Type, Class & Id selectors are
  * supported.
  * <code>
- * //A type selector using the node name, sets the frequency for all sines
+ * //type selector using the node name, sets the frequency for all sines
  * __("sine").frequency(200);
  *
  * //set the frequency for the node with id "foo"
@@ -83,11 +83,11 @@ function find() {
     return cracked;
 }
 
-/**
- * find nodes in a macro with a selector updates the _selectedNodes array
- * @function
- * @private
- */
+///**
+// * find nodes in a macro with a selector updates the _selectedNodes array
+// * @function
+// * @private
+// */
 function findInMacro() {
     if (arguments && arguments.length) {
         if(__.isStr(arguments[0])) {
@@ -128,22 +128,22 @@ function processSelectorForMacro(selector) {
     return selectorArr.join(",");
 }
 
-/**
- * reset state
- * @function
- * @private
- */
+///**
+// * reset state
+// * @function
+// * @private
+// */
 function reset() {
     _previousNode = null;
     _selectedNodes = [];
     _currentSelector = "";
 }
 
-/**
- * reset selection
- * @function
- * @private
- */
+///**
+// * reset selection
+// * @function
+// * @private
+// */
 function resetSelection() {
     _selectedNodes = [];
     _currentSelector = "";
@@ -170,15 +170,15 @@ cracked.reset = function() {
 /**
  * executes a method with a specific set of selected nodes
  * without modifying the internal selectedNodes array
- * <code>
- * //filter out everything but the sines and
- * //execute the frequency method against those nodes.
+ * <pre><pre><code style="color:#7f0a0c">
+ * //filter everything but the sines from currently selected nodes and
+ * //execute the frequency method against the remaining sines.
  * //the internal _selectedNodes array remains unchanged
  * cracked.exec(
  *    "frequency",
  *    200,
  *    cracked.filter("sine")
- * );</code>
+ * );</code></pre>
  *
  * @public
  * @function
@@ -198,11 +198,11 @@ cracked.exec = function (method, args, nodes) {
 /**
  * iterate over the selectedNodes array, executing
  * the supplied function for each element
- * <code>
- * \_\_.each(type, function(node,index,array){
+ * <pre><code style="color:#7f0a0c">
+ * __.each(type, function(node,index,array){
      *      //Loops over any selected nodes. Parameters are the
      *      //current node, current index, and the selectedNode array
-     * });</code>
+     * });</code></pre>
  *
  *
  * @public
@@ -226,9 +226,9 @@ cracked.each = function (type, fn) {
 /**
  * Filter selected nodes with an additional selector
  * returns node array that can used with exec()
- * <code>
+ * <pre><code style="color:#7f0a0c">
  * //select any sine & sawtooth oscillators
- * \_\_("sine,saw");
+ * __("sine,saw");
  *
  * //filter out everything but the sines and
  * //execute the frequency method against those nodes.
@@ -237,7 +237,7 @@ cracked.each = function (type, fn) {
  *    "frequency",
  *    200,
  *    cracked.filter("sine")
- * );</code>
+ * );</code></pre>
  *
  * @public
  * @function
@@ -267,7 +267,7 @@ cracked.filter = function () {
 /**
  * Find nodes with a selector
  * returns node array that can used with exec()
- * <code>
+ * <pre><code style="color:#7f0a0c">
  *
  * //find all the sines in the patch and
  * //execute the frequency method against those nodes.
@@ -276,7 +276,7 @@ cracked.filter = function () {
  *    "frequency",
  *    200,
  *    cracked.find("sine")
- * );</code>
+ * );</code></pre>
  *
  * @public
  * @function

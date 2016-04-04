@@ -118,14 +118,14 @@ cracked.attr = function (userParams) {
     return cracked;
 };
 
-/**
- * parses the dot separated keys in the param string and sets the value on the node. helper for the above
- * @private
- * @param {Object} node native node we are setting on
- * @param {String} keyStr unresolved parameter name
- * @param {*} value value to set
- * @param {Object} map name/param mapping
- */
+///**
+// * parses the dot separated keys in the param string and sets the value on the node. helper for the above
+// * @private
+// * @param {Object} node native node we are setting on
+// * @param {String} keyStr unresolved parameter name
+// * @param {*} value value to set
+// * @param {Object} map name/param mapping
+// */
 function applyParam(node, keyStr, value, map) {
     var mappingResult = resolveParamMapping(keyStr, map),
         keyArr = mappingResult.path.split("."),
@@ -145,12 +145,12 @@ function applyParam(node, keyStr, value, map) {
     }
 }
 
-/**
- * helper for above - set value at time
- * @private
- * @param node
- * @param value
- */
+///**
+// * helper for above - set value at time
+// * @private
+// * @param node
+// * @param value
+// */
 function setAudioParam(node, value) {
     if (node && __.isFun(node.setValueAtTime)) {
         var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
@@ -159,14 +159,14 @@ function setAudioParam(node, value) {
     }
 }
 
-/**
- * parameter name mapping resolver takes a native node &
- * the name to be resolved helper for above
- * @private
- * @param name param name
- * @param map mapping hash
- * @returns {*}
- */
+///**
+// * parameter name mapping resolver takes a native node &
+// * the name to be resolved helper for above
+// * @private
+// * @param name param name
+// * @param map mapping hash
+// * @returns {*}
+// */
 function resolveParamMapping(name, map) {
     var mapping = map || {},
         result = mapping[name] || name;

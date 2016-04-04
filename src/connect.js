@@ -37,11 +37,11 @@ cracked.connect = function () {
     return cracked;
 };
 
-/**
- * helper for connect method above
- * @function
- * @private
- */
+///**
+// * helper for connect method above
+// * @function
+// * @private
+// */
 function connectPreviousToSelected() {
     var pNode = getPreviousNode();
     _selectedNodes.forEach(function (node, i, array) {
