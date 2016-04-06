@@ -4226,6 +4226,23 @@ cracked.detune = function (userParam) {
 };
 
 /**
+ * Type setter convenience method
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @plugin
+ * @param {String} userParam oscillator type to set
+ */
+cracked.type = function (userParam) {
+    if (__.isStr(userParam)) {
+        cracked.attr({
+            "type": userParam
+        });
+    }
+    return cracked;
+};
+
+/**
  * Gain setter convenience method
  *
  * [See more control examples](../../examples/control.html)
@@ -4487,7 +4504,7 @@ cracked.isSupported = function() {
 };
 
 /**
- * execute a callback at random intervals
+ * execute a callback at random intervals within a range
  * @public
  * @param {Function} callback to be invoked at every interval
  * @param {Number} minTime. minimum value for the random interval
@@ -4510,7 +4527,7 @@ cracked.random_interval = function(callback, minTime, maxTime) {
 };
 
 /**
- * fill an random with some values
+ * fill an array with some values
  * @public
  * @param {Number} size of the array to be filled
  * @param {Function} fn to provide the value, if absent then array is filled with 0's.
@@ -4525,4 +4542,34 @@ cracked.fill_array = function(size,fn) {
     }
     return tmp;
 };
+
+/**
+ * fill an random with some values
+ * @public
+ * @param {Number} length in sec
+ */
+cracked.random_envelope = function(length) {
+
+    var result = [];
+
+    if(__.isNum(length)) {
+
+        var tmp = __.fill_array(4,function(){
+            return __.random(0,100);
+        });
+
+        var sum = tmp.reduce(function(a, b) {
+            return a + b;
+        });
+
+        var factor = (length/sum);
+
+        result = tmp.map(function(element,index){
+            return element*factor;
+        });
+    }
+
+    return result;
+};
+
 })();
