@@ -3398,6 +3398,32 @@ cracked.allpass = function (params) {
 };
 
 /**
+ * Clip - clip input 1 to -1
+ *
+ * @plugin
+ * @param {Object} [params] map of optional values
+ */
+cracked.clip = function (params) {
+
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.mapping = userParams.mapping || {};
+
+    var curve = new Float32Array(2);
+
+    // Set some default clipping - just makes everything under -1 be -1, and everything over 1 be 1.
+    curve[0] = -1;
+    curve[1] = 1;
+
+    __.begin("clip", userParams).
+        waveshaper({
+            curve: curve
+        }).end("clip");
+
+    return cracked;
+};
+
+/**
  * System out - destination with a master volume
  * @plugin
  * @param {Number} [params=1] system out gain
@@ -3407,7 +3433,7 @@ cracked.dac = function (params) {
     var userParams = __.isObj(params) ? params : {};
     var options = {};
     options.mapping = userParams.mapping || {};
-    __.begin("dac", userParams).gain(gain).destination().end("dac");
+    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
     return cracked;
 };
 
@@ -3490,6 +3516,7 @@ cracked.sampler = function (userParams) {
     }
     return cracked;
 };
+
 
 /**
  * Low Frequency Oscillator
@@ -4544,7 +4571,7 @@ cracked.fill_array = function(size,fn) {
 };
 
 /**
- * fill an random with some values
+ * create a adsr envelope with random values scaled to a length
  * @public
  * @param {Number} length in sec
  */
