@@ -819,11 +819,21 @@ function AudioNode(type, creationParams, userSettings) {
             if (__.isArr(rawNode)) {
                 //in a macro connections are made with the first and last node in the macro.
                 //tbd - support a way to designate connection nodes
-                rawNode = (whichNode === "from") ? rawNode[rawNode.length - 1] : rawNode[0];
+                rawNode = (whichNode === "from") ? getRawNode(rawNode,(rawNode.length - 1)) : getRawNode(rawNode,0);
             }
             return rawNode;
         } else {
             return null;
+        }
+    }
+
+    //recursive method extract the raw node
+    function getRawNode(node,position) {
+        if(__.isArr(node)) {
+            var pos = !position ? 0 : node.length-1;
+            return getRawNode(node[position],pos);
+        } else {
+            return node;
         }
     }
 
@@ -3398,14 +3408,12 @@ cracked.allpass = function (params) {
 };
 
 /**
- * System out - destination with a master volume
+ * Clips audio level at 1/-1
  * @plugin
- * @param {Number} [params=1] system out gain
  */
-cracked.dac = function (params) {
-    var gain = __.isNum(params) ? params : 1;
+cracked.clip = function (params) {
+
     var userParams = __.isObj(params) ? params : {};
-    var options = {};
     userParams.mapping = userParams.mapping || {};
 
     var curve = new Float32Array(2);
@@ -3414,7 +3422,21 @@ cracked.dac = function (params) {
     curve[0] = -1;
     curve[1] = 1;
 
-    __.begin("dac", userParams).waveshaper({curve: curve}).gain(gain).destination().end("dac");
+    __.begin("clip", userParams).waveshaper({curve: curve}).end("clip");
+    return cracked;
+};
+
+/**
+ * System out - destination with a master volume.
+ * @plugin
+ * @param {Number} [params=1] system out gain
+ */
+cracked.dac = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    userParams.mapping = userParams.mapping || {};
+
+    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
     return cracked;
 };
 
@@ -3426,8 +3448,7 @@ cracked.dac = function (params) {
 cracked.adc = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
-    var options = {};
-    options.mapping = userParams.mapping || {};
+    userParams.mapping = userParams.mapping || {};
     __.begin("adc", userParams).origin().gain(gain).end("adc");
     return cracked;
 };
@@ -3441,8 +3462,7 @@ cracked.adc = function (params) {
 cracked.out = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
-    var options = {};
-    options.mapping = userParams.mapping || {};
+    userParams.mapping = userParams.mapping || {};
     __.begin("out", userParams).gain(gain).destination().end("out");
     return cracked;
 };
@@ -3456,8 +3476,7 @@ cracked.out = function (params) {
 cracked.in = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
-    var options = {};
-    options.mapping = userParams.mapping || {};
+    userParams.mapping = userParams.mapping || {};
     __.begin("in", userParams).origin().gain(gain).end("in");
     return cracked;
 };

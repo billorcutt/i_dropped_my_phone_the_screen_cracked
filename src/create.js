@@ -516,11 +516,21 @@ function AudioNode(type, creationParams, userSettings) {
             if (__.isArr(rawNode)) {
                 //in a macro connections are made with the first and last node in the macro.
                 //tbd - support a way to designate connection nodes
-                rawNode = (whichNode === "from") ? rawNode[rawNode.length - 1] : rawNode[0];
+                rawNode = (whichNode === "from") ? getRawNode(rawNode,(rawNode.length - 1)) : getRawNode(rawNode,0);
             }
             return rawNode;
         } else {
             return null;
+        }
+    }
+
+    //recursive method extract the raw node
+    function getRawNode(node,position) {
+        if(__.isArr(node)) {
+            var pos = !position ? 0 : node.length-1;
+            return getRawNode(node[position],pos);
+        } else {
+            return node;
         }
     }
 
