@@ -3398,32 +3398,6 @@ cracked.allpass = function (params) {
 };
 
 /**
- * Clip - clip input 1 to -1
- *
- * @plugin
- * @param {Object} [params] map of optional values
- */
-cracked.clip = function (params) {
-
-    var userParams = __.isObj(params) ? params : {};
-    var options = {};
-    options.mapping = userParams.mapping || {};
-
-    var curve = new Float32Array(2);
-
-    // Set some default clipping - just makes everything under -1 be -1, and everything over 1 be 1.
-    curve[0] = -1;
-    curve[1] = 1;
-
-    __.begin("clip", userParams).
-        waveshaper({
-            curve: curve
-        }).end("clip");
-
-    return cracked;
-};
-
-/**
  * System out - destination with a master volume
  * @plugin
  * @param {Number} [params=1] system out gain
@@ -3432,8 +3406,15 @@ cracked.dac = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
     var options = {};
-    options.mapping = userParams.mapping || {};
-    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    userParams.mapping = userParams.mapping || {};
+
+    var curve = new Float32Array(2);
+
+    // Set some default clipping - just makes everything under -1 be -1, and everything over 1 be 1.
+    curve[0] = -1;
+    curve[1] = 1;
+
+    __.begin("dac", userParams).waveshaper({curve: curve}).gain(gain).destination().end("dac");
     return cracked;
 };
 
@@ -3491,7 +3472,7 @@ cracked.panner = function (params) {
     var pan = __.isNum(params) ? params : (__.isObj(params) && params.pan) ? params.pan : 0;
     var userParams = __.isObj(params) ? params : {};
     var options = {};
-    options.mapping = userParams.mapping || {};
+    userParams.mapping = userParams.mapping || {};
     __.begin("panner", userParams).stereoPanner({'pan':pan}).end("panner");
     return cracked;
 };
