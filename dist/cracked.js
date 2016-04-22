@@ -1488,6 +1488,7 @@ var _isLoopRunning = false,
     _loopCB = null,
     _loopData = [],
     _loopIndex = -1,
+    _loopCount = 0,
     _loopListeners = [],
     _loopTimeToNextStep = 0;
 
@@ -1592,6 +1593,7 @@ function resetLoop() {
     _loopData = [];
     _loopListeners = [];
     _loopIndex = -1;
+    _loopCount = 0;
     _isLoopRunning = false;
     _loopTimeToNextStep = 0;
 }
@@ -1605,7 +1607,7 @@ function resetLoop() {
 // */
 function configureLoop(opts, fn, data) {
     if (opts && typeof opts === 'object') {
-        _loopStepSize = opts.steps;
+        _loopStepSize = opts.steps || data ? data.length : undefined;
         _loopInterval = opts.interval || 200;
     } else if(opts && __.isNum(opts) && !fn && !data) {
         //just configuring tempo only
@@ -1647,7 +1649,7 @@ function loopStep() {
     }
     //global callback
     if (__.isFun(_loopCB)) {
-        _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData);
+        _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData, ++_loopCount);
     }
 
     //loop thru any bound step event listeners
@@ -1656,7 +1658,8 @@ function loopStep() {
             tmp = _selectedNodes,
             index = listener.loopIndex,
             stepSize = listener.loopStepSize,
-            data = listener.data;
+            data = listener.data,
+            count = ++listener.count;
 
         //if step size not configured globally
         listener.loopIndex = (index < (stepSize - 1)) ? index + 1 : 0;
@@ -1665,7 +1668,7 @@ function loopStep() {
         _selectedNodes = listener.selection;
 
         //run the callback
-        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data);
+        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data, count);
 
         //put the nodes back in place
         _selectedNodes = tmp;
@@ -1689,7 +1692,8 @@ cracked.bind = function (eventType, fn, data) {
             loopStepSize : data.length || 0,
             loopIndex : -1,
             selection: _selectedNodes.slice(0),
-            selector: _currentSelector
+            selector: _currentSelector,
+            count:0
         });
     }
     return cracked;
@@ -4479,6 +4483,16 @@ cracked.shuffle = function (arr) {
  */
 cracked.random = function (min, max) {
     return Math.round(min + Math.random() * (max - min));
+};
+
+/**
+ * Returns a boolean based on percentage.
+ * @plugin
+ * @param {Number} percentage
+ * @returns {boolean}
+ */
+cracked.chance = function(percentage) {
+    return percentage > __.random(0,100);
 };
 
 /**

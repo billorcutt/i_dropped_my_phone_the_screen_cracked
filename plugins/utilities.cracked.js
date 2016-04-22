@@ -262,6 +262,16 @@ cracked.random = function (min, max) {
 };
 
 /**
+ * Returns a boolean based on percentage.
+ * @plugin
+ * @param {Number} percentage
+ * @returns {boolean}
+ */
+cracked.chance = function(percentage) {
+    return percentage > __.random(0,100);
+};
+
+/**
  * Scale an input number between min & max to an output number between a min & max. Supports logarithmic or linear scaling.
  * @plugin
  * @param {Number} position
