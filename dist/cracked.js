@@ -4572,6 +4572,7 @@ cracked.random_interval = function(callback, minTime, maxTime) {
  * @public
  * @param {Number} size of the array to be filled
  * @param {Function} fn to provide the value, if absent then array is filled with 0's.
+ * @returns {Array}
  */
 cracked.fill_array = function(size,fn) {
     var tmp = [];
@@ -4588,6 +4589,7 @@ cracked.fill_array = function(size,fn) {
  * create a adsr envelope with random values scaled to a length
  * @public
  * @param {Number} length in sec
+ * @returns {Array}
  */
 cracked.random_envelope = function(length) {
 
@@ -4611,6 +4613,19 @@ cracked.random_envelope = function(length) {
     }
 
     return result;
+};
+
+/**
+ * advance thru array one step at a time.
+ * start over when arriving at the end
+ * @param {Array} arr to loop over
+ * @public
+ */
+
+cracked.array_next = function(arr) {
+    var current_index = arr.current_index = arr.current_index  ||   0;
+    arr.current_index = arr.current_index+1 >= arr.length ? 0 : arr.current_index+1;
+    return arr[current_index];
 };
 
 })();
