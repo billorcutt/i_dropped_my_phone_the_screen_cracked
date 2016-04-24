@@ -215,6 +215,19 @@ cracked.scales = function (type) {
     }[type];
 };
 
+/**
+ * Return a random frequency in a randomly selected octave from a given scale
+ * @plugin
+ * @param {String} scale
+ * @param {Number} octave_lower
+ * @param {Number} octave_upper
+ */
+cracked.random_scale = function (scale,octave_lower,octave_upper) {
+    var lower = __.ifUndef(octave_lower,3);
+    var upper = __.ifUndef(octave_upper,7);
+    return __.pitch2freq(__.scales(scale)[__.random(0,__.scales(scale).length)] + __.random(lower,upper) * 12);
+};
+
 //from https://github.com/hoch/WAAX/blob/master/src/core/Helper.js
 /**
  * Converts a pitch value to frequency
@@ -344,24 +357,6 @@ cracked.random_interval = function(callback, minTime, maxTime) {
 };
 
 /**
- * fill an array with some values
- * @public
- * @param {Number} size of the array to be filled
- * @param {Function} fn to provide the value, if absent then array is filled with 0's.
- * @returns {Array}
- */
-cracked.fill_array = function(size,fn) {
-    var tmp = [];
-    if(__.isNum(size)) {
-        var fun = __.isFun(fn) ? fn : function(){return 0;};
-        for(var i=0;i<size;i++) {
-            tmp.push(fun.apply(this,[]));
-        }
-    }
-    return tmp;
-};
-
-/**
  * create a adsr envelope with random values scaled to a length
  * @public
  * @param {Number} length in sec
@@ -392,14 +387,38 @@ cracked.random_envelope = function(length) {
 };
 
 /**
+ * fill an array with some values
+ * @public
+ * @param {Number} size of the array to be filled
+ * @param {Function} fn to provide the value, if absent then array is filled with 0's.
+ * @returns {Array}
+ */
+cracked.fill_array = function(size,fn) {
+    var tmp = [];
+    if(__.isNum(size)) {
+        var fun = __.isFun(fn) ? fn : function(){return 0;};
+        for(var i=0;i<size;i++) {
+            tmp.push(fun.apply(this,[]));
+        }
+    }
+    return tmp;
+};
+
+/**
  * advance thru array one step at a time.
  * start over when arriving at the end
  * @param {Array} arr to loop over
+ * @param {Number} offset added to index
+ * @param {Number} limit upper bound to iteration
  * @public
  */
 
-cracked.array_next = function(arr) {
+cracked.array_next = function(arr,offset,limit) {
+    offset = offset || 0;
+    limit = limit || arr.length;
+    var adjusted_limit = Math.min(limit,arr.length);
+    var adjusted_offset = Math.min(offset,adjusted_limit-1);
     var current_index = arr.current_index = arr.current_index  ||   0;
-    arr.current_index = arr.current_index+1 >= arr.length ? 0 : arr.current_index+1;
-    return arr[current_index];
+    arr.current_index = (arr.current_index+1+adjusted_offset) >= adjusted_limit ? 0 : arr.current_index+1;
+    return arr[current_index + adjusted_offset];
 };
