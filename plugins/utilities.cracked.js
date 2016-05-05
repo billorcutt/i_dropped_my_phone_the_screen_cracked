@@ -398,7 +398,7 @@ cracked.fill_array = function(size,fn) {
     if(__.isNum(size)) {
         var fun = __.isFun(fn) ? fn : function(){return 0;};
         for(var i=0;i<size;i++) {
-            tmp.push(fun.apply(this,[]));
+            tmp.push(fun.apply(this,[i]));
         }
     }
     return tmp;
