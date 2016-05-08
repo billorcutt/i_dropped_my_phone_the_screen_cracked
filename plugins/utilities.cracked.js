@@ -225,7 +225,7 @@ cracked.scales = function (type) {
 cracked.random_scale = function (scale,octave_lower,octave_upper) {
     var lower = __.ifUndef(octave_lower,3);
     var upper = __.ifUndef(octave_upper,7);
-    return __.pitch2freq(__.scales(scale)[__.random(0,__.scales(scale).length)] + __.random(lower,upper) * 12);
+    return __.pitch2freq(__.scales(scale)[__.random(0,__.scales(scale).length-1)] + __.random(lower,upper) * 12);
 };
 
 //from https://github.com/hoch/WAAX/blob/master/src/core/Helper.js
