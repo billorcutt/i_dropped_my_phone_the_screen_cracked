@@ -1633,6 +1633,9 @@ function checkup() {
     if (now < _loopTimeToNextStep && now > timeAtPreviousStep) {
         loopStep();
         _loopTimeToNextStep += (_loopInterval / 1000);
+    } else if(now > _loopTimeToNextStep) {
+        //we dropped a frame
+        _loopTimeToNextStep += (_loopInterval / 1000);
     }
 }
 
