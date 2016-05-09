@@ -216,7 +216,27 @@ cracked.scales = function (type) {
 };
 
 /**
- * Return a random frequency in a randomly selected octave from a given scale
+ * Returns a musical scale/mode based on type
+ * @plugin
+ * @param {String} type scale type
+ */
+cracked.chords = function (type) {
+    return {
+        "major": [0, 4, 7],
+        "minor": [0, 3, 7],
+        "seventh": [0, 4, 7, 10],
+        "ninth": [0, 4, 7, 10, 14],
+        "major_seventh": [0, 4, 7, 11],
+        "minor_seventh": [0, 3, 7, 10],
+        "suspended": [0, 5, 7],
+        "diminished": [0, 3, 6],
+        "eleventh": [0, 4, 7, 10, 14, 17],
+        "thirteenth": [0, 4, 7, 10, 14, 17, 21]
+    }[type];
+};
+
+/**
+ * Return a random series of frequencies from randomly selected octaves from a given scale
  * @plugin
  * @param {String} scale
  * @param {Number} octave_lower
@@ -226,6 +246,19 @@ cracked.random_scale = function (scale,octave_lower,octave_upper) {
     var lower = __.ifUndef(octave_lower,3);
     var upper = __.ifUndef(octave_upper,7);
     return __.pitch2freq(__.scales(scale)[__.random(0,__.scales(scale).length-1)] + __.random(lower,upper) * 12);
+};
+
+/**
+ * Return a random series of frequencies from a randomly selected octave from a given chord
+ * @plugin
+ * @param {String} chord
+ * @param {Number} octave_lower
+ * @param {Number} octave_upper
+ */
+cracked.random_arpeggio = function (chord,octave_lower,octave_upper) {
+    var lower = __.ifUndef(octave_lower,3);
+    var upper = __.ifUndef(octave_upper,7);
+    return __.pitch2freq(__.chords(chord)[__.random(0,__.chords(chord).length-1)] + __.random(lower,upper) * 12);
 };
 
 //from https://github.com/hoch/WAAX/blob/master/src/core/Helper.js
