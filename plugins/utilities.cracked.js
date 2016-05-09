@@ -358,6 +358,20 @@ cracked.sec2ms = function(second) {
 };
 
 /**
+ * Converts a millisecond value to second value
+ * @plugin
+ * @param {Number} second
+ */
+cracked.ms2sec = function(ms) {
+    if(__.isNum(ms)) {
+        return ms / 1000;
+    } else {
+        console.error("ms2sec: param not number");
+        return ms;
+    }
+};
+
+/**
  * Returns a boolean true if the browser supports
  * web audio
  * @plugin

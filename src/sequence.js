@@ -18,7 +18,8 @@ var _isLoopRunning = false,
     _loopIndex = -1,
     _loopCount = 0,
     _loopListeners = [],
-    _loopTimeToNextStep = 0;
+    _loopTimeToNextStep = 0,
+    _loopTolerance = 0.30;
 
 /**
  * main method for loop
@@ -83,13 +84,21 @@ function toggleGrid() {
 }
 
 ///**
+// * Get the millisecond value for setting timeout
+// * @private
+// */
+function calculateTimeout() {
+    return __.sec2ms(_loopTimeToNextStep  - _context.currentTime - (__.ms2sec(_loopInterval * _loopTolerance)));
+}
+
+///**
 // * Starts the loop
 // * @private
 // */
 function startLoop() {
     if (!_isLoopRunning) {
         _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
-        _loopID = setInterval(checkup, (_loopInterval / 1.75));
+        _loopID = setTimeout(checkup, calculateTimeout());
         _isLoopRunning = true;
         _ignoreGrid = false;
     }
@@ -157,14 +166,17 @@ function configureLoop(opts, fn, data) {
 // */
 function checkup() {
     var now = _context.currentTime,
-        timeAtPreviousStep = _loopTimeToNextStep - _loopInterval / 1000;
+        loopIntervalInSecs = __.ms2sec(_loopInterval),
+        timeAtPreviousStep = _loopTimeToNextStep -  loopIntervalInSecs;
     if (now < _loopTimeToNextStep && now > timeAtPreviousStep) {
         loopStep();
-        _loopTimeToNextStep += (_loopInterval / 1000);
+        _loopTimeToNextStep += loopIntervalInSecs;
     } else if(now > _loopTimeToNextStep) {
         //we dropped a frame
-        _loopTimeToNextStep += (_loopInterval / 1000);
+        _loopTimeToNextStep += loopIntervalInSecs;
     }
+    clearTimeout(_loopID);
+    _loopID = setTimeout(checkup, calculateTimeout());
 }
 
 ///**
