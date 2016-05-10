@@ -10,7 +10,7 @@
 
 var _isLoopRunning = false,
     _ignoreGrid = true,
-    _loopStepSize,
+    _loopStepSize = 0,
     _loopInterval = 100,
     _loopID = 0,
     _loopCB = null,
@@ -122,7 +122,7 @@ function stopLoop() {
 // * @private
 // */
 function resetLoop() {
-    _loopStepSize = undefined;
+    _loopStepSize = 0;
     _loopInterval = 100;
     _ignoreGrid = true;
     _loopID = 0;
@@ -143,8 +143,8 @@ function resetLoop() {
 // * @private
 // */
 function configureLoop(opts, fn, data) {
-    if (opts && typeof opts === 'object') {
-        _loopStepSize = opts.steps || data ? data.length : undefined;
+    if (opts && __.isObj(opts)) {
+        _loopStepSize = opts.steps ? opts.steps : data && data.length ? data.length : 0;
         _loopInterval = opts.interval || 200;
     } else if(opts && __.isNum(opts) && !fn && !data) {
         //just configuring tempo only
