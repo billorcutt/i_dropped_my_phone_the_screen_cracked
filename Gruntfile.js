@@ -55,15 +55,14 @@ module.exports = function(grunt) {
                 }
             }
         },
-        dox: {
-            options: {
-                title: "Cracked Documentation"
-            },
-            files: {
+        jsdoc : {
+            dist : {
                 src: ['src/find.js','src/control.js','src/nodes.js','src/sequence.js',
                     'src/macro.js','src/midi.js','src/connect.js','src/debug.js',
                     'src/type.js', 'plugins/**/*.js'],
-                dest: 'docs'
+                options: {
+                    destination: 'docs'
+                }
             }
         },
         connect: {
@@ -78,9 +77,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-dox');
+    //grunt.loadNpmTasks('grunt-dox');
+    grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
-    grunt.registerTask('default', ['concat', 'jshint', 'uglify','dox']);
+    grunt.registerTask('default', ['concat', 'jshint', 'uglify','jsdoc']);
 
 };

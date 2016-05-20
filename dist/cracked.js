@@ -19,6 +19,7 @@ var _nodeStore = {},
  * Updates the internal selected nodes array with a collection of audio
  * nodes matching the selector provided. Type, Class & Id selectors are
  * supported.
+ * <pre>
  * <code>
  * //type selector using the node name, sets the frequency for all sines
  * __("sine").frequency(200);
@@ -31,31 +32,34 @@ var _nodeStore = {},
  *
  * //select all sines, any nodes with classname "bar" or id of "foo"
  * //and set their frequencies to 200
- * __("sine,.bar,#foo").frequency(200);</code>
+ * __("sine,.bar,#foo").frequency(200);</code></pre>
  *
  * [See more selector examples](../../examples/selector.html)
  *
  * If invoked without arguments, cracked() resets the selection/connection state,
  * removing any record of previous nodes and effectively marking the start of
  * a new connection chain. Since a new node will try to connect to any previous
- * node, calling \_\_() tells a node that there is no previous node to connect to.
+ * node, calling __() tells a node that there is no previous node to connect to.
  * For example:
+ * <pre>
  * <code>
  * //Create & connect sine -> lowpass -> dac
- * \_\_().sine();
- * \_\_.lowpass();
- * \_\_.dac();
+ * __().sine();
+ * __.lowpass();
+ * __.dac();
  *
  * //Create but don't connect
- * \_\_().sine();
- * \_\_().lowpass();
- * \_\_().dac();</code>
+ * __().sine();
+ * __().lowpass();
+ * __().dac();</code></pre>
  *
  * cracked is also the namespace for public methods and also can be written as a
- * double underscore \_\_
+ * double underscore __
+ * <pre>
  * <code>
- * \_\_("sine"); //same as cracked("sine")
+ * __("sine"); //same as cracked("sine")
  * </code>
+ * </pre>
  *
  *
  * @public
@@ -219,7 +223,7 @@ cracked.exec = function (method, args, nodes) {
  *
  * @public
  * @function
- * @type {String} type string to be checked against the node type
+ * @param {String} type string to be checked against the node type
  * @param {Function} fn function to be called on each node
  * @returns {cracked}
  */

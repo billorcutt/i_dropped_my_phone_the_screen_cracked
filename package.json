@@ -13,6 +13,6 @@
     "grunt-contrib-connect": "^0.11.2",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-dox": "^0.5.0"
+    "grunt-jsdoc":"2.0.0"
   }
 }
