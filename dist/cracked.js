@@ -1479,7 +1479,7 @@ function fetchSoundFile(path, callback) {
  */
 
 ///**
-// * global vars for loop
+// * vars for loop
 // * @type {boolean}
 // * @private
 // */
@@ -2070,7 +2070,7 @@ function resetMacro() {
  */
 
 ///**
-// * global vars for midi
+// * vars for midi
 // * @type {Object}
 // * @private
 // */

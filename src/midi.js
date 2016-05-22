@@ -3,7 +3,7 @@
  */
 
 ///**
-// * global vars for midi
+// * vars for midi
 // * @type {Object}
 // * @private
 // */

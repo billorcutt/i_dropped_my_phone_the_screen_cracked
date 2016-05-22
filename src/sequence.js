@@ -3,7 +3,7 @@
  */
 
 ///**
-// * global vars for loop
+// * vars for loop
 // * @type {boolean}
 // * @private
 // */
