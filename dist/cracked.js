@@ -2090,11 +2090,11 @@ function resetMacro() {
  * #Midi#
  */
 
-///**
-// * vars for midi
-// * @type {Object}
-// * @private
-// */
+/**
+ * vars for midi
+ * @type {Object}
+ * @private
+ */
 var _midi_access = null,
     _midi_inputs = null,
     _midi_outputs = null,
@@ -4911,8 +4911,8 @@ cracked.isSupported = function() {
  * @name cracked#random_interval
  * @public
  * @param {Function} callback to be invoked at every interval
- * @param {Number} minTime. minimum value for the random interval
- * @param {Number} maxTime. maximum value for the random interval
+ * @param {Number} minTime minimum value for the random interval
+ * @param {Number} maxTime maximum value for the random interval
  */
 cracked.random_interval = function(callback, minTime, maxTime) {
 

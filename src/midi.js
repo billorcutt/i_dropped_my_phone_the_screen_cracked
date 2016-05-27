@@ -2,11 +2,11 @@
  * #Midi#
  */
 
-///**
-// * vars for midi
-// * @type {Object}
-// * @private
-// */
+/**
+ * vars for midi
+ * @type {Object}
+ * @private
+ */
 var _midi_access = null,
     _midi_inputs = null,
     _midi_outputs = null,

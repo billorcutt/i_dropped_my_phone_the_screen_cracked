@@ -57,7 +57,13 @@ module.exports = function(grunt) {
         },
         jsdoc : {
             dist : {
-                src: ['dist/cracked.js'],
+                src: [
+                    'src/intro.js','src/find.js','src/create.js',
+                    'src/control.js','src/nodes.js','src/sequence.js',
+                    'src/model.js','src/macro.js','src/midi.js','src/connect.js',
+                    'src/utilities.js','src/debug.js','src/outro.js',
+                    'src/type.js', 'plugins/**/*.js'
+                ],
                 options: {
                     destination: 'docs',
                     readme:'README.md',
