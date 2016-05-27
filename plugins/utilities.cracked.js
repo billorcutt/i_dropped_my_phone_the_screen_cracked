@@ -4,6 +4,10 @@
  *
  * Frequency setter convenience method
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#frequency
+ * @public
  * @param {Number} userParam frequency to set
  */
 cracked.frequency = function (userParam) {
@@ -21,6 +25,10 @@ cracked.frequency = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#detune
+ * @public
  * @param {Number} userParam detune frequency to set
  */
 cracked.detune = function (userParam) {
@@ -38,6 +46,10 @@ cracked.detune = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#type
+ * @public
  * @param {String} userParam oscillator type to set
  */
 cracked.type = function (userParam) {
@@ -55,6 +67,10 @@ cracked.type = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#volume
+ * @public
  * @param {Number} userParam gain to set
  */
 cracked.volume = function (userParam) {
@@ -72,6 +88,10 @@ cracked.volume = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#time
+ * @public
  * @param {Number} userParam delay time to set
  */
 cracked.time = function (userParam) {
@@ -89,6 +109,10 @@ cracked.time = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#feedback
+ * @public
  * @param {Number} userParam feedback amount to set
  */
 cracked.feedback = function (userParam) {
@@ -107,6 +131,10 @@ cracked.feedback = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#speed
+ * @public
  * @param {Number} userParam sampler speed to set
  */
 cracked.speed = function (userParam) {
@@ -124,6 +152,10 @@ cracked.speed = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#drive
+ * @public
  * @param {Number} userParam drive distortion/waveshaper/etc to set
  */
 cracked.drive = function (userParam) {
@@ -141,6 +173,10 @@ cracked.drive = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#distortion
+ * @public
  * @param {Number} userParam distortion to set
  */
 cracked.distortion = function (userParam) {
@@ -158,6 +194,10 @@ cracked.distortion = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#q
+ * @public
  * @param {Number} userParam q value to set
  */
 cracked.q = function (userParam) {
@@ -175,6 +215,10 @@ cracked.q = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#pan
+ * @public
  * @param {Number} userParam pan value (1 to -1) to set
  */
 cracked.pan = function (userParam) {
@@ -192,6 +236,10 @@ cracked.pan = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#play
+ * @public
  */
 cracked.play = function () {
     cracked("*").start();
@@ -201,6 +249,10 @@ cracked.play = function () {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#scales
+ * @public
  * @param {String} type scale type
  */
 cracked.scales = function (type) {
@@ -218,6 +270,10 @@ cracked.scales = function (type) {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#chords
+ * @public
  * @param {String} type scale type
  */
 cracked.chords = function (type) {
@@ -238,6 +294,10 @@ cracked.chords = function (type) {
 /**
  * Return a random series of frequencies from randomly selected octaves from a given scale
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#random_scale
+ * @public
  * @param {String} scale
  * @param {Number} octave_lower
  * @param {Number} octave_upper
@@ -251,6 +311,10 @@ cracked.random_scale = function (scale,octave_lower,octave_upper) {
 /**
  * Return a random series of frequencies from a randomly selected octave from a given chord
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#random_arpeggio
+ * @public
  * @param {String} chord
  * @param {Number} octave_lower
  * @param {Number} octave_upper
@@ -265,6 +329,10 @@ cracked.random_arpeggio = function (chord,octave_lower,octave_upper) {
 /**
  * Converts a pitch value to frequency
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#pitch2freq
+ * @public
  * @param {Number} pitch
  */
 cracked.pitch2freq = function (pitch) {
@@ -275,6 +343,10 @@ cracked.pitch2freq = function (pitch) {
  * Takes a reference to an array, shuffles it
  * and returns it
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#shuffle
+ * @public
  * @param {Array} arr
  */
 cracked.shuffle = function (arr) {
@@ -300,6 +372,10 @@ cracked.shuffle = function (arr) {
 /**
  * Returns a random number between min & max
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#random
+ * @public
  * @param {Number} min
  * @param {Number} max
  */
@@ -310,6 +386,10 @@ cracked.random = function (min, max) {
 /**
  * Returns a boolean based on percentage.
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#chance
+ * @public
  * @param {Number} percentage
  * @returns {boolean}
  */
@@ -320,6 +400,10 @@ cracked.chance = function(percentage) {
 /**
  * Scale an input number between min & max to an output number between a min & max. Supports logarithmic or linear scaling.
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#scale
+ * @public
  * @param {Number} position
  * @param {Number} inMin
  * @param {Number} inMax
@@ -346,6 +430,10 @@ cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
 /**
  * Converts a second value to millisecond value
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#sec2ms
+ * @public
  * @param {Number} second
  */
 cracked.sec2ms = function(second) {
@@ -360,6 +448,10 @@ cracked.sec2ms = function(second) {
 /**
  * Converts a millisecond value to second value
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#ms2sec
+ * @public
  * @param {Number} second
  */
 cracked.ms2sec = function(ms) {
@@ -375,6 +467,10 @@ cracked.ms2sec = function(ms) {
  * Returns a boolean true if the browser supports
  * web audio
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#isSupported
+ * @public
  */
 cracked.isSupported = function() {
     return ("AudioContext" in window || "webkitAudioContext" in window);
@@ -382,10 +478,13 @@ cracked.isSupported = function() {
 
 /**
  * execute a callback at random intervals within a range
+ * @function
+ * @memberof cracked
+ * @name cracked#random_interval
  * @public
  * @param {Function} callback to be invoked at every interval
- * @param {Number} minTime. minimum value for the random interval
- * @param {Number} maxTime. maximum value for the random interval
+ * @param {Number} minTime minimum value for the random interval
+ * @param {Number} maxTime maximum value for the random interval
  */
 cracked.random_interval = function(callback, minTime, maxTime) {
 
@@ -405,6 +504,9 @@ cracked.random_interval = function(callback, minTime, maxTime) {
 
 /**
  * create a adsr envelope with random values scaled to a length
+ * @function
+ * @memberof cracked
+ * @name cracked#random_envelope
  * @public
  * @param {Number} length in sec
  * @returns {Array}
@@ -435,6 +537,9 @@ cracked.random_envelope = function(length) {
 
 /**
  * fill an array with some values
+ * @function
+ * @memberof cracked
+ * @name cracked#fill_array
  * @public
  * @param {Number} size of the array to be filled
  * @param {Function} fn to provide the value, if absent then array is filled with 0's.
@@ -457,6 +562,9 @@ cracked.fill_array = function(size,fn) {
  * @param {Array} arr to loop over
  * @param {Number} offset added to index
  * @param {Number} limit upper bound to iteration
+ * @function
+ * @memberof cracked
+ * @name cracked#array_next
  * @public
  */
 

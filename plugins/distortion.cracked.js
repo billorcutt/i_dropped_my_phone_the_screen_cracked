@@ -4,6 +4,9 @@
  * [See more bitcrusher examples](../../examples/distortion.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#bitcrusher
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=0.1]
  * @param {Number} [params.bits=6]
@@ -53,6 +56,9 @@ cracked.bitcrusher = function (params) {
  * [See more ring modulator examples](../../examples/distortion.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#ring
  * @param {Object} [params] map of optional values
  * @param {Number} [params.distortion=1]
  * @param {Number} [params.frequency=30]
@@ -205,6 +211,9 @@ cracked.ring = function (params) {
  * [See more overdrive examples](../../examples/distortion.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#overdrive
  * @param {Object} [params] map of optional values
  * @param {Number} [params.drive=0.5]
  * @param {Number} [params.color=800]

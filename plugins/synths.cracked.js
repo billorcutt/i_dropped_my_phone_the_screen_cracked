@@ -6,6 +6,10 @@
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#monosynth
+ * @public
  * @param {Object} [params] map of optional values
  */
 cracked.monosynth = function (params) {
@@ -125,6 +129,10 @@ cracked.monosynth = function (params) {
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#polysynth
+ * @public
  * @param {Object} [params] map of optional values
  */
 cracked.polysynth = function (params) {

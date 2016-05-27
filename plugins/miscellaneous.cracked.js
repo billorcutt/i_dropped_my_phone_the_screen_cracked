@@ -1,6 +1,10 @@
 /**
  * Clips audio level at 1/-1
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#clip
+ * @public
  */
 cracked.clip = function (params) {
 
@@ -21,6 +25,10 @@ cracked.clip = function (params) {
  * System out - destination with a master volume.
  * @plugin
  * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#dac
+ * @public
  */
 cracked.dac = function (params) {
     var gain = __.isNum(params) ? params : 1;
@@ -35,6 +43,10 @@ cracked.dac = function (params) {
  * System in - input with a master volume
  * @plugin
  * @param {Number} [params=1] system in gain
+ * @function
+ * @memberof cracked
+ * @name cracked#adc
+ * @public
  */
 cracked.adc = function (params) {
     var gain = __.isNum(params) ? params : 1;
@@ -49,6 +61,10 @@ cracked.adc = function (params) {
  * Alias for dac
  * @plugin
  * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#out
+ * @public
  */
 cracked.out = function (params) {
     var gain = __.isNum(params) ? params : 1;
@@ -63,6 +79,10 @@ cracked.out = function (params) {
  * Alias for adc
  * @plugin
  * @param {Number} [params=1] system in gain
+ * @function
+ * @memberof cracked
+ * @name cracked#in
+ * @public
  */
 cracked.in = function (params) {
     var gain = __.isNum(params) ? params : 1;
@@ -77,6 +97,10 @@ cracked.in = function (params) {
  *
  * @plugin
  * @param {Object} [params] map of optional values
+ * @function
+ * @memberof cracked
+ * @name cracked#panner
+ * @public
  */
 cracked.panner = function (params) {
     var pan = __.isNum(params) ? params : (__.isObj(params) && params.pan) ? params.pan : 0;
@@ -93,6 +117,10 @@ cracked.panner = function (params) {
  * [See more sampler examples](../../examples/sampler.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#sampler
+ * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.speed=1]
  * @param {Number} [userParams.start=1]

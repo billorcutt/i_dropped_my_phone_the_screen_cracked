@@ -4,6 +4,9 @@
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#reverb
  * @param {Object} [params] map of optional values
  * @param {Boolean} [params.reverse=false] reverse reverb
  * @param {String} [params.path] path to impulse file. if no path, impulse is generated.
@@ -59,6 +62,9 @@ cracked.reverb = function (params) {
  * [See more delay examples](../../examples/delay.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#delay
  * @param {Object} [params] map of optional values
  * @param {Number} [params.delay=1] delay time in seconds
  * @param {Number} [params.damping=0.84] feedback input gain
@@ -129,6 +135,9 @@ cracked.delay = function (params) {
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
+ * @function
+ * @memberof cracked
+ * @name cracked#comb
  * @param {Object} [params] map of optional values
  * @param {Number} [params.delay=0.027] delay time in seconds
  * @param {Number} [params.damping=0.84] feedback input gain
