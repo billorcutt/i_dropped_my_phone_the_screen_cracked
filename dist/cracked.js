@@ -1,6 +1,11 @@
 (function () {
 'use strict';
 
+/**
+ * set up some variables used throughout the module
+ * @private
+ */
+
 var _nodeStore = {},
     _nodeLookup = {},
     _previousNode = null,
@@ -16,12 +21,9 @@ var _nodeStore = {},
  */
 
 /**
- * Updates the internal selected nodes array with a collection of audio
- * nodes matching the selector provided. Type, Class & Id selectors are
- * supported.
+ * Updates the internal selected nodes array with a collection of audio nodes matching the selector provided. Type, Class & Id selectors are supported.
  * <pre>
- * <code>
- * //type selector using the node name, sets the frequency for all sines
+ * <code>//type selector using the node name, sets the frequency for all sines
  * __("sine").frequency(200);
  *
  * //set the frequency for the node with id "foo"
@@ -36,14 +38,10 @@ var _nodeStore = {},
  *
  * [See more selector examples](../../examples/selector.html)
  *
- * If invoked without arguments, cracked() resets the selection/connection state,
- * removing any record of previous nodes and effectively marking the start of
- * a new connection chain. Since a new node will try to connect to any previous
- * node, calling __() tells a node that there is no previous node to connect to.
+ * If invoked without arguments, cracked() resets the selection/connection state, removing any record of previous nodes and effectively marking the start of a new connection chain. Since a new node will try to connect to any previous node, calling __() tells a node that there is no previous node to connect to.
  * For example:
  * <pre>
- * <code>
- * //Create & connect sine -> lowpass -> dac
+ * <code>//Create & connect sine -> lowpass -> dac
  * __().sine();
  * __.lowpass();
  * __.dac();
@@ -56,9 +54,7 @@ var _nodeStore = {},
  * cracked is also the namespace for public methods and also can be written as a
  * double underscore __
  * <pre>
- * <code>
- * __("sine"); //same as cracked("sine")
- * </code>
+ * <code>__("sine"); //same as cracked("sine")</code>
  * </pre>
  *
  *
@@ -99,11 +95,11 @@ function find() {
     return cracked;
 }
 
-///**
-// * find nodes in a macro with a selector updates the _selectedNodes array
-// * @function
-// * @private
-// */
+/**
+ * find nodes in a macro with a selector updates the _selectedNodes array
+ * @function
+ * @private
+ */
 function findInMacro() {
     if (arguments && arguments.length) {
         if(__.isStr(arguments[0])) {
@@ -144,22 +140,22 @@ function processSelectorForMacro(selector) {
     return selectorArr.join(",");
 }
 
-///**
-// * reset state
-// * @function
-// * @private
-// */
+/**
+ * reset state
+ * @function
+ * @private
+ */
 function reset() {
     _previousNode = null;
     _selectedNodes = [];
     _currentSelector = "";
 }
 
-///**
-// * reset selection
-// * @function
-// * @private
-// */
+/**
+ * reset selection
+ * @function
+ * @private
+ */
 function resetSelection() {
     _selectedNodes = [];
     _currentSelector = "";
@@ -167,10 +163,11 @@ function resetSelection() {
 
 /**
  * resets everything to its initial state
- * <code>
- *  //reset state for the entire app
- *  cracked.reset();</code>
+ * <pre><code>//reset state for the entire app
+ *  cracked.reset();</code></pre>
  * @public
+ * @name cracked#reset
+ * @memberof cracked
  * @function
  * @returns {cracked}
  */
@@ -184,10 +181,8 @@ cracked.reset = function() {
 };
 
 /**
- * executes a method with a specific set of selected nodes
- * without modifying the internal selectedNodes array
- * <pre><pre><code style="color:#7f0a0c">
- * //filter everything but the sines from currently selected nodes and
+ * executes a method with a specific set of selected nodes without modifying the internal selectedNodes array
+ * <pre><code>//filter everything but the sines from currently selected nodes and
  * //execute the frequency method against the remaining sines.
  * //the internal _selectedNodes array remains unchanged
  * cracked.exec(
@@ -198,6 +193,8 @@ cracked.reset = function() {
  *
  * @public
  * @function
+ * @name cracked#exec
+ * @memberof cracked
  * @param {String} method method name
  * @param {Array} args arguments to supply to the method
  * @param {Array} nodes node array to execute against
@@ -212,16 +209,15 @@ cracked.exec = function (method, args, nodes) {
 };
 
 /**
- * iterate over the selectedNodes array, executing
- * the supplied function for each element
- * <pre><code style="color:#7f0a0c">
- * __.each(type, function(node,index,array){
+ * iterate over the selectedNodes array, executing the supplied function for each element
+ * <pre><code>__.each(type, function(node,index,array){
      *      //Loops over any selected nodes. Parameters are the
      *      //current node, current index, and the selectedNode array
      * });</code></pre>
  *
- *
  * @public
+ * @name cracked#each
+ * @memberof cracked
  * @function
  * @param {String} type string to be checked against the node type
  * @param {Function} fn function to be called on each node
@@ -240,10 +236,8 @@ cracked.each = function (type, fn) {
 };
 
 /**
- * Filter selected nodes with an additional selector
- * returns node array that can used with exec()
- * <pre><code style="color:#7f0a0c">
- * //select any sine & sawtooth oscillators
+ * Filter selected nodes with an additional selector returns node array that can used with exec()
+ * <pre><code>//select any sine & sawtooth oscillators
  * __("sine,saw");
  *
  * //filter out everything but the sines and
@@ -256,6 +250,8 @@ cracked.each = function (type, fn) {
  * );</code></pre>
  *
  * @public
+ * @name cracked#filter
+ * @memberof cracked
  * @function
  * @param {String} selector selector expression
  * @returns {Array}
@@ -281,11 +277,8 @@ cracked.filter = function () {
 };
 
 /**
- * Find nodes with a selector
- * returns node array that can used with exec()
- * <pre><code style="color:#7f0a0c">
- *
- * //find all the sines in the patch and
+ * Find nodes with a selector returns node array that can used with exec()
+ * <pre><code>//find all the sines in the patch and
  * //execute the frequency method against those nodes.
  * //the internal _selectedNodes array remains unchanged
  * cracked.exec(
@@ -295,6 +288,8 @@ cracked.filter = function () {
  * );</code></pre>
  *
  * @public
+ * @name cracked#find
+ * @memberof cracked
  * @function
  * @param {String} selector selector expression
  * @returns {Array}
@@ -312,14 +307,14 @@ cracked.find = function () {
  *
  */
 
-///**
-// * node factory -  create, configure and connect new nodes. returns an instance of audio node wrapper class
-// * @private
-// * @param {String} type
-// * @param {Object} creationParams hash of params supplied by the invoking factory method
-// * @param {Object} userSettings user supplied params
-// * @returns {AudioNode}
-// */
+/**
+* node factory -  create, configure and connect new nodes. returns an instance of audio node wrapper class
+* @private
+* @param {String} type
+* @param {Object} creationParams hash of params supplied by the invoking factory method
+* @param {Object} userSettings user supplied params
+* @returns {AudioNode}
+*/
 function createNode(type, creationParams, userSettings) {
     var node = new AudioNode(type, creationParams, userSettings || {});
     saveNode(node);
@@ -348,12 +343,12 @@ function createNode(type, creationParams, userSettings) {
     return node;
 }
 
-///**
-// * Native audio nodes are made here.
-// * @param {Object} creationParams
-// * @private
-// * @returns {*}
-// */
+/**
+* Native audio nodes are made here.
+* @param {Object} creationParams
+* @private
+* @returns {*}
+*/
 function audioNodeFactory(creationParams) {
     var node;
     if (_context && creationParams.method && _context[creationParams.method]) {
@@ -375,15 +370,15 @@ function audioNodeFactory(creationParams) {
     return node;
 }
 
-///**
-// * wrapper class for audio nodes
-// * @private
-// * @param {String} type audio node type
-// * @param {Object} creationParams app supplied params
-// * @param {Object} userSettings user supplied params
-// * @type {AudioNode}
-// * @constructor
-// */
+/**
+* wrapper class for audio nodes
+* @private
+* @param {String} type audio node type
+* @param {Object} creationParams app supplied params
+* @param {Object} userSettings user supplied params
+* @type {AudioNode}
+* @constructor
+*/
 function AudioNode(type, creationParams, userSettings) {
 
     var uuid,
@@ -879,17 +874,15 @@ function AudioNode(type, creationParams, userSettings) {
  */
 
 /**
- * Calls start() on the currently selected nodes
- * Throws no error if there are no selected nodes
- * that have a start method
- * <code>
- * //create and connect sine->lowpass->dac
- * \_\_().sine().lowpass().dac();
+ * Calls start() on the currently selected nodes. Throws no error if there aren't any selected nodes with a start method
+ * <pre><code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
  * //start the sine node
- * \_\_("sine").start();</code>
+ * __("sine").start();</code></pre>
  *
  * [See more control examples](../../examples/control.html)
- *
+ * @memberof cracked
+ * @name cracked#start
  * @function
  * @public
  */
@@ -906,17 +899,16 @@ cracked.start = function () {
 };
 
 /**
- * Calls stop() on the currently selected nodes
- * Throws no error if there are no selected nodes
- * that have a stop method
- * <code>
- * //create and connect sine->lowpass->dac
- * \_\_().sine().lowpass().dac();
+ * Calls stop() on the currently selected nodes. Throws no error if there are no selected nodes that have a stop method.
+ * <pre><code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
  * //stop the sine node
- * \_\_("sine").stop();</code>
+ * __("sine").stop();</code></pre>
  *
  * [See more control examples](../../examples/control.html)
- *
+ * 
+ * @memberof cracked
+ * @name cracked#stop
  * @function
  * @public
  */
@@ -931,21 +923,17 @@ cracked.stop = function () {
 };
 
 /**
- * Public method to ramp a parameter on currently selected nodes
- * Target & timeToRamp parameters can be numbers or arrays of numbers
- * for multisegement ramps. Initial value param is optional, if
- * omitted, then the current value is used as the initial value.
- * If loop is running, then ramp start times are snapped to the
- * sequencer grid.
- * <code>
- * //create and connect sine->lowpass->dac & play
- * \_\_().sine().lowpass().dac().play();
+ * Public method to ramp a parameter on currently selected nodes. Target & timeToRamp parameters can be numbers or arrays of numbers for multisegement ramps. Initial value param is optional, if omitted, then the current value is used as the initial value. If loop is running, then ramp start times are snapped to the sequencer grid.
+ * <pre><code>//create and connect sine->lowpass->dac & play
+ * __().sine().lowpass().dac().play();
  * //ramp the frequency of the sine. 220 to 880 in 5 seconds
- * \_\_("sine").ramp(880,5,"frequency",220);</code>
+ * __("sine").ramp(880,5,"frequency",220);</code></pre>
  *
  * [See more envelope examples](../../examples/envelopes.html)
  *
  * @function
+ * @memberof cracked
+ * @name cracked#ramp
  * @public
  * @param {Number|Array} target value to ramp to
  * @param {Number|Array} timeToRamp length of ramp in seconds
@@ -967,15 +955,16 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * Set attribute values on a node. Takes an object with
  * any number of key:value pairs to set
  *
- * <code>
- * //create and connect sine->lowpass->dac & play
- * \_\_().sine().lowpass().dac().play();
+ * <pre><code>//create and connect sine->lowpass->dac & play
+ * __().sine().lowpass().dac().play();
  * //set the frequency of the sine to 880
- * \_\_("sine").attr({"frequency":880});</code>
+ * __("sine").attr({"frequency":880});</code></pre>
  *
  * [See more control examples](../../examples/control.html)
  *
  * @function
+ * @memberof cracked
+ * @name cracked#attr
  * @public
  * @param {Object} userParams options object
  * @param {String} userParams.paramName
@@ -992,14 +981,14 @@ cracked.attr = function (userParams) {
     return cracked;
 };
 
-///**
-// * parses the dot separated keys in the param string and sets the value on the node. helper for the above
-// * @private
-// * @param {Object} node native node we are setting on
-// * @param {String} keyStr unresolved parameter name
-// * @param {*} value value to set
-// * @param {Object} map name/param mapping
-// */
+/**
+ * parses the dot separated keys in the param string and sets the value on the node. helper for the above
+ * @private
+ * @param {Object} node native node we are setting on
+ * @param {String} keyStr unresolved parameter name
+ * @param {*} value value to set
+ * @param {Object} map name/param mapping
+ */
 function applyParam(node, keyStr, value, map) {
     var mappingResult = resolveParamMapping(keyStr, map),
         keyArr = mappingResult.path.split("."),
@@ -1019,12 +1008,12 @@ function applyParam(node, keyStr, value, map) {
     }
 }
 
-///**
-// * helper for above - set value at time
-// * @private
-// * @param node
-// * @param value
-// */
+/**
+ * helper for above - set value at time
+ * @private
+ * @param node
+ * @param value
+ */
 function setAudioParam(node, value) {
     if (node && __.isFun(node.setValueAtTime)) {
         var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
@@ -1033,14 +1022,14 @@ function setAudioParam(node, value) {
     }
 }
 
-///**
-// * parameter name mapping resolver takes a native node &
-// * the name to be resolved helper for above
-// * @private
-// * @param name param name
-// * @param map mapping hash
-// * @returns {*}
-// */
+/**
+ * parameter name mapping resolver takes a native node &
+ * the name to be resolved helper for above
+ * @private
+ * @param name param name
+ * @param map mapping hash
+ * @returns {*}
+ */
 function resolveParamMapping(name, map) {
     var mapping = map || {},
         result = mapping[name] || name;
@@ -1057,6 +1046,8 @@ function resolveParamMapping(name, map) {
 /**
  * Native Script node
  * @function
+ * @memberof cracked
+ * @name cracked#script
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.buffersize=4096]
@@ -1092,6 +1083,8 @@ cracked.script = function (userParams) {
 /**
  * Native Waveshaper
  * @function
+ * @memberof cracked
+ * @name cracked#waveshaper
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.drive=50]
@@ -1140,6 +1133,8 @@ cracked.waveshaper = function (userParams) {
 /**
  * Native Compressor
  * @function
+ * @memberof cracked
+ * @name cracked#compressor
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
@@ -1168,6 +1163,8 @@ cracked.compressor = function (userParams) {
 /**
  * Native Gain
  * @function
+ * @memberof cracked
+ * @name cracked#gain
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
@@ -1192,6 +1189,8 @@ cracked.gain = function (userParams) {
  * Naming this with prefix native so I can use "delay" as a plugin name
  * max buffer size three minutes
  * @function
+ * @memberof cracked
+ * @name cracked#native_delay
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.delay=0] in seconds.
@@ -1212,6 +1211,8 @@ cracked.native_delay = function (userParams) {
 /**
  * Native oscillator, used the oscillator plugins
  * @function
+ * @memberof cracked
+ * @name cracked#osc
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440]
@@ -1234,6 +1235,8 @@ cracked.osc = function (userParams) {
 /**
  * Native biquad filter, used by filter plugins
  * @function
+ * @memberof cracked
+ * @name cracked#biquadFilter
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440]
@@ -1258,6 +1261,8 @@ cracked.biquadFilter = function (userParams) {
 /**
  * Native convolver, used by reverb
  * @function
+ * @memberof cracked
+ * @name cracked#convolver
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.path] path to remote impulse
@@ -1280,6 +1285,8 @@ cracked.convolver = function (userParams) {
 /**
  * Native stereo panner, used by panner
  * @function
+ * @memberof cracked
+ * @name cracked#stereoPanner
  * @public
  * @param {Object} [userParams] map of optional values
  */
@@ -1300,6 +1307,8 @@ cracked.stereoPanner = function (userParams) {
 /**
  * Native destination, used by the dac plugin
  * @function
+ * @memberof cracked
+ * @name cracked#destination
  * @public
  * @param {Object} [userParams] map of optional values
  */
@@ -1315,6 +1324,8 @@ cracked.destination = function (userParams) {
  * Native sound input node, used by the adc plugin
  * origin = opposite of destination
  * @function
+ * @memberof cracked
+ * @name cracked#origin
  * @public
  * @param {Object} [userParams] map of optional values
  */
@@ -1331,11 +1342,11 @@ cracked.origin = function (userParams) {
     return cracked;
 };
 
-///**
-// * helper function for origin method
-// * @function
-// * @private
-// */
+/**
+* helper function for origin method
+* @function
+* @private
+*/
 function createMockMediaStream(creationParams) {
     //create buffer-less buffer source object as our mock mediastream
     creationParams.method = "createBufferSource";
@@ -1348,11 +1359,11 @@ function createMockMediaStream(creationParams) {
     return tmpnode;
 }
 
-///**
-// * helper function for origin method
-// * @function
-// * @private
-// */
+/**
+* helper function for origin method
+* @function
+* @private
+*/
 function createMediaStreamSourceNode(params,temporaryNode) {
     //make the real mediastream and drop it into place.
     var newNode = null;
@@ -1391,6 +1402,8 @@ function createMediaStreamSourceNode(params,temporaryNode) {
  * Native audio source node and buffer combined.
  * @function
  * @public
+ * @memberof cracked
+ * @name cracked#buffer
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.path] path to remote file
  * @param {Number} [userParams.speed=1] playback speed
@@ -1413,11 +1426,11 @@ cracked.buffer = function (userParams) {
     return cracked;
 };
 
-///**
-// * helper function for buffer & reverb
-// * @function
-// * @private
-// */
+/**
+* helper function for buffer & reverb
+* @function
+* @private
+*/
 function loadBuffer(userParams, node) {
     if (userParams && userParams.path && node) {
         loadBufferFromFile(userParams.path, node.getNativeNode());
@@ -1426,22 +1439,22 @@ function loadBuffer(userParams, node) {
     }
 }
 
-///**
-// * helper function for buffer & reverb
-// * @function
-// * @private
-// */
+/**
+* helper function for buffer & reverb
+* @function
+* @private
+*/
 function loadBufferWithData(dataFunction, buffersrc) {
     if (dataFunction && buffersrc) {
         buffersrc.buffer = dataFunction(_context);
     }
 }
 
-///**
-// * helper function for buffer & reverb
-// * @function
-// * @private
-// */
+/**
+* helper function for buffer & reverb
+* @function
+* @private
+*/
 function loadBufferFromFile(path_to_soundfile, buffersrc) {
     if (path_to_soundfile && buffersrc) {
         fetchSoundFile(path_to_soundfile, function (sndArray) {
@@ -1455,11 +1468,11 @@ function loadBufferFromFile(path_to_soundfile, buffersrc) {
     }
 }
 
-///**
-// * asynchronously fetches a file for the buffer and returns an arraybuffer
-// * @function
-// * @private
-// */
+/**
+* asynchronously fetches a file for the buffer and returns an arraybuffer
+* @function
+* @private
+*/
 function fetchSoundFile(path, callback) {
     if (path && callback) {
         var request = new XMLHttpRequest();
@@ -1478,11 +1491,11 @@ function fetchSoundFile(path, callback) {
  * #Sequencing#
  */
 
-///**
-// * vars for loop
-// * @type {boolean}
-// * @private
-// */
+/**
+* vars for loop
+* @type {boolean}
+* @private
+*/
 
 var _isLoopRunning = false,
     _ignoreGrid = true,
@@ -1500,21 +1513,22 @@ var _isLoopRunning = false,
 /**
  * main method for loop
  *
- * <code>
- * //configure the loop: 8 steps, 100ms between steps
- * \_\_.loop({steps:8,interval:100});
+ * <pre><code>//configure the loop: 8 steps, 100ms between steps
+ * __.loop({steps:8,interval:100});
  *
  * //start
- * \_\_.loop("start");
+ * __.loop("start");
  * //stop
- * \_\_.loop("stop");
+ * __.loop("stop");
  * //reset the loop params
- * \_\_.loop("reset");
- * </code>
+ * __.loop("reset");</code></pre>
  *
  * [See sequencing examples](../../examples/sequencing.html)
  *
  * @public
+ * @memberof cracked
+ * @name cracked#loop
+ * @function
  * @param {String} [arg] stop/start/reset commands
  * @param {Object} [config] configuration object
  * @param {Number} [config.interval=100] step length in ms
@@ -1549,28 +1563,28 @@ cracked.loop = function () {
     return cracked;
 };
 
-///**
-// * Toggles the state of the _ignoreGrid variable
-// * @private
-// */
+/**
+* Toggles the state of the _ignoreGrid variable
+* @private
+*/
 function toggleGrid() {
     if (_isLoopRunning) {
         _ignoreGrid = !_ignoreGrid;
     }
 }
 
-///**
-// * Get the millisecond value for setting timeout
-// * @private
-// */
+/**
+* Get the millisecond value for setting timeout
+* @private
+*/
 function calculateTimeout() {
     return __.sec2ms(_loopTimeToNextStep  - _context.currentTime - (__.ms2sec(_loopInterval * _loopTolerance)));
 }
 
-///**
-// * Starts the loop
-// * @private
-// */
+/**
+* Starts the loop
+* @private
+*/
 function startLoop() {
     if (!_isLoopRunning) {
         _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
@@ -1580,10 +1594,10 @@ function startLoop() {
     }
 }
 
-///**
-// * Stops the loop
-// * @private
-// */
+/**
+* Stops the loop
+* @private
+*/
 function stopLoop() {
     if (_isLoopRunning) {
         clearInterval(_loopID);
@@ -1593,10 +1607,10 @@ function stopLoop() {
     }
 }
 
-///**
-// * Resets the loop to defaults
-// * @private
-// */
+/**
+* Resets the loop to defaults
+* @private
+*/
 function resetLoop() {
     _loopStepSize = 0;
     _loopInterval = 100;
@@ -1611,13 +1625,13 @@ function resetLoop() {
     _loopTimeToNextStep = 0;
 }
 
-///**
-// * configure the loop options
-// * @param {Object} opts configuration object
-// * @param {Function} fn global callback
-// * @param {Array} data array of data to be passed to the global callback
-// * @private
-// */
+/**
+* configure the loop options
+* @param {Object} opts configuration object
+* @param {Function} fn global callback
+* @param {Array} data array of data to be passed to the global callback
+* @private
+*/
 function configureLoop(opts, fn, data) {
     if (opts && __.isObj(opts)) {
         _loopStepSize = opts.steps ? opts.steps : data && data.length ? data.length : 0;
@@ -1636,10 +1650,10 @@ function configureLoop(opts, fn, data) {
     }
 }
 
-///**
-// * called by setInterval - sets the time to next step
-// * @private
-// */
+/**
+* called by setInterval - sets the time to next step
+* @private
+*/
 function checkup() {
     var now = _context.currentTime,
         loopIntervalInSecs = __.ms2sec(_loopInterval),
@@ -1655,10 +1669,10 @@ function checkup() {
     _loopID = setTimeout(checkup, calculateTimeout());
 }
 
-///**
-// * call on every step
-// * @private
-// */
+/**
+* call on every step
+* @private
+*/
 function loopStep() {
 
     //globals- tbd deprecate. step size should just be based on available data
@@ -1697,6 +1711,9 @@ function loopStep() {
 /**
  * Listener - binds a set of audio nodes and a callback to loop step events
  * @public
+ * @memberof cracked
+ * @name cracked#bind
+ * @function
  * @param {String} eventType currently just "step"
  * @param {Function} fn callback to be invoked at each step
  * @param {Array} data should the same length as the number of steps
@@ -1721,6 +1738,9 @@ cracked.bind = function (eventType, fn, data) {
 /**
  * Remove any steps listeners registered on these nodes
  * @public
+ * @memberof cracked
+ * @function
+ * @name cracked#unbind
  * @param {String} eventType
  */
 cracked.unbind = function (eventType) {
@@ -1739,43 +1759,43 @@ cracked.unbind = function (eventType) {
  * #Model#
  */
 
-///**
-// * Resets Model
-// * @param node
-// * @private
-// */
+/**
+* Resets Model
+* @param node
+* @private
+*/
 function resetModel() {
     _nodeStore = {};
     _nodeLookup = {};
 }
 
-///**
-// * Squirrel away nodes for winter
-// * @param node
-// * @private
-// */
+/**
+* Squirrel away nodes for winter
+* @param node
+* @private
+*/
 function saveNode(node) {
     updateMacro(node);
     setNode(node);
     setNodeLookup(node);
 }
 
-///**
-// * add node to the master list
-// * @param node
-// * @private
-// */
+/**
+* add node to the master list
+* @param node
+* @private
+*/
 function setNode(node) {
     _nodeStore[node.getUUID()] = node;
 }
 
-///**
-// * save node for lookup table setting references using node type,
-// * class & id. tbd - fix bug - when saving node must walk up the
-// * macro array to get the complete namespace #11
-// * @param node
-// * @private
-// */
+/**
+* save node for lookup table setting references using node type,
+* class & id. tbd - fix bug - when saving node must walk up the
+* macro array to get the complete namespace #11
+* @param node
+* @private
+*/
 function setNodeLookup(node) {
     var params = node.getParams().settings;
     var prefix = getCurrentMacroNamespace();
@@ -1801,12 +1821,12 @@ function setNodeLookup(node) {
     node.selector_array = selector_array;
 }
 
-///**
-// * remove nodes from the model
-// * @param nodes to remove. optional. if not
-// * supplied currently selected nodes are used.
-// * @private
-// */
+/**
+* remove nodes from the model
+* @param nodes to remove. optional. if not
+* supplied currently selected nodes are used.
+* @private
+*/
 function removeModelReferences(nodes) {
     var nodesToRemove = nodes || _selectedNodes;
     nodesToRemove.forEach(removeReferences);
@@ -1831,11 +1851,11 @@ function removeModelReferences(nodes) {
     }
 }
 
-///**
-// * remove references to selected nodes tbd - need to do this for
-// * * real works ok right now for top level macros
-// * @private
-// */
+/**
+* remove references to selected nodes tbd - need to do this for
+* * real works ok right now for top level macros
+* @private
+*/
 cracked.removeMacros = function () {
     var arr = _currentSelector.split(",");
     //iterate over selectors
@@ -1862,14 +1882,14 @@ cracked.removeMacros = function () {
     }
 };
 
-///**
-// * get node with a uuid returns a AudioNode instance
-// * says uuid but actually works with a variety of input
-// * tbd - refactor this to getNode() or something
-// * @private
-// * @param {*} uuid
-// * @returns {*}
-// */
+/**
+* get node with a uuid returns a AudioNode instance
+* says uuid but actually works with a variety of input
+* tbd - refactor this to getNode() or something
+* @private
+* @param {*} uuid
+* @returns {*}
+*/
 function getNodeWithUUID(uuid) {
     if (uuid && _nodeStore[uuid]) {
         return _nodeStore[uuid];
@@ -1887,13 +1907,13 @@ function getNodeWithUUID(uuid) {
     }
 }
 
-///**
-// * get node reference, supports comma delimited selectors node
-// * type, id or class returns array of node ids
-// * @param {String} selector
-// * @returns {Array}
-// * @private
-// */
+/**
+* get node reference, supports comma delimited selectors node
+* type, id or class returns array of node ids
+* @param {String} selector
+* @returns {Array}
+* @private
+*/
 function getNodesWithSelector(selector) {
     var selector_array = selector.split(","),
         nodes = [];
@@ -1913,32 +1933,32 @@ function getNodesWithSelector(selector) {
     return nodes;
 }
 
-///**
-// * Get previous node
-// * @private
-// * @returns {*}
-// */
+/**
+* Get previous node
+* @private
+* @returns {*}
+*/
 function getPreviousNode() {
     return _previousNode;
 }
 
-///**
-// * Sets previous node
-// * @private
-// * @param {Object} node
-// */
+/**
+* Sets previous node
+* @private
+* @param {Object} node
+*/
 function setPreviousNode(node) {
     if (node) {
         _previousNode = node;
     }
 }
 
-///**
-// * Returns selector type: class, id or type
-// * @private
-// * @param {String} str
-// * @returns {string}
-// */
+/**
+* Returns selector type: class, id or type
+* @private
+* @param {String} str
+* @returns {string}
+*/
 function getSelectorType(str) {
     return str.match(/^\./) ? "class" : str.match(/^\#/) ? "id" : "type";
 }
@@ -1951,12 +1971,12 @@ function getSelectorType(str) {
  */
 
 /**
- * start macro recording, add any user parameters (id,classname,etc)
- * to the container macro
- * <code>
- * //define a simple macro named "microsynth"
- * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code>
+ * start macro recording, add any user parameters (id,classname,etc) to the container macro
+ * <pre><code>//define a simple macro named "microsynth"
+ * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#begin
  * @public
  * @function
  * @param {String} name macro name
@@ -1971,10 +1991,11 @@ cracked.begin = function (name, userParams) {
 
 /**
  * end macro recording
- * <code>
- * //define a simple macro named "microsynth"
- * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code>
+ * <pre><code>//define a simple macro named "microsynth"
+ * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#end
  * @public
  * @function
  * @param {String} name macro name
@@ -1990,11 +2011,11 @@ cracked.end = function (name) {
     return cracked;
 };
 
-///**
-// * create the macro container node
-// * @function
-// * @private
-// */
+/**
+* create the macro container node
+* @function
+* @private
+*/
 function createMacro(name, userParams) {
     //tbd - macro needs its own class
     return createNode(name, {
@@ -2002,12 +2023,12 @@ function createMacro(name, userParams) {
     }, userParams);
 }
 
-///**
-// * method that updates the current macro
-// * container with nodes as they are created
-// * @function
-// * @private
-// */
+/**
+* method that updates the current macro
+* container with nodes as they are created
+* @function
+* @private
+*/
 function updateMacro(node) {
     if (recordingMacro()) {
         node.setMacroContainerUUID(getCurrentMacro().getUUID());
@@ -2015,20 +2036,20 @@ function updateMacro(node) {
     }
 }
 
-///**
-// * are we currently recording a macro? returns boolean
-// * @function
-// * @private
-// */
+/**
+* are we currently recording a macro? returns boolean
+* @function
+* @private
+*/
 function recordingMacro() {
     return !!_currentMacro.length;
 }
 
-///**
-// * returns the current macro if there is one
-// * @function
-// * @private
-// */
+/**
+* returns the current macro if there is one
+* @function
+* @private
+*/
 function getCurrentMacro() {
     if (recordingMacro()) {
         return _currentMacro[_currentMacro.length - 1];
@@ -2037,13 +2058,13 @@ function getCurrentMacro() {
     }
 }
 
-///**
-// * walks the currentMacro stack and returns a
-// * str with the current namespace
-// * @function
-// * @private
-// * @return {String} namespace
-// */
+/**
+* walks the currentMacro stack and returns a
+* str with the current namespace
+* @function
+* @private
+* @return {String} namespace
+*/
 function getCurrentMacroNamespace() {
     var arr = [],
         space = " ";
@@ -2056,11 +2077,11 @@ function getCurrentMacroNamespace() {
     return arr.join("");
 }
 
-///**
-// * resets the current Macro;
-// * @function
-// * @private
-// */
+/**
+* resets the current Macro;
+* @function
+* @private
+*/
 function resetMacro() {
     _currentMacro = [];
 }
@@ -2082,12 +2103,14 @@ var _midi_access = null,
 
 /**
  * Is midi supported?
- * <pre><code style="color:#7f0a0c">
- * if(__.midi_supported()) {
- *      //do midi stuffs here
- *      //cuz it's supported
+ * <pre><code>if(__.midi_supported()) {
+ *      //do midi stuff here
+ *      //cuz you can
  * }</code></pre>
  * @public
+ * @memberof cracked
+ * @function
+ * @name cracked#midi_supported
  * @returns {boolean}
  */
 cracked.midi_supported = function(){
@@ -2096,13 +2119,15 @@ cracked.midi_supported = function(){
 
 /**
  * Initialize midi. Callback is invoked when ready.
- * <pre><code style="color:#7f0a0c">
- * //when midi is ready...
+ * <pre><code>//when midi is ready...
  * __.midi_init(function(){
  *      //...call this function
  * });</code></pre>
  * @param {Function} callback
+ * @memberof cracked
+ * @name cracked#midi_init
  * @public
+ * @function
  */
 cracked.midi_init = function(callback) {
     if(_midi_access) {
@@ -2126,15 +2151,17 @@ cracked.midi_init = function(callback) {
 
 /**
  * Midi input. Bind handler for the onMIDIMessage event.
- * <pre><code style="color:#7f0a0c">
- * //when midi is ready...
+ * <pre><code>//when midi is ready...
  * __.midi_init(function(){
  *      __.midi_receive(function(midiEvent){
  *          //handle incoming raw midi events here...
  *      });
  * });</code></pre>
  * @param {Function} callback
+ * @memberof cracked
+ * @name cracked#midi_receive
  * @public
+ * @function
  */
 cracked.midi_receive = function(callback){
     if(_midi_access) {
@@ -2186,8 +2213,7 @@ cracked.midi_receive = function(callback){
 
 /**
  * Midi input. Shorthand binding for note ons
- * <pre><code style="color:#7f0a0c">
- * //when midi is ready...
+ * <pre><code>//when midi is ready...
  * __.midi_init(function(){
  *      //get midi noteon events
  *      __.midi_noteon(function(noteData){
@@ -2197,6 +2223,9 @@ cracked.midi_receive = function(callback){
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @memberof cracked
+ * @name cracked#midi_noteon
+ * @function
  */
 cracked.midi_noteon = function(callback) {
     if(__.isFun(callback)) {
@@ -2207,8 +2236,7 @@ cracked.midi_noteon = function(callback) {
 
 /**
  * Midi input. Shorthand binding for note offs
- * <pre><code style="color:#7f0a0c">
- * //when midi is ready...
+ * <pre><code>//when midi is ready...
  * __.midi_init(function(){
  *      //get midi noteoff events
  *      __.midi_noteoff(function(noteData){
@@ -2218,6 +2246,9 @@ cracked.midi_noteon = function(callback) {
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @memberof cracked
+ * @name cracked#midi_noteoff
+ * @function
  */
 cracked.midi_noteoff = function(callback) {
     if(__.isFun(callback)) {
@@ -2228,8 +2259,7 @@ cracked.midi_noteoff = function(callback) {
 
 /**
  * Midi input. Shorthand binding for midi control messages
- * <pre><code style="color:#7f0a0c">
- * //when midi is ready...
+ * <pre><code>//when midi is ready...
  * __.midi_init(function(){
  *      //get midi control events
  *      __.midi_control(function(noteData){
@@ -2239,6 +2269,9 @@ cracked.midi_noteoff = function(callback) {
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @memberof cracked
+ * @name cracked#midi_control
+ * @function
  */
 cracked.midi_control = function(callback) {
     if(__.isFun(callback)) {
@@ -2256,15 +2289,15 @@ cracked.midi_control = function(callback) {
  */
 
 /**
- * chainable method to connect nodes to previously instantiated
- * nodes. Takes a selector to find the nodes to connect to.
- * <code>
- *     //create and connect sine->lowpass->dac
- *     \_\_().sine().lowpass().dac();
- *     //create a sawtooth and connect to the lowpass instantiated above
- *     \_\_().saw().connect("lowpass");</code>
+ * chainable method to connect nodes to previously instantiated nodes. Takes a selector to find the nodes to connect to.
+ * <pre><code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //create a sawtooth and connect to the lowpass instantiated above
+ * __().saw().connect("lowpass");</code></pre>
  *
  * @public
+ * @memberof cracked
+ * @name cracked#connect
  * @function
  * @param {String} selector selector expression
  * @return cracked
@@ -2288,11 +2321,11 @@ cracked.connect = function () {
     return cracked;
 };
 
-///**
-// * helper for connect method above
-// * @function
-// * @private
-// */
+/**
+ * helper for connect method above
+ * @function
+ * @private
+ */
 function connectPreviousToSelected() {
     var pNode = getPreviousNode();
     _selectedNodes.forEach(function (node, i, array) {
@@ -2308,16 +2341,15 @@ function connectPreviousToSelected() {
 
 //disconnects and removes all references to selected nodes
 /**
- * chainable method to stop, disconnect and remove
- * the currently selected nodes. Takes a time in ms to
- * schedule the node removal.
- * <code>
- *     //create and connect sine->lowpass->dac
- *     \_\_().sine().lowpass().dac();
- *     //remove the lowpass instantiated above in 100ms
- *     \_\_("lowpass").remove(100);</code>
+ * chainable method to stop, disconnect and remove the currently selected nodes. Takes a time in ms to schedule the node removal.
+ * <pre><code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //remove the lowpass instantiated above in 100ms
+ * __("lowpass").remove(100);</code></pre>
  *
  * @public
+ * @memberof cracked
+ * @name cracked#remove
  * @function
  * @param {Number} time in ms to schedule node removal
  * @return cracked
@@ -2346,13 +2378,13 @@ cracked.remove = function(time) {
     }
 };
 
-///**
-// * flatten multidimensional arrays
-// * @private
-// * @param {Array} a
-// * @param {Array} r
-// * @returns {*|Array}
-// */
+/**
+* flatten multidimensional arrays
+* @private
+* @param {Array} a
+* @param {Array} r
+* @returns {*|Array} 
+*/
 function flatten(a, r) {
     //http://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
     r = r || [];
@@ -2366,12 +2398,12 @@ function flatten(a, r) {
     return r;
 }
 
-///**
-// * Dedupe array
-// * @private
-// * @param {Array} array
-// * @returns {*|Array|string}
-// */
+/**
+* Dedupe array
+* @private
+* @param {Array} array
+* @returns {*|Array|string}
+*/
 function arrayUnique(array) {
     var a = array.concat();
     for (var i = 0; i < a.length; ++i) {
@@ -2384,11 +2416,11 @@ function arrayUnique(array) {
     return a;
 }
 
-///**
-// * get unique id
-// * @private
-// * @returns {string}
-// */
+/**
+* get unique id
+* @private
+* @returns {string}
+*/
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0,
@@ -2397,13 +2429,13 @@ function generateUUID() {
     });
 }
 
-///**
-// * helper function to set values in a map
-// * @param {Object} map
-// * @param {string} key
-// * @param {*} value
-// * @private
-// */
+/**
+* helper function to set values in a map
+* @param {Object} map
+* @param {string} key
+* @param {*} value
+* @private
+*/
 function setter(map, key, value) {
     if (map && key) {
         if (map[key] && map[key].push) {
@@ -2414,13 +2446,13 @@ function setter(map, key, value) {
     }
 }
 
-///**
-// * helper function to remove values in a map
-// * @param {Object} map
-// * @param {string} key
-// * @param {*} value
-// * @private
-// */
+/**
+* helper function to remove values in a map
+* @param {Object} map
+* @param {string} key
+* @param {*} value
+* @private
+*/
 function unsetter(map, key, value) {
     if(__.isNotUndef(map[key])) {
         if(__.isArr(map[key])) {
@@ -2436,13 +2468,13 @@ function unsetter(map, key, value) {
     }
 }
 
-///**
-// * adds and overwrites properties from the src obect to the target object
-// * @private
-// * @param source
-// * @param target
-// * @returns {*|{}}
-// */
+/**
+* adds and overwrites properties from the src obect to the target object
+* @private
+* @param source
+* @param target
+* @returns {*|{}}
+*/
 function mergeObjects(source, target) {
     source = source || {};
     target = target || {};
@@ -2456,18 +2488,19 @@ function mergeObjects(source, target) {
 
 // Development/Debug
 /**
- * #Debug#
+ * @description Debug
  */
 
 /**
  * log selected nodes to console if any.
- * <code>
- * //create and connect sine -> lowpass -> dac
- * \_\_().sine().lowpass().dac();
+ * <pre><code>//create and connect sine -> lowpass -> dac
+ * __().sine().lowpass().dac();
  *
  * //logs the [oscillatorNode] object to the console
- * \_\_("sine").log()</code>
+ * __("sine").log()</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#log
  * @public
  * @function
  */
@@ -2477,12 +2510,12 @@ cracked.log = function () {
     console.log(arr);
 };
 
-///**
-// * helper for above
-// * @private
-// * @param node
-// * @param arr
-// */
+/**
+ * helper for above
+ * @private
+ * @param node
+ * @param arr
+ */
 function logNodes(node, arr) {
     if (_currentSelector) {
         var nodes = arr || [];
@@ -2503,13 +2536,14 @@ function logNodes(node, arr) {
 
 /**
  * return the length of selected nodes array
- * <code>
- * //create and connect sine -> lowpass -> dac
- * \_\_().sine().lowpass().dac();
+ * <pre><code>//create and connect sine -> lowpass -> dac
+ * __().sine().lowpass().dac();
  *
  * //returns 2
- * \_\_("sine,lowpass").size();</code>
+ * __("sine,lowpass").size();</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#size
  * @public
  * @function
  * @returns {Number}
@@ -2529,11 +2563,11 @@ cracked.size = function () {
     }
 })();
 
-///**
-// * print a ton of shit to the console
-// * @private
-// * @param msg
-// */
+/**
+ * print a ton of shit to the console
+ * @private
+ * @param msg
+ */
 function logToConsole(msg) {
     if (_debugEnabled) {
         console.log(msg);
@@ -2543,7 +2577,10 @@ function logToConsole(msg) {
 /**
  * dump the node lookup object to the console
  * debug only
+ * @memberof cracked
+ * @name cracked#_dumpState
  * @public
+ * @function
  */
 cracked._dumpState = function () {
     console.log(_nodeLookup,_nodeStore);
@@ -2555,17 +2592,20 @@ cracked._dumpState = function () {
  * @param uuid
  * @returns {*}
  * @public
+ * @function
+ * @memberof cracked
+ * @name cracked#_getNode
  */
 cracked._getNode = function (uuid) {
     return (getNodeWithUUID(uuid));
 };
 
-///**
-// * log connections
-// * @param nodeToConnect
-// * @param node
-// * @private
-// */
+/**
+ * log connections
+ * @param nodeToConnect
+ * @param node
+ * @private
+ */
 function logConnections(nodeToConnect, node) {
 
     var vals = [
@@ -2586,6 +2626,9 @@ window.__ = window.__ || cracked;
 /**
  * Returns the 2nd argument if the 1st is undefined
  * @plugin
+ * @function
+ * @name cracked#ifUndef
+ * @memberof cracked
  * @param {*} test thing to test for undefined
  * @param {*} def default value to return if test is undefined
  */
@@ -2596,6 +2639,9 @@ cracked.ifUndef = function(test, def) {
 /**
  * Returns true if not undefined
  * @plugin
+ * @function
+ * @name cracked#isNotUndef
+ * @memberof cracked
  * @param {*} test thing to test for undefined
  */
 cracked.isNotUndef = function(test) {
@@ -2605,6 +2651,9 @@ cracked.isNotUndef = function(test) {
 /**
  * Returns true if undefined
  * @plugin
+ * @function
+ * @name cracked#isUndef
+ * @memberof cracked
  * @param {*} test thing to test for undefined
  */
 cracked.isUndef = function(test) {
@@ -2614,6 +2663,9 @@ cracked.isUndef = function(test) {
 /**
  * Returns true if param is an object
  * @plugin
+ * @function
+ * @name cracked#isObj
+ * @memberof cracked
  * @param {*} obj thing to test
  */
 cracked.isObj = function(obj) {
@@ -2623,6 +2675,9 @@ cracked.isObj = function(obj) {
 /**
  * Returns true if param is a number
  * @plugin
+ * @function
+ * @name cracked#isNum
+ * @memberof cracked
  * @param {*} num thing to test
  */
 cracked.isNum = function(num) {
@@ -2636,6 +2691,9 @@ cracked.isNum = function(num) {
 /**
  * Returns true if param is a string
  * @plugin
+ * @function
+ * @name cracked#isStr
+ * @memberof cracked
  * @param {*} str thing to test
  */
 cracked.isStr = function(str) {
@@ -2645,6 +2703,9 @@ cracked.isStr = function(str) {
 /**
  * Returns true if param is an array
  * @plugin
+ * @function
+ * @name cracked#isArr
+ * @memberof cracked
  * @param {*} arr thing to test
  */
 cracked.isArr = function(arr) {
@@ -2654,6 +2715,9 @@ cracked.isArr = function(arr) {
 /**
  * Returns true if param is a function
  * @plugin
+ * @function
+ * @name cracked#isFun
+ * @memberof cracked
  * @param {*} fn thing to test
  */
 cracked.isFun = function(fn) {

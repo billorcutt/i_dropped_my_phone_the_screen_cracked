@@ -1,10 +1,10 @@
-///**
-// * flatten multidimensional arrays
-// * @private
-// * @param {Array} a
-// * @param {Array} r
-// * @returns {*|Array}
-// */
+/**
+* flatten multidimensional arrays
+* @private
+* @param {Array} a
+* @param {Array} r
+* @returns {*|Array} 
+*/
 function flatten(a, r) {
     //http://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
     r = r || [];
@@ -18,12 +18,12 @@ function flatten(a, r) {
     return r;
 }
 
-///**
-// * Dedupe array
-// * @private
-// * @param {Array} array
-// * @returns {*|Array|string}
-// */
+/**
+* Dedupe array
+* @private
+* @param {Array} array
+* @returns {*|Array|string}
+*/
 function arrayUnique(array) {
     var a = array.concat();
     for (var i = 0; i < a.length; ++i) {
@@ -36,11 +36,11 @@ function arrayUnique(array) {
     return a;
 }
 
-///**
-// * get unique id
-// * @private
-// * @returns {string}
-// */
+/**
+* get unique id
+* @private
+* @returns {string}
+*/
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0,
@@ -49,13 +49,13 @@ function generateUUID() {
     });
 }
 
-///**
-// * helper function to set values in a map
-// * @param {Object} map
-// * @param {string} key
-// * @param {*} value
-// * @private
-// */
+/**
+* helper function to set values in a map
+* @param {Object} map
+* @param {string} key
+* @param {*} value
+* @private
+*/
 function setter(map, key, value) {
     if (map && key) {
         if (map[key] && map[key].push) {
@@ -66,13 +66,13 @@ function setter(map, key, value) {
     }
 }
 
-///**
-// * helper function to remove values in a map
-// * @param {Object} map
-// * @param {string} key
-// * @param {*} value
-// * @private
-// */
+/**
+* helper function to remove values in a map
+* @param {Object} map
+* @param {string} key
+* @param {*} value
+* @private
+*/
 function unsetter(map, key, value) {
     if(__.isNotUndef(map[key])) {
         if(__.isArr(map[key])) {
@@ -88,13 +88,13 @@ function unsetter(map, key, value) {
     }
 }
 
-///**
-// * adds and overwrites properties from the src obect to the target object
-// * @private
-// * @param source
-// * @param target
-// * @returns {*|{}}
-// */
+/**
+* adds and overwrites properties from the src obect to the target object
+* @private
+* @param source
+* @param target
+* @returns {*|{}}
+*/
 function mergeObjects(source, target) {
     source = source || {};
     target = target || {};

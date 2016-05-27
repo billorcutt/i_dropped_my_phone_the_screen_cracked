@@ -2,11 +2,11 @@
  * #Sequencing#
  */
 
-///**
-// * vars for loop
-// * @type {boolean}
-// * @private
-// */
+/**
+* vars for loop
+* @type {boolean}
+* @private
+*/
 
 var _isLoopRunning = false,
     _ignoreGrid = true,
@@ -24,21 +24,22 @@ var _isLoopRunning = false,
 /**
  * main method for loop
  *
- * <code>
- * //configure the loop: 8 steps, 100ms between steps
- * \_\_.loop({steps:8,interval:100});
+ * <pre><code>//configure the loop: 8 steps, 100ms between steps
+ * __.loop({steps:8,interval:100});
  *
  * //start
- * \_\_.loop("start");
+ * __.loop("start");
  * //stop
- * \_\_.loop("stop");
+ * __.loop("stop");
  * //reset the loop params
- * \_\_.loop("reset");
- * </code>
+ * __.loop("reset");</code></pre>
  *
  * [See sequencing examples](../../examples/sequencing.html)
  *
  * @public
+ * @memberof cracked
+ * @name cracked#loop
+ * @function
  * @param {String} [arg] stop/start/reset commands
  * @param {Object} [config] configuration object
  * @param {Number} [config.interval=100] step length in ms
@@ -73,28 +74,28 @@ cracked.loop = function () {
     return cracked;
 };
 
-///**
-// * Toggles the state of the _ignoreGrid variable
-// * @private
-// */
+/**
+* Toggles the state of the _ignoreGrid variable
+* @private
+*/
 function toggleGrid() {
     if (_isLoopRunning) {
         _ignoreGrid = !_ignoreGrid;
     }
 }
 
-///**
-// * Get the millisecond value for setting timeout
-// * @private
-// */
+/**
+* Get the millisecond value for setting timeout
+* @private
+*/
 function calculateTimeout() {
     return __.sec2ms(_loopTimeToNextStep  - _context.currentTime - (__.ms2sec(_loopInterval * _loopTolerance)));
 }
 
-///**
-// * Starts the loop
-// * @private
-// */
+/**
+* Starts the loop
+* @private
+*/
 function startLoop() {
     if (!_isLoopRunning) {
         _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
@@ -104,10 +105,10 @@ function startLoop() {
     }
 }
 
-///**
-// * Stops the loop
-// * @private
-// */
+/**
+* Stops the loop
+* @private
+*/
 function stopLoop() {
     if (_isLoopRunning) {
         clearInterval(_loopID);
@@ -117,10 +118,10 @@ function stopLoop() {
     }
 }
 
-///**
-// * Resets the loop to defaults
-// * @private
-// */
+/**
+* Resets the loop to defaults
+* @private
+*/
 function resetLoop() {
     _loopStepSize = 0;
     _loopInterval = 100;
@@ -135,13 +136,13 @@ function resetLoop() {
     _loopTimeToNextStep = 0;
 }
 
-///**
-// * configure the loop options
-// * @param {Object} opts configuration object
-// * @param {Function} fn global callback
-// * @param {Array} data array of data to be passed to the global callback
-// * @private
-// */
+/**
+* configure the loop options
+* @param {Object} opts configuration object
+* @param {Function} fn global callback
+* @param {Array} data array of data to be passed to the global callback
+* @private
+*/
 function configureLoop(opts, fn, data) {
     if (opts && __.isObj(opts)) {
         _loopStepSize = opts.steps ? opts.steps : data && data.length ? data.length : 0;
@@ -160,10 +161,10 @@ function configureLoop(opts, fn, data) {
     }
 }
 
-///**
-// * called by setInterval - sets the time to next step
-// * @private
-// */
+/**
+* called by setInterval - sets the time to next step
+* @private
+*/
 function checkup() {
     var now = _context.currentTime,
         loopIntervalInSecs = __.ms2sec(_loopInterval),
@@ -179,10 +180,10 @@ function checkup() {
     _loopID = setTimeout(checkup, calculateTimeout());
 }
 
-///**
-// * call on every step
-// * @private
-// */
+/**
+* call on every step
+* @private
+*/
 function loopStep() {
 
     //globals- tbd deprecate. step size should just be based on available data
@@ -221,6 +222,9 @@ function loopStep() {
 /**
  * Listener - binds a set of audio nodes and a callback to loop step events
  * @public
+ * @memberof cracked
+ * @name cracked#bind
+ * @function
  * @param {String} eventType currently just "step"
  * @param {Function} fn callback to be invoked at each step
  * @param {Array} data should the same length as the number of steps
@@ -245,6 +249,9 @@ cracked.bind = function (eventType, fn, data) {
 /**
  * Remove any steps listeners registered on these nodes
  * @public
+ * @memberof cracked
+ * @function
+ * @name cracked#unbind
  * @param {String} eventType
  */
 cracked.unbind = function (eventType) {

@@ -5,15 +5,15 @@
  */
 
 /**
- * chainable method to connect nodes to previously instantiated
- * nodes. Takes a selector to find the nodes to connect to.
- * <code>
- *     //create and connect sine->lowpass->dac
- *     \_\_().sine().lowpass().dac();
- *     //create a sawtooth and connect to the lowpass instantiated above
- *     \_\_().saw().connect("lowpass");</code>
+ * chainable method to connect nodes to previously instantiated nodes. Takes a selector to find the nodes to connect to.
+ * <pre><code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //create a sawtooth and connect to the lowpass instantiated above
+ * __().saw().connect("lowpass");</code></pre>
  *
  * @public
+ * @memberof cracked
+ * @name cracked#connect
  * @function
  * @param {String} selector selector expression
  * @return cracked
@@ -37,11 +37,11 @@ cracked.connect = function () {
     return cracked;
 };
 
-///**
-// * helper for connect method above
-// * @function
-// * @private
-// */
+/**
+ * helper for connect method above
+ * @function
+ * @private
+ */
 function connectPreviousToSelected() {
     var pNode = getPreviousNode();
     _selectedNodes.forEach(function (node, i, array) {
@@ -57,16 +57,15 @@ function connectPreviousToSelected() {
 
 //disconnects and removes all references to selected nodes
 /**
- * chainable method to stop, disconnect and remove
- * the currently selected nodes. Takes a time in ms to
- * schedule the node removal.
- * <code>
- *     //create and connect sine->lowpass->dac
- *     \_\_().sine().lowpass().dac();
- *     //remove the lowpass instantiated above in 100ms
- *     \_\_("lowpass").remove(100);</code>
+ * chainable method to stop, disconnect and remove the currently selected nodes. Takes a time in ms to schedule the node removal.
+ * <pre><code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //remove the lowpass instantiated above in 100ms
+ * __("lowpass").remove(100);</code></pre>
  *
  * @public
+ * @memberof cracked
+ * @name cracked#remove
  * @function
  * @param {Number} time in ms to schedule node removal
  * @return cracked

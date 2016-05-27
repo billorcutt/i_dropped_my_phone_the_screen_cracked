@@ -1,6 +1,9 @@
 /**
  * Returns the 2nd argument if the 1st is undefined
  * @plugin
+ * @function
+ * @name cracked#ifUndef
+ * @memberof cracked
  * @param {*} test thing to test for undefined
  * @param {*} def default value to return if test is undefined
  */
@@ -11,6 +14,9 @@ cracked.ifUndef = function(test, def) {
 /**
  * Returns true if not undefined
  * @plugin
+ * @function
+ * @name cracked#isNotUndef
+ * @memberof cracked
  * @param {*} test thing to test for undefined
  */
 cracked.isNotUndef = function(test) {
@@ -20,6 +26,9 @@ cracked.isNotUndef = function(test) {
 /**
  * Returns true if undefined
  * @plugin
+ * @function
+ * @name cracked#isUndef
+ * @memberof cracked
  * @param {*} test thing to test for undefined
  */
 cracked.isUndef = function(test) {
@@ -29,6 +38,9 @@ cracked.isUndef = function(test) {
 /**
  * Returns true if param is an object
  * @plugin
+ * @function
+ * @name cracked#isObj
+ * @memberof cracked
  * @param {*} obj thing to test
  */
 cracked.isObj = function(obj) {
@@ -38,6 +50,9 @@ cracked.isObj = function(obj) {
 /**
  * Returns true if param is a number
  * @plugin
+ * @function
+ * @name cracked#isNum
+ * @memberof cracked
  * @param {*} num thing to test
  */
 cracked.isNum = function(num) {
@@ -51,6 +66,9 @@ cracked.isNum = function(num) {
 /**
  * Returns true if param is a string
  * @plugin
+ * @function
+ * @name cracked#isStr
+ * @memberof cracked
  * @param {*} str thing to test
  */
 cracked.isStr = function(str) {
@@ -60,6 +78,9 @@ cracked.isStr = function(str) {
 /**
  * Returns true if param is an array
  * @plugin
+ * @function
+ * @name cracked#isArr
+ * @memberof cracked
  * @param {*} arr thing to test
  */
 cracked.isArr = function(arr) {
@@ -69,6 +90,9 @@ cracked.isArr = function(arr) {
 /**
  * Returns true if param is a function
  * @plugin
+ * @function
+ * @name cracked#isFun
+ * @memberof cracked
  * @param {*} fn thing to test
  */
 cracked.isFun = function(fn) {

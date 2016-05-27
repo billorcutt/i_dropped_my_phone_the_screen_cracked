@@ -6,6 +6,8 @@
 /**
  * Native Script node
  * @function
+ * @memberof cracked
+ * @name cracked#script
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.buffersize=4096]
@@ -41,6 +43,8 @@ cracked.script = function (userParams) {
 /**
  * Native Waveshaper
  * @function
+ * @memberof cracked
+ * @name cracked#waveshaper
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.drive=50]
@@ -89,6 +93,8 @@ cracked.waveshaper = function (userParams) {
 /**
  * Native Compressor
  * @function
+ * @memberof cracked
+ * @name cracked#compressor
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
@@ -117,6 +123,8 @@ cracked.compressor = function (userParams) {
 /**
  * Native Gain
  * @function
+ * @memberof cracked
+ * @name cracked#gain
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.threshold=-24] in decibels, nominal range of -100 to 0.
@@ -141,6 +149,8 @@ cracked.gain = function (userParams) {
  * Naming this with prefix native so I can use "delay" as a plugin name
  * max buffer size three minutes
  * @function
+ * @memberof cracked
+ * @name cracked#native_delay
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.delay=0] in seconds.
@@ -161,6 +171,8 @@ cracked.native_delay = function (userParams) {
 /**
  * Native oscillator, used the oscillator plugins
  * @function
+ * @memberof cracked
+ * @name cracked#osc
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440]
@@ -183,6 +195,8 @@ cracked.osc = function (userParams) {
 /**
  * Native biquad filter, used by filter plugins
  * @function
+ * @memberof cracked
+ * @name cracked#biquadFilter
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.frequency=440]
@@ -207,6 +221,8 @@ cracked.biquadFilter = function (userParams) {
 /**
  * Native convolver, used by reverb
  * @function
+ * @memberof cracked
+ * @name cracked#convolver
  * @public
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.path] path to remote impulse
@@ -229,6 +245,8 @@ cracked.convolver = function (userParams) {
 /**
  * Native stereo panner, used by panner
  * @function
+ * @memberof cracked
+ * @name cracked#stereoPanner
  * @public
  * @param {Object} [userParams] map of optional values
  */
@@ -249,6 +267,8 @@ cracked.stereoPanner = function (userParams) {
 /**
  * Native destination, used by the dac plugin
  * @function
+ * @memberof cracked
+ * @name cracked#destination
  * @public
  * @param {Object} [userParams] map of optional values
  */
@@ -264,6 +284,8 @@ cracked.destination = function (userParams) {
  * Native sound input node, used by the adc plugin
  * origin = opposite of destination
  * @function
+ * @memberof cracked
+ * @name cracked#origin
  * @public
  * @param {Object} [userParams] map of optional values
  */
@@ -280,11 +302,11 @@ cracked.origin = function (userParams) {
     return cracked;
 };
 
-///**
-// * helper function for origin method
-// * @function
-// * @private
-// */
+/**
+* helper function for origin method
+* @function
+* @private
+*/
 function createMockMediaStream(creationParams) {
     //create buffer-less buffer source object as our mock mediastream
     creationParams.method = "createBufferSource";
@@ -297,11 +319,11 @@ function createMockMediaStream(creationParams) {
     return tmpnode;
 }
 
-///**
-// * helper function for origin method
-// * @function
-// * @private
-// */
+/**
+* helper function for origin method
+* @function
+* @private
+*/
 function createMediaStreamSourceNode(params,temporaryNode) {
     //make the real mediastream and drop it into place.
     var newNode = null;
@@ -340,6 +362,8 @@ function createMediaStreamSourceNode(params,temporaryNode) {
  * Native audio source node and buffer combined.
  * @function
  * @public
+ * @memberof cracked
+ * @name cracked#buffer
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.path] path to remote file
  * @param {Number} [userParams.speed=1] playback speed
@@ -362,11 +386,11 @@ cracked.buffer = function (userParams) {
     return cracked;
 };
 
-///**
-// * helper function for buffer & reverb
-// * @function
-// * @private
-// */
+/**
+* helper function for buffer & reverb
+* @function
+* @private
+*/
 function loadBuffer(userParams, node) {
     if (userParams && userParams.path && node) {
         loadBufferFromFile(userParams.path, node.getNativeNode());
@@ -375,22 +399,22 @@ function loadBuffer(userParams, node) {
     }
 }
 
-///**
-// * helper function for buffer & reverb
-// * @function
-// * @private
-// */
+/**
+* helper function for buffer & reverb
+* @function
+* @private
+*/
 function loadBufferWithData(dataFunction, buffersrc) {
     if (dataFunction && buffersrc) {
         buffersrc.buffer = dataFunction(_context);
     }
 }
 
-///**
-// * helper function for buffer & reverb
-// * @function
-// * @private
-// */
+/**
+* helper function for buffer & reverb
+* @function
+* @private
+*/
 function loadBufferFromFile(path_to_soundfile, buffersrc) {
     if (path_to_soundfile && buffersrc) {
         fetchSoundFile(path_to_soundfile, function (sndArray) {
@@ -404,11 +428,11 @@ function loadBufferFromFile(path_to_soundfile, buffersrc) {
     }
 }
 
-///**
-// * asynchronously fetches a file for the buffer and returns an arraybuffer
-// * @function
-// * @private
-// */
+/**
+* asynchronously fetches a file for the buffer and returns an arraybuffer
+* @function
+* @private
+*/
 function fetchSoundFile(path, callback) {
     if (path && callback) {
         var request = new XMLHttpRequest();

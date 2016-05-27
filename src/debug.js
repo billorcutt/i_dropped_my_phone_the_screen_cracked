@@ -1,17 +1,18 @@
 // Development/Debug
 /**
- * #Debug#
+ * @description Debug
  */
 
 /**
  * log selected nodes to console if any.
- * <code>
- * //create and connect sine -> lowpass -> dac
- * \_\_().sine().lowpass().dac();
+ * <pre><code>//create and connect sine -> lowpass -> dac
+ * __().sine().lowpass().dac();
  *
  * //logs the [oscillatorNode] object to the console
- * \_\_("sine").log()</code>
+ * __("sine").log()</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#log
  * @public
  * @function
  */
@@ -21,12 +22,12 @@ cracked.log = function () {
     console.log(arr);
 };
 
-///**
-// * helper for above
-// * @private
-// * @param node
-// * @param arr
-// */
+/**
+ * helper for above
+ * @private
+ * @param node
+ * @param arr
+ */
 function logNodes(node, arr) {
     if (_currentSelector) {
         var nodes = arr || [];
@@ -47,13 +48,14 @@ function logNodes(node, arr) {
 
 /**
  * return the length of selected nodes array
- * <code>
- * //create and connect sine -> lowpass -> dac
- * \_\_().sine().lowpass().dac();
+ * <pre><code>//create and connect sine -> lowpass -> dac
+ * __().sine().lowpass().dac();
  *
  * //returns 2
- * \_\_("sine,lowpass").size();</code>
+ * __("sine,lowpass").size();</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#size
  * @public
  * @function
  * @returns {Number}
@@ -73,11 +75,11 @@ cracked.size = function () {
     }
 })();
 
-///**
-// * print a ton of shit to the console
-// * @private
-// * @param msg
-// */
+/**
+ * print a ton of shit to the console
+ * @private
+ * @param msg
+ */
 function logToConsole(msg) {
     if (_debugEnabled) {
         console.log(msg);
@@ -87,7 +89,10 @@ function logToConsole(msg) {
 /**
  * dump the node lookup object to the console
  * debug only
+ * @memberof cracked
+ * @name cracked#_dumpState
  * @public
+ * @function
  */
 cracked._dumpState = function () {
     console.log(_nodeLookup,_nodeStore);
@@ -99,17 +104,20 @@ cracked._dumpState = function () {
  * @param uuid
  * @returns {*}
  * @public
+ * @function
+ * @memberof cracked
+ * @name cracked#_getNode
  */
 cracked._getNode = function (uuid) {
     return (getNodeWithUUID(uuid));
 };
 
-///**
-// * log connections
-// * @param nodeToConnect
-// * @param node
-// * @private
-// */
+/**
+ * log connections
+ * @param nodeToConnect
+ * @param node
+ * @private
+ */
 function logConnections(nodeToConnect, node) {
 
     var vals = [

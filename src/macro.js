@@ -6,12 +6,12 @@
  */
 
 /**
- * start macro recording, add any user parameters (id,classname,etc)
- * to the container macro
- * <code>
- * //define a simple macro named "microsynth"
- * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code>
+ * start macro recording, add any user parameters (id,classname,etc) to the container macro
+ * <pre><code>//define a simple macro named "microsynth"
+ * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#begin
  * @public
  * @function
  * @param {String} name macro name
@@ -26,10 +26,11 @@ cracked.begin = function (name, userParams) {
 
 /**
  * end macro recording
- * <code>
- * //define a simple macro named "microsynth"
- * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code>
+ * <pre><code>//define a simple macro named "microsynth"
+ * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
+ * @memberof cracked
+ * @name cracked#end
  * @public
  * @function
  * @param {String} name macro name
@@ -45,11 +46,11 @@ cracked.end = function (name) {
     return cracked;
 };
 
-///**
-// * create the macro container node
-// * @function
-// * @private
-// */
+/**
+* create the macro container node
+* @function
+* @private
+*/
 function createMacro(name, userParams) {
     //tbd - macro needs its own class
     return createNode(name, {
@@ -57,12 +58,12 @@ function createMacro(name, userParams) {
     }, userParams);
 }
 
-///**
-// * method that updates the current macro
-// * container with nodes as they are created
-// * @function
-// * @private
-// */
+/**
+* method that updates the current macro
+* container with nodes as they are created
+* @function
+* @private
+*/
 function updateMacro(node) {
     if (recordingMacro()) {
         node.setMacroContainerUUID(getCurrentMacro().getUUID());
@@ -70,20 +71,20 @@ function updateMacro(node) {
     }
 }
 
-///**
-// * are we currently recording a macro? returns boolean
-// * @function
-// * @private
-// */
+/**
+* are we currently recording a macro? returns boolean
+* @function
+* @private
+*/
 function recordingMacro() {
     return !!_currentMacro.length;
 }
 
-///**
-// * returns the current macro if there is one
-// * @function
-// * @private
-// */
+/**
+* returns the current macro if there is one
+* @function
+* @private
+*/
 function getCurrentMacro() {
     if (recordingMacro()) {
         return _currentMacro[_currentMacro.length - 1];
@@ -92,13 +93,13 @@ function getCurrentMacro() {
     }
 }
 
-///**
-// * walks the currentMacro stack and returns a
-// * str with the current namespace
-// * @function
-// * @private
-// * @return {String} namespace
-// */
+/**
+* walks the currentMacro stack and returns a
+* str with the current namespace
+* @function
+* @private
+* @return {String} namespace
+*/
 function getCurrentMacroNamespace() {
     var arr = [],
         space = " ";
@@ -111,11 +112,11 @@ function getCurrentMacroNamespace() {
     return arr.join("");
 }
 
-///**
-// * resets the current Macro;
-// * @function
-// * @private
-// */
+/**
+* resets the current Macro;
+* @function
+* @private
+*/
 function resetMacro() {
     _currentMacro = [];
 }
