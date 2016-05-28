@@ -42,6 +42,7 @@
  *
  *
  * @public
+ * @category Find
  * @type cracked
  * @function
  * @namespace
@@ -149,6 +150,7 @@ function resetSelection() {
  * <pre><code>//reset state for the entire app
  *  cracked.reset();</code></pre>
  * @public
+ * @category Find
  * @name cracked#reset
  * @memberof cracked
  * @function
@@ -175,6 +177,7 @@ cracked.reset = function() {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @function
  * @name cracked#exec
  * @memberof cracked
@@ -199,6 +202,7 @@ cracked.exec = function (method, args, nodes) {
      * });</code></pre>
  *
  * @public
+ * @category Find
  * @name cracked#each
  * @memberof cracked
  * @function
@@ -233,6 +237,7 @@ cracked.each = function (type, fn) {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @name cracked#filter
  * @memberof cracked
  * @function
@@ -271,6 +276,7 @@ cracked.filter = function () {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @name cracked#find
  * @memberof cracked
  * @function

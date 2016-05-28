@@ -6,6 +6,7 @@
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#sine
@@ -35,6 +36,7 @@ cracked.sine = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#square
@@ -64,6 +66,7 @@ cracked.square = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#saw
@@ -93,6 +96,7 @@ cracked.saw = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#triangle

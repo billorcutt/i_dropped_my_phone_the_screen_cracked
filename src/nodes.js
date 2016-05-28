@@ -9,6 +9,7 @@
  * @memberof cracked
  * @name cracked#script
  * @public
+ * @category Node
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.buffersize=4096]
  * @param {Number} [userParams.channels=1]
@@ -44,6 +45,7 @@ cracked.script = function (userParams) {
  * Native Waveshaper
  * @function
  * @memberof cracked
+ * @category Node
  * @name cracked#waveshaper
  * @public
  * @param {Object} [userParams] map of optional values
@@ -93,6 +95,7 @@ cracked.waveshaper = function (userParams) {
 /**
  * Native Compressor
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#compressor
  * @public
@@ -123,6 +126,7 @@ cracked.compressor = function (userParams) {
 /**
  * Native Gain
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#gain
  * @public
@@ -149,6 +153,7 @@ cracked.gain = function (userParams) {
  * Naming this with prefix native so I can use "delay" as a plugin name
  * max buffer size three minutes
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#native_delay
  * @public
@@ -171,6 +176,7 @@ cracked.native_delay = function (userParams) {
 /**
  * Native oscillator, used the oscillator plugins
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#osc
  * @public
@@ -195,6 +201,7 @@ cracked.osc = function (userParams) {
 /**
  * Native biquad filter, used by filter plugins
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#biquadFilter
  * @public
@@ -221,6 +228,7 @@ cracked.biquadFilter = function (userParams) {
 /**
  * Native convolver, used by reverb
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#convolver
  * @public
@@ -245,6 +253,7 @@ cracked.convolver = function (userParams) {
 /**
  * Native stereo panner, used by panner
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#stereoPanner
  * @public
@@ -267,6 +276,7 @@ cracked.stereoPanner = function (userParams) {
 /**
  * Native destination, used by the dac plugin
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#destination
  * @public
@@ -284,6 +294,7 @@ cracked.destination = function (userParams) {
  * Native sound input node, used by the adc plugin
  * origin = opposite of destination
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#origin
  * @public

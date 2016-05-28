@@ -4,6 +4,7 @@
  * [See more LFO examples](../../examples/modulation.html)
  *
  * @plugin
+ * @category Modulator
  * @function
  * @memberof cracked
  * @name cracked#lfo
@@ -51,6 +52,7 @@ cracked.lfo = function (userParams) {
  * fill an audio buffer with a series of discrete values
  *
  * @plugin
+ * @category Modulator
  * @function
  * @memberof cracked
  * @name cracked#stepper

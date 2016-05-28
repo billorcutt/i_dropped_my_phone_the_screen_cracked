@@ -11,6 +11,7 @@
  * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
  * @memberof cracked
+ * @category Macro
  * @name cracked#begin
  * @public
  * @function
@@ -30,6 +31,7 @@ cracked.begin = function (name, userParams) {
  * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
  * @memberof cracked
+ * @category Macro
  * @name cracked#end
  * @public
  * @function

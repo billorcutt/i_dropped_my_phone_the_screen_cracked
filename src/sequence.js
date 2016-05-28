@@ -38,6 +38,7 @@ var _isLoopRunning = false,
  *
  * @public
  * @memberof cracked
+ * @category Sequence
  * @name cracked#loop
  * @function
  * @param {String} [arg] stop/start/reset commands
@@ -222,6 +223,7 @@ function loopStep() {
 /**
  * Listener - binds a set of audio nodes and a callback to loop step events
  * @public
+ * @category Sequence
  * @memberof cracked
  * @name cracked#bind
  * @function
@@ -249,6 +251,7 @@ cracked.bind = function (eventType, fn, data) {
 /**
  * Remove any steps listeners registered on these nodes
  * @public
+ * @category Sequence
  * @memberof cracked
  * @function
  * @name cracked#unbind

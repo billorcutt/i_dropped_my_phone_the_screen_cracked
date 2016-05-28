@@ -1,6 +1,7 @@
 /**
  * Clips audio level at 1/-1
  * @plugin
+ * @category Miscellaneous
  * @function
  * @memberof cracked
  * @name cracked#clip
@@ -24,6 +25,7 @@ cracked.clip = function (params) {
 /**
  * System out - destination with a master volume.
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system out gain
  * @function
  * @memberof cracked
@@ -42,6 +44,7 @@ cracked.dac = function (params) {
 /**
  * System in - input with a master volume
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system in gain
  * @function
  * @memberof cracked
@@ -60,6 +63,7 @@ cracked.adc = function (params) {
  * System out - destination with a master volume
  * Alias for dac
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system out gain
  * @function
  * @memberof cracked
@@ -78,6 +82,7 @@ cracked.out = function (params) {
  * System in - input with a master volume
  * Alias for adc
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system in gain
  * @function
  * @memberof cracked
@@ -96,6 +101,7 @@ cracked.in = function (params) {
  * Panner - simple stereo panner
  *
  * @plugin
+ * @category Miscellaneous
  * @param {Object} [params] map of optional values
  * @function
  * @memberof cracked
@@ -117,6 +123,7 @@ cracked.panner = function (params) {
  * [See more sampler examples](../../examples/sampler.html)
  *
  * @plugin
+ * @category Miscellaneous
  * @function
  * @memberof cracked
  * @name cracked#sampler

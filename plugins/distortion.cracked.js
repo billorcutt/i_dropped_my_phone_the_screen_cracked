@@ -4,6 +4,7 @@
  * [See more bitcrusher examples](../../examples/distortion.html)
  *
  * @plugin
+ * @category Distortion
  * @function
  * @memberof cracked
  * @name cracked#bitcrusher
@@ -56,6 +57,7 @@ cracked.bitcrusher = function (params) {
  * [See more ring modulator examples](../../examples/distortion.html)
  *
  * @plugin
+ * @category Distortion
  * @function
  * @memberof cracked
  * @name cracked#ring
@@ -211,6 +213,7 @@ cracked.ring = function (params) {
  * [See more overdrive examples](../../examples/distortion.html)
  *
  * @plugin
+ * @category Distortion
  * @function
  * @memberof cracked
  * @name cracked#overdrive

@@ -4,6 +4,7 @@
  *
  * Frequency setter convenience method
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#frequency
@@ -26,6 +27,7 @@ cracked.frequency = function (userParam) {
  *
  * @plugin
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#detune
  * @public
@@ -46,6 +48,7 @@ cracked.detune = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#type
@@ -67,6 +70,7 @@ cracked.type = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#volume
@@ -88,6 +92,7 @@ cracked.volume = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#time
@@ -109,6 +114,7 @@ cracked.time = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#feedback
@@ -131,6 +137,7 @@ cracked.feedback = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#speed
@@ -152,6 +159,7 @@ cracked.speed = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#drive
@@ -173,6 +181,7 @@ cracked.drive = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#distortion
@@ -194,6 +203,7 @@ cracked.distortion = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#q
@@ -215,6 +225,7 @@ cracked.q = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#pan
@@ -236,6 +247,7 @@ cracked.pan = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#play
@@ -249,6 +261,7 @@ cracked.play = function () {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#scales
@@ -270,6 +283,7 @@ cracked.scales = function (type) {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#chords
@@ -294,6 +308,7 @@ cracked.chords = function (type) {
 /**
  * Return a random series of frequencies from randomly selected octaves from a given scale
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#random_scale
@@ -311,6 +326,7 @@ cracked.random_scale = function (scale,octave_lower,octave_upper) {
 /**
  * Return a random series of frequencies from a randomly selected octave from a given chord
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#random_arpeggio
@@ -329,6 +345,7 @@ cracked.random_arpeggio = function (chord,octave_lower,octave_upper) {
 /**
  * Converts a pitch value to frequency
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#pitch2freq
@@ -343,6 +360,7 @@ cracked.pitch2freq = function (pitch) {
  * Takes a reference to an array, shuffles it
  * and returns it
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#shuffle
@@ -372,6 +390,7 @@ cracked.shuffle = function (arr) {
 /**
  * Returns a random number between min & max
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#random
@@ -386,6 +405,7 @@ cracked.random = function (min, max) {
 /**
  * Returns a boolean based on percentage.
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#chance
@@ -400,6 +420,7 @@ cracked.chance = function(percentage) {
 /**
  * Scale an input number between min & max to an output number between a min & max. Supports logarithmic or linear scaling.
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#scale
@@ -430,6 +451,7 @@ cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
 /**
  * Converts a second value to millisecond value
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#sec2ms
@@ -448,6 +470,7 @@ cracked.sec2ms = function(second) {
 /**
  * Converts a millisecond value to second value
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#ms2sec
@@ -467,6 +490,7 @@ cracked.ms2sec = function(ms) {
  * Returns a boolean true if the browser supports
  * web audio
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#isSupported
@@ -479,6 +503,7 @@ cracked.isSupported = function() {
 /**
  * execute a callback at random intervals within a range
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#random_interval
  * @public
@@ -505,6 +530,7 @@ cracked.random_interval = function(callback, minTime, maxTime) {
 /**
  * create a adsr envelope with random values scaled to a length
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#random_envelope
  * @public
@@ -538,6 +564,7 @@ cracked.random_envelope = function(length) {
 /**
  * fill an array with some values
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#fill_array
  * @public
@@ -563,6 +590,7 @@ cracked.fill_array = function(size,fn) {
  * @param {Number} offset added to index
  * @param {Number} limit upper bound to iteration
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#array_next
  * @public

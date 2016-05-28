@@ -4,6 +4,7 @@
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#noise
@@ -29,6 +30,7 @@ cracked.noise = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#pink
@@ -109,6 +111,7 @@ cracked.pink = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#white
@@ -155,6 +158,7 @@ cracked.white = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#brown

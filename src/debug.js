@@ -12,6 +12,7 @@
  * __("sine").log()</code></pre>
  *
  * @memberof cracked
+ * @category Debug
  * @name cracked#log
  * @public
  * @function
@@ -56,6 +57,7 @@ function logNodes(node, arr) {
  *
  * @memberof cracked
  * @name cracked#size
+ * @category Debug
  * @public
  * @function
  * @returns {Number}
@@ -88,8 +90,9 @@ function logToConsole(msg) {
 
 /**
  * dump the node lookup object to the console
- * debug only
+ * works in debug only
  * @memberof cracked
+ * @category Debug
  * @name cracked#_dumpState
  * @public
  * @function
@@ -100,8 +103,9 @@ cracked._dumpState = function () {
 
 /**
  * debug method to get a node with a uuid
- * debug only
+ * works in debug only
  * @param uuid
+ * @category Debug
  * @returns {*}
  * @public
  * @function

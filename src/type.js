@@ -1,6 +1,7 @@
 /**
  * Returns the 2nd argument if the 1st is undefined
  * @plugin
+ * @category Type
  * @function
  * @name cracked#ifUndef
  * @memberof cracked
@@ -14,6 +15,7 @@ cracked.ifUndef = function(test, def) {
 /**
  * Returns true if not undefined
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isNotUndef
  * @memberof cracked
@@ -26,6 +28,7 @@ cracked.isNotUndef = function(test) {
 /**
  * Returns true if undefined
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isUndef
  * @memberof cracked
@@ -38,6 +41,7 @@ cracked.isUndef = function(test) {
 /**
  * Returns true if param is an object
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isObj
  * @memberof cracked
@@ -50,6 +54,7 @@ cracked.isObj = function(obj) {
 /**
  * Returns true if param is a number
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isNum
  * @memberof cracked
@@ -66,6 +71,7 @@ cracked.isNum = function(num) {
 /**
  * Returns true if param is a string
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isStr
  * @memberof cracked
@@ -78,6 +84,7 @@ cracked.isStr = function(str) {
 /**
  * Returns true if param is an array
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isArr
  * @memberof cracked
@@ -90,6 +97,7 @@ cracked.isArr = function(arr) {
 /**
  * Returns true if param is a function
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isFun
  * @memberof cracked

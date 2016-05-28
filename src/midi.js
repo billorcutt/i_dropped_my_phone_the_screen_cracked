@@ -20,6 +20,7 @@ var _midi_access = null,
  *      //cuz you can
  * }</code></pre>
  * @public
+ * @category Midi
  * @memberof cracked
  * @function
  * @name cracked#midi_supported
@@ -39,6 +40,7 @@ cracked.midi_supported = function(){
  * @memberof cracked
  * @name cracked#midi_init
  * @public
+ * @category Midi
  * @function
  */
 cracked.midi_init = function(callback) {
@@ -73,6 +75,7 @@ cracked.midi_init = function(callback) {
  * @memberof cracked
  * @name cracked#midi_receive
  * @public
+ * @category Midi
  * @function
  */
 cracked.midi_receive = function(callback){
@@ -135,6 +138,7 @@ cracked.midi_receive = function(callback){
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @category Midi
  * @memberof cracked
  * @name cracked#midi_noteon
  * @function
@@ -158,6 +162,7 @@ cracked.midi_noteon = function(callback) {
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @category Midi
  * @memberof cracked
  * @name cracked#midi_noteoff
  * @function
@@ -181,6 +186,7 @@ cracked.midi_noteoff = function(callback) {
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @category Midi
  * @memberof cracked
  * @name cracked#midi_control
  * @function

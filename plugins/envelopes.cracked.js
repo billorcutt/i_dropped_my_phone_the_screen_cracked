@@ -9,6 +9,7 @@
  * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
  *
  * @plugin
+ * @category Envelope
  * @function
  * @memberof cracked
  * @name cracked#adsr

@@ -6,6 +6,7 @@
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
+ * @category Synth
  * @function
  * @memberof cracked
  * @name cracked#monosynth
@@ -129,6 +130,7 @@ cracked.monosynth = function (params) {
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
+ * @category Synth
  * @function
  * @memberof cracked
  * @name cracked#polysynth

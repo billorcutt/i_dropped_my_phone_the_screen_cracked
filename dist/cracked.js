@@ -59,6 +59,7 @@ var _nodeStore = {},
  *
  *
  * @public
+ * @category Find
  * @type cracked
  * @function
  * @namespace
@@ -166,6 +167,7 @@ function resetSelection() {
  * <pre><code>//reset state for the entire app
  *  cracked.reset();</code></pre>
  * @public
+ * @category Find
  * @name cracked#reset
  * @memberof cracked
  * @function
@@ -192,6 +194,7 @@ cracked.reset = function() {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @function
  * @name cracked#exec
  * @memberof cracked
@@ -216,6 +219,7 @@ cracked.exec = function (method, args, nodes) {
      * });</code></pre>
  *
  * @public
+ * @category Find
  * @name cracked#each
  * @memberof cracked
  * @function
@@ -250,6 +254,7 @@ cracked.each = function (type, fn) {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @name cracked#filter
  * @memberof cracked
  * @function
@@ -288,6 +293,7 @@ cracked.filter = function () {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @name cracked#find
  * @memberof cracked
  * @function
@@ -883,6 +889,7 @@ function AudioNode(type, creationParams, userSettings) {
  * [See more control examples](../../examples/control.html)
  * @memberof cracked
  * @name cracked#start
+ * @category Control
  * @function
  * @public
  */
@@ -909,6 +916,7 @@ cracked.start = function () {
  * 
  * @memberof cracked
  * @name cracked#stop
+ * @category Control
  * @function
  * @public
  */
@@ -935,6 +943,7 @@ cracked.stop = function () {
  * @memberof cracked
  * @name cracked#ramp
  * @public
+ * @category Control
  * @param {Number|Array} target value to ramp to
  * @param {Number|Array} timeToRamp length of ramp in seconds
  * @param {String} paramToRamp name of parameter to ramp
@@ -966,6 +975,7 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * @memberof cracked
  * @name cracked#attr
  * @public
+ * @category Control
  * @param {Object} userParams options object
  * @param {String} userParams.paramName
  * @param {} userParams.paramValue
@@ -1049,6 +1059,7 @@ function resolveParamMapping(name, map) {
  * @memberof cracked
  * @name cracked#script
  * @public
+ * @category Node
  * @param {Object} [userParams] map of optional values
  * @param {Number} [userParams.buffersize=4096]
  * @param {Number} [userParams.channels=1]
@@ -1084,6 +1095,7 @@ cracked.script = function (userParams) {
  * Native Waveshaper
  * @function
  * @memberof cracked
+ * @category Node
  * @name cracked#waveshaper
  * @public
  * @param {Object} [userParams] map of optional values
@@ -1133,6 +1145,7 @@ cracked.waveshaper = function (userParams) {
 /**
  * Native Compressor
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#compressor
  * @public
@@ -1163,6 +1176,7 @@ cracked.compressor = function (userParams) {
 /**
  * Native Gain
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#gain
  * @public
@@ -1189,6 +1203,7 @@ cracked.gain = function (userParams) {
  * Naming this with prefix native so I can use "delay" as a plugin name
  * max buffer size three minutes
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#native_delay
  * @public
@@ -1211,6 +1226,7 @@ cracked.native_delay = function (userParams) {
 /**
  * Native oscillator, used the oscillator plugins
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#osc
  * @public
@@ -1235,6 +1251,7 @@ cracked.osc = function (userParams) {
 /**
  * Native biquad filter, used by filter plugins
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#biquadFilter
  * @public
@@ -1261,6 +1278,7 @@ cracked.biquadFilter = function (userParams) {
 /**
  * Native convolver, used by reverb
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#convolver
  * @public
@@ -1285,6 +1303,7 @@ cracked.convolver = function (userParams) {
 /**
  * Native stereo panner, used by panner
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#stereoPanner
  * @public
@@ -1307,6 +1326,7 @@ cracked.stereoPanner = function (userParams) {
 /**
  * Native destination, used by the dac plugin
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#destination
  * @public
@@ -1324,6 +1344,7 @@ cracked.destination = function (userParams) {
  * Native sound input node, used by the adc plugin
  * origin = opposite of destination
  * @function
+ * @category Node
  * @memberof cracked
  * @name cracked#origin
  * @public
@@ -1527,6 +1548,7 @@ var _isLoopRunning = false,
  *
  * @public
  * @memberof cracked
+ * @category Sequence
  * @name cracked#loop
  * @function
  * @param {String} [arg] stop/start/reset commands
@@ -1711,6 +1733,7 @@ function loopStep() {
 /**
  * Listener - binds a set of audio nodes and a callback to loop step events
  * @public
+ * @category Sequence
  * @memberof cracked
  * @name cracked#bind
  * @function
@@ -1738,6 +1761,7 @@ cracked.bind = function (eventType, fn, data) {
 /**
  * Remove any steps listeners registered on these nodes
  * @public
+ * @category Sequence
  * @memberof cracked
  * @function
  * @name cracked#unbind
@@ -1976,6 +2000,7 @@ function getSelectorType(str) {
  * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
  * @memberof cracked
+ * @category Macro
  * @name cracked#begin
  * @public
  * @function
@@ -1995,6 +2020,7 @@ cracked.begin = function (name, userParams) {
  * __().begin("microsynth").sine().gain(0).dac().end("microsynth");</code></pre>
  *
  * @memberof cracked
+ * @category Macro
  * @name cracked#end
  * @public
  * @function
@@ -2108,6 +2134,7 @@ var _midi_access = null,
  *      //cuz you can
  * }</code></pre>
  * @public
+ * @category Midi
  * @memberof cracked
  * @function
  * @name cracked#midi_supported
@@ -2127,6 +2154,7 @@ cracked.midi_supported = function(){
  * @memberof cracked
  * @name cracked#midi_init
  * @public
+ * @category Midi
  * @function
  */
 cracked.midi_init = function(callback) {
@@ -2161,6 +2189,7 @@ cracked.midi_init = function(callback) {
  * @memberof cracked
  * @name cracked#midi_receive
  * @public
+ * @category Midi
  * @function
  */
 cracked.midi_receive = function(callback){
@@ -2223,6 +2252,7 @@ cracked.midi_receive = function(callback){
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @category Midi
  * @memberof cracked
  * @name cracked#midi_noteon
  * @function
@@ -2246,6 +2276,7 @@ cracked.midi_noteon = function(callback) {
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @category Midi
  * @memberof cracked
  * @name cracked#midi_noteoff
  * @function
@@ -2269,6 +2300,7 @@ cracked.midi_noteoff = function(callback) {
  * });</code></pre>
  * @param {Function} callback
  * @public
+ * @category Midi
  * @memberof cracked
  * @name cracked#midi_control
  * @function
@@ -2296,6 +2328,7 @@ cracked.midi_control = function(callback) {
  * __().saw().connect("lowpass");</code></pre>
  *
  * @public
+ * @category Connect
  * @memberof cracked
  * @name cracked#connect
  * @function
@@ -2348,6 +2381,7 @@ function connectPreviousToSelected() {
  * __("lowpass").remove(100);</code></pre>
  *
  * @public
+ * @category Connect
  * @memberof cracked
  * @name cracked#remove
  * @function
@@ -2500,6 +2534,7 @@ function mergeObjects(source, target) {
  * __("sine").log()</code></pre>
  *
  * @memberof cracked
+ * @category Debug
  * @name cracked#log
  * @public
  * @function
@@ -2544,6 +2579,7 @@ function logNodes(node, arr) {
  *
  * @memberof cracked
  * @name cracked#size
+ * @category Debug
  * @public
  * @function
  * @returns {Number}
@@ -2576,8 +2612,9 @@ function logToConsole(msg) {
 
 /**
  * dump the node lookup object to the console
- * debug only
+ * works in debug only
  * @memberof cracked
+ * @category Debug
  * @name cracked#_dumpState
  * @public
  * @function
@@ -2588,8 +2625,9 @@ cracked._dumpState = function () {
 
 /**
  * debug method to get a node with a uuid
- * debug only
+ * works in debug only
  * @param uuid
+ * @category Debug
  * @returns {*}
  * @public
  * @function
@@ -2626,6 +2664,7 @@ window.__ = window.__ || cracked;
 /**
  * Returns the 2nd argument if the 1st is undefined
  * @plugin
+ * @category Type
  * @function
  * @name cracked#ifUndef
  * @memberof cracked
@@ -2639,6 +2678,7 @@ cracked.ifUndef = function(test, def) {
 /**
  * Returns true if not undefined
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isNotUndef
  * @memberof cracked
@@ -2651,6 +2691,7 @@ cracked.isNotUndef = function(test) {
 /**
  * Returns true if undefined
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isUndef
  * @memberof cracked
@@ -2663,6 +2704,7 @@ cracked.isUndef = function(test) {
 /**
  * Returns true if param is an object
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isObj
  * @memberof cracked
@@ -2675,6 +2717,7 @@ cracked.isObj = function(obj) {
 /**
  * Returns true if param is a number
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isNum
  * @memberof cracked
@@ -2691,6 +2734,7 @@ cracked.isNum = function(num) {
 /**
  * Returns true if param is a string
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isStr
  * @memberof cracked
@@ -2703,6 +2747,7 @@ cracked.isStr = function(str) {
 /**
  * Returns true if param is an array
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isArr
  * @memberof cracked
@@ -2715,6 +2760,7 @@ cracked.isArr = function(arr) {
 /**
  * Returns true if param is a function
  * @plugin
+ * @category Type
  * @function
  * @name cracked#isFun
  * @memberof cracked
@@ -2731,6 +2777,7 @@ cracked.isFun = function(fn) {
  *
  * @plugin
  * @function
+ * @category Delay
  * @memberof cracked
  * @name cracked#reverb
  * @param {Object} [params] map of optional values
@@ -2788,6 +2835,7 @@ cracked.reverb = function (params) {
  * [See more delay examples](../../examples/delay.html)
  *
  * @plugin
+ * @category Delay
  * @function
  * @memberof cracked
  * @name cracked#delay
@@ -2861,6 +2909,7 @@ cracked.delay = function (params) {
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
+ * @category Delay
  * @function
  * @memberof cracked
  * @name cracked#comb
@@ -2926,6 +2975,7 @@ cracked.comb = function (params) {
  * [See more bitcrusher examples](../../examples/distortion.html)
  *
  * @plugin
+ * @category Distortion
  * @function
  * @memberof cracked
  * @name cracked#bitcrusher
@@ -2978,6 +3028,7 @@ cracked.bitcrusher = function (params) {
  * [See more ring modulator examples](../../examples/distortion.html)
  *
  * @plugin
+ * @category Distortion
  * @function
  * @memberof cracked
  * @name cracked#ring
@@ -3133,6 +3184,7 @@ cracked.ring = function (params) {
  * [See more overdrive examples](../../examples/distortion.html)
  *
  * @plugin
+ * @category Distortion
  * @function
  * @memberof cracked
  * @name cracked#overdrive
@@ -3208,6 +3260,7 @@ cracked.overdrive = function (params) {
  * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
  *
  * @plugin
+ * @category Envelope
  * @function
  * @memberof cracked
  * @name cracked#adsr
@@ -3314,6 +3367,7 @@ cracked.adsr = function (userParams) {
  * [See more lowpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#lowpass
@@ -3342,6 +3396,7 @@ cracked.lowpass = function (params) {
  * [See more highpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#highpass
@@ -3370,6 +3425,7 @@ cracked.highpass = function (params) {
  * [See more bandpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#bandpass
@@ -3398,6 +3454,7 @@ cracked.bandpass = function (params) {
  * [See more lowshelf examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#lowshelf
@@ -3428,6 +3485,7 @@ cracked.lowshelf = function (params) {
  * [See more highshelf examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#highshelf
@@ -3458,6 +3516,7 @@ cracked.highshelf = function (params) {
  * [See more peaking examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#peaking
@@ -3488,6 +3547,7 @@ cracked.peaking = function (params) {
  * [See more notch examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#notch
@@ -3516,6 +3576,7 @@ cracked.notch = function (params) {
  * [See more allpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
  * @function
  * @memberof cracked
  * @name cracked#allpass
@@ -3542,6 +3603,7 @@ cracked.allpass = function (params) {
 /**
  * Clips audio level at 1/-1
  * @plugin
+ * @category Miscellaneous
  * @function
  * @memberof cracked
  * @name cracked#clip
@@ -3565,6 +3627,7 @@ cracked.clip = function (params) {
 /**
  * System out - destination with a master volume.
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system out gain
  * @function
  * @memberof cracked
@@ -3583,6 +3646,7 @@ cracked.dac = function (params) {
 /**
  * System in - input with a master volume
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system in gain
  * @function
  * @memberof cracked
@@ -3601,6 +3665,7 @@ cracked.adc = function (params) {
  * System out - destination with a master volume
  * Alias for dac
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system out gain
  * @function
  * @memberof cracked
@@ -3619,6 +3684,7 @@ cracked.out = function (params) {
  * System in - input with a master volume
  * Alias for adc
  * @plugin
+ * @category Miscellaneous
  * @param {Number} [params=1] system in gain
  * @function
  * @memberof cracked
@@ -3637,6 +3703,7 @@ cracked.in = function (params) {
  * Panner - simple stereo panner
  *
  * @plugin
+ * @category Miscellaneous
  * @param {Object} [params] map of optional values
  * @function
  * @memberof cracked
@@ -3658,6 +3725,7 @@ cracked.panner = function (params) {
  * [See more sampler examples](../../examples/sampler.html)
  *
  * @plugin
+ * @category Miscellaneous
  * @function
  * @memberof cracked
  * @name cracked#sampler
@@ -3684,6 +3752,7 @@ cracked.sampler = function (userParams) {
  * [See more LFO examples](../../examples/modulation.html)
  *
  * @plugin
+ * @category Modulator
  * @function
  * @memberof cracked
  * @name cracked#lfo
@@ -3731,6 +3800,7 @@ cracked.lfo = function (userParams) {
  * fill an audio buffer with a series of discrete values
  *
  * @plugin
+ * @category Modulator
  * @function
  * @memberof cracked
  * @name cracked#stepper
@@ -3784,6 +3854,7 @@ cracked.stepper = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#noise
@@ -3809,6 +3880,7 @@ cracked.noise = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#pink
@@ -3889,6 +3961,7 @@ cracked.pink = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#white
@@ -3935,6 +4008,7 @@ cracked.white = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
  * @function
  * @memberof cracked
  * @name cracked#brown
@@ -3987,6 +4061,7 @@ cracked.brown = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#sine
@@ -4016,6 +4091,7 @@ cracked.sine = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#square
@@ -4045,6 +4121,7 @@ cracked.square = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#saw
@@ -4074,6 +4151,7 @@ cracked.saw = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
  * @function
  * @memberof cracked
  * @name cracked#triangle
@@ -4106,6 +4184,7 @@ cracked.triangle = function (params) {
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
+ * @category Synth
  * @function
  * @memberof cracked
  * @name cracked#monosynth
@@ -4229,6 +4308,7 @@ cracked.monosynth = function (params) {
  * [See more synth examples](../../examples/synth.html)
  *
  * @plugin
+ * @category Synth
  * @function
  * @memberof cracked
  * @name cracked#polysynth
@@ -4432,6 +4512,7 @@ cracked.polysynth = function (params) {
  *
  * Frequency setter convenience method
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#frequency
@@ -4454,6 +4535,7 @@ cracked.frequency = function (userParam) {
  *
  * @plugin
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#detune
  * @public
@@ -4474,6 +4556,7 @@ cracked.detune = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#type
@@ -4495,6 +4578,7 @@ cracked.type = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#volume
@@ -4516,6 +4600,7 @@ cracked.volume = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#time
@@ -4537,6 +4622,7 @@ cracked.time = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#feedback
@@ -4559,6 +4645,7 @@ cracked.feedback = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#speed
@@ -4580,6 +4667,7 @@ cracked.speed = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#drive
@@ -4601,6 +4689,7 @@ cracked.drive = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#distortion
@@ -4622,6 +4711,7 @@ cracked.distortion = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#q
@@ -4643,6 +4733,7 @@ cracked.q = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#pan
@@ -4664,6 +4755,7 @@ cracked.pan = function (userParam) {
  * [See more control examples](../../examples/control.html)
  *
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#play
@@ -4677,6 +4769,7 @@ cracked.play = function () {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#scales
@@ -4698,6 +4791,7 @@ cracked.scales = function (type) {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#chords
@@ -4722,6 +4816,7 @@ cracked.chords = function (type) {
 /**
  * Return a random series of frequencies from randomly selected octaves from a given scale
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#random_scale
@@ -4739,6 +4834,7 @@ cracked.random_scale = function (scale,octave_lower,octave_upper) {
 /**
  * Return a random series of frequencies from a randomly selected octave from a given chord
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#random_arpeggio
@@ -4757,6 +4853,7 @@ cracked.random_arpeggio = function (chord,octave_lower,octave_upper) {
 /**
  * Converts a pitch value to frequency
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#pitch2freq
@@ -4771,6 +4868,7 @@ cracked.pitch2freq = function (pitch) {
  * Takes a reference to an array, shuffles it
  * and returns it
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#shuffle
@@ -4800,6 +4898,7 @@ cracked.shuffle = function (arr) {
 /**
  * Returns a random number between min & max
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#random
@@ -4814,6 +4913,7 @@ cracked.random = function (min, max) {
 /**
  * Returns a boolean based on percentage.
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#chance
@@ -4828,6 +4928,7 @@ cracked.chance = function(percentage) {
 /**
  * Scale an input number between min & max to an output number between a min & max. Supports logarithmic or linear scaling.
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#scale
@@ -4858,6 +4959,7 @@ cracked.scale = function(position, inMin, inMax, outMin, outMax, type) {
 /**
  * Converts a second value to millisecond value
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#sec2ms
@@ -4876,6 +4978,7 @@ cracked.sec2ms = function(second) {
 /**
  * Converts a millisecond value to second value
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#ms2sec
@@ -4895,6 +4998,7 @@ cracked.ms2sec = function(ms) {
  * Returns a boolean true if the browser supports
  * web audio
  * @plugin
+ * @category Utility
  * @function
  * @memberof cracked
  * @name cracked#isSupported
@@ -4907,6 +5011,7 @@ cracked.isSupported = function() {
 /**
  * execute a callback at random intervals within a range
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#random_interval
  * @public
@@ -4933,6 +5038,7 @@ cracked.random_interval = function(callback, minTime, maxTime) {
 /**
  * create a adsr envelope with random values scaled to a length
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#random_envelope
  * @public
@@ -4966,6 +5072,7 @@ cracked.random_envelope = function(length) {
 /**
  * fill an array with some values
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#fill_array
  * @public
@@ -4991,6 +5098,7 @@ cracked.fill_array = function(size,fn) {
  * @param {Number} offset added to index
  * @param {Number} limit upper bound to iteration
  * @function
+ * @category Utility
  * @memberof cracked
  * @name cracked#array_next
  * @public

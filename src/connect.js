@@ -12,6 +12,7 @@
  * __().saw().connect("lowpass");</code></pre>
  *
  * @public
+ * @category Connect
  * @memberof cracked
  * @name cracked#connect
  * @function
@@ -64,6 +65,7 @@ function connectPreviousToSelected() {
  * __("lowpass").remove(100);</code></pre>
  *
  * @public
+ * @category Connect
  * @memberof cracked
  * @name cracked#remove
  * @function

@@ -14,6 +14,7 @@
  * [See more control examples](../../examples/control.html)
  * @memberof cracked
  * @name cracked#start
+ * @category Control
  * @function
  * @public
  */
@@ -40,6 +41,7 @@ cracked.start = function () {
  * 
  * @memberof cracked
  * @name cracked#stop
+ * @category Control
  * @function
  * @public
  */
@@ -66,6 +68,7 @@ cracked.stop = function () {
  * @memberof cracked
  * @name cracked#ramp
  * @public
+ * @category Control
  * @param {Number|Array} target value to ramp to
  * @param {Number|Array} timeToRamp length of ramp in seconds
  * @param {String} paramToRamp name of parameter to ramp
@@ -97,6 +100,7 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * @memberof cracked
  * @name cracked#attr
  * @public
+ * @category Control
  * @param {Object} userParams options object
  * @param {String} userParams.paramName
  * @param {} userParams.paramValue

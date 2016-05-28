@@ -5,6 +5,7 @@
  *
  * @plugin
  * @function
+ * @category Delay
  * @memberof cracked
  * @name cracked#reverb
  * @param {Object} [params] map of optional values
@@ -62,6 +63,7 @@ cracked.reverb = function (params) {
  * [See more delay examples](../../examples/delay.html)
  *
  * @plugin
+ * @category Delay
  * @function
  * @memberof cracked
  * @name cracked#delay
@@ -135,6 +137,7 @@ cracked.delay = function (params) {
  * [See more reverb examples](../../examples/delay.html)
  *
  * @plugin
+ * @category Delay
  * @function
  * @memberof cracked
  * @name cracked#comb
