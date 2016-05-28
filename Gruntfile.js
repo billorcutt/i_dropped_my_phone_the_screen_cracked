@@ -67,7 +67,7 @@ module.exports = function(grunt) {
                 options: {
                     destination: 'docs',
                     readme:'README.md',
-                    template : "node_modules/ink-docstrap/template",
+                    template : "jsdoc/minami",
                     configure : "jsdoc/jsdoc.conf.json"
                 }
             }
