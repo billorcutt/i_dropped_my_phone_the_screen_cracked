@@ -209,8 +209,17 @@ nav > h2 > a {
    color: hsl(202, 71%, 50%) !important;
 }
 
+nav h3 a:active, {
+  font-size:15px;
+}
+
 nav h3 a {
   font-size:15px;
+}
+
+nav h3 a:hover {
+  font-size:15px;
+  text-decoration: underline;
 }
 
 footer {
