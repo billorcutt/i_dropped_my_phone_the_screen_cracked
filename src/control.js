@@ -154,8 +154,13 @@ function applyParam(node, keyStr, value, map) {
 function setAudioParam(node, value) {
     if (node && __.isFun(node.setValueAtTime)) {
         var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-        node.cancelScheduledValues(time);
-        node.setValueAtTime(value, time);
+        if(_ignoreGrid) {
+            node.cancelScheduledValues(time);
+            node.value = value;
+        } else {
+            node.cancelScheduledValues(time);
+            node.setValueAtTime(value, time);
+        }
     }
 }
 
