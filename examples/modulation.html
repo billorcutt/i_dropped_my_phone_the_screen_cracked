@@ -18,21 +18,23 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
+    <div class="small-12 columns example-container">
+        <div id="editor1" class="tiny editor">
 
-    </div>
-    <div class="small-12 large-10 columns">
-        <div id="editor1" class="tiny editor">//simple frequency modulation
+//simple frequency modulation
 //the "modulates" parameter on the gain tells it to connect
 //to the frequency audio param of the 2nd sine.
 __().sine(.1).gain({gain:100,modulates:"frequency"}).sine().dac(.25);
 
 //start up the sines
 __("sine").start();
+
         </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
-        <div id="editor2" class="small editor">//slightly more complex example
+        <div id="editor2" class="small editor">
+
+//slightly more complex example
 //the "modulates" parameter on the gain tells it to connect
 //to the frequency audio param of the 2nd sine.
 __().sine(.1).gain({gain:100,modulates:"frequency"}).sine().dac(.15);
@@ -41,10 +43,13 @@ __().sine(.1).gain(100).delay({modulates:"frequency",delay:1}).sine().connect("d
 
 //start up the sines
 __("sine").start();
+
         </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
-        <div id="editor3" class="small editor">//brown noise as a modulation source
+        <div id="editor3" class="small editor">
+
+//brown noise as a modulation source
 __().
     brown().
     lowpass({frequency:20,q:30}).
@@ -56,21 +61,29 @@ __().
 __().lfo({frequency:.15,gain:5}).connect("lowpass");
 
 //start it up
-__("sine,brown,lfo").start();</div>
+__("sine,brown,lfo").start();
+
+        </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
         <h2>LFO</h2>
 
-        <div id="editor4" class="tiny editor">//create &amp; connect an lfo to a sine and then to output
+        <div id="editor4" class="tiny editor">
+
+//create &amp; connect an lfo to a sine and then to output
 //lfo defaults: type=sawtooth, frequency=6, gain=1000, modulates=frequency
 __().lfo().sine().dac(.15);
 
 //start up lfo &amp; sine
-__("sine,lfo").start();</div>
+__("sine,lfo").start();
+
+        </div>
         <p><button class="play" data-id="editor4">START</button></p>
 
 
-        <div id="editor5" class="small editor">//create &amp; connect an lfo to a sine and then to output
+        <div id="editor5" class="small editor">
+
+//create &amp; connect an lfo to a sine and then to output
 //set master gain to .25
 __().lfo({frequency:4,type:"sine",gain:10,id:"lfo1"}).sine().dac(.25);
 
@@ -79,11 +92,14 @@ __().lfo({frequency:.1,modulates:"gain",gain:50,type:"sine"}).connect("#lfo1");
 
 //start
 __("sine,lfo").start();
+
         </div>
         <p><button class="play" data-id="editor5">START</button></p>
 
 
-        <div id="editor6" class="small editor">//create &amp; connect a sine to output
+        <div id="editor6" class="small editor">
+
+//create &amp; connect a sine to output
 //set master gain to .25
 __().sine().gain(.5).dac(.25);
 
@@ -95,11 +111,14 @@ __().lfo({frequency:4,type:"sine",gain:20}).connect("sine");
 
 //start
 __("sine,lfo").start();
+
         </div>
         <p><button class="play" data-id="editor6">START</button></p>
 
 
-        <div id="editor7" class="small editor">//create sine &amp; gain nodes and connect to output
+        <div id="editor7" class="small editor">
+
+//create sine &amp; gain nodes and connect to output
 __().sine(180).gain(.75).dac(.5);
 
 //create an lfo and connect to the gain node
@@ -108,45 +127,60 @@ __().lfo({modulates:"gain",frequency:.15,gain:1}).connect("gain");
 
 //start
 __("sine,lfo").start();
+
         </div>
         <p><button class="play" data-id="editor7">START</button></p>
 
 
-        <div id="editor8" class="tiny editor">//create sine &amp; gain nodes and connect to output
+        <div id="editor8" class="tiny editor">
+
+//create sine &amp; gain nodes and connect to output
 __().sine(180).gain().dac(.5);
 
 //cheap tremolo effect
 __().lfo({modulates:"gain",frequency:10,gain:1,type:"triangle"}).connect("gain");
 
 //start
-__("sine,lfo").start();</div>
+__("sine,lfo").start();
+
+        </div>
         <p><button class="play" data-id="editor8">START</button></p>
 
-        <div id="editor9" class="tiny editor">//lfo with pink noise as its type.
+        <div id="editor9" class="tiny editor">
+
+//lfo with pink noise as its type.
 __().
     lfo({type:"pink",gain:500,modulates:"detune"}).
     sine(180).
     dac();
 
 //start it up
-__("sine,lfo").start();</div>
+__("sine,lfo").start();
+
+        </div>
         <p><button class="play" data-id="editor9">START</button></p>
 
-        <div id="editor10" class="small editor">//set up a sine with a delay
-__().sine(300).delay().dac(.25);
+        <div id="editor10" class="small editor">
+
+//set up a sine with a delay
+__().sine(300).delay().dac(0.25);
 
 //lfo modulating the delay time & feedback parameters of the delay
-__().lfo({type:"sine",modulates:"feedback",frequency:.5,gain:1}).connect("delay");
-__().lfo({type:"sine",modulates:"delay",frequency:15,gain:.015}).connect("delay");
+__().lfo({type:"sine",modulates:"feedback",frequency:0.05,gain:0.01}).connect("delay");
+__().lfo({type:"sine",modulates:"delay",frequency:0.1,gain:0.015}).connect("delay");
 
 __("sine,lfo").start();
+
         </div>
         <p><button class="play" data-id="editor10">START</button></p>
 
-        <div id="editor11" class="tiny editor">//create saw->panner->dac
+        <div id="editor11" class="tiny editor">
+
+//create saw->panner->dac
 __().saw().panner().dac(0.25);
 //create an lfo and connect it to modulate the panner
 __().lfo({type:"square", modulates:"pan", frequency:1}).connect("panner").play();
+
         </div>
         <p><button class="play" data-id="editor11">START</button></p>
 

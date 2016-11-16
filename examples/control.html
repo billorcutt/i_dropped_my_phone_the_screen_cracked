@@ -18,14 +18,14 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
 
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
 
         <h3>Attr</h3>
 
-        <div id="editor1" class="small editor">//set up sounds to control
+        <div id="editor1" class="small editor">
+
+//set up sounds to control
 __().sine().lowpass().gain().dac();
 
 //add a delay in parallel
@@ -36,12 +36,15 @@ __("lowpass").attr({"frequency":200,"q":5});
 __("sine").attr({"detune":6});
 __("gain").attr({"gain":0.5});
 __("delay").attr({"delay":1,feedback:0.9});
+
         </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
         <h3>Start, Stop &amp Play</h3>
 
-        <div id="editor2" class="medium editor">//set up sounds to control
+        <div id="editor2" class="medium editor">
+
+//set up sounds to control
 __().sine().lowpass().gain().dac();
 
 //start the sine
@@ -63,12 +66,16 @@ __("saw").stop();
 __("*").stop();
 
 //start everything
-__.play();</div>
+__.play();
+
+        </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
         <h3>Convenience Methods</h3>
 
-        <div id="editor3" class="small editor">//set up sounds to control
+        <div id="editor3" class="small editor">
+
+//set up sounds to control
 __().sine().lowpass().gain().dac();
 
 //add a delay in parallel
@@ -80,6 +87,7 @@ __("sine").detune(6);
 __("gain").volume(0.5);
 __("delay").time(1);
 __("delay").feedback(0.9);
+
         </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
@@ -92,7 +100,6 @@ __().
         gain().
         dac(0.5).
         play();
-
 
 //use jquery to bind to events from the slider
 $("input[type='range']").bind("input",function(evt){
@@ -110,9 +117,9 @@ $("input[type='range']").bind("input",function(evt){
 
 </div>
 
-        <input type="range" data-modifies="speed" data-selector="sampler" step=".001" min=0.001 max=2> <span>Speed</span>
-        <input type="range" data-modifies="distortion" data-selector="ring" min=1 max=100> <span>Distortion</span>
-        <input type="range" data-modifies="frequency" data-selector="ring" min=1 max=2000> <span>Frequency</span>
+        <input type="range" data-modifies="speed" data-selector="sampler" step=".001" min=0.001 max=2> <span class="range-label">Speed</span>
+        <input type="range" data-modifies="distortion" data-selector="ring" min=1 max=100> <span class="range-label">Distortion</span>
+        <input type="range" data-modifies="frequency" data-selector="ring" min=1 max=2000> <span class="range-label">Frequency</span>
         <p><button class="play" data-id="editor4">START</button></p>
 
     </div>

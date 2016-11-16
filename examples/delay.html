@@ -18,79 +18,94 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
-
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
 
         <h3>Reverb</h3>
 
-        <div id="editor1" class="tiny editor">//no remote impulse, uses generated impulse
+        <div id="editor1" class="tiny editor">
+
+//no remote impulse, uses generated impulse
 //default values - seconds: 3, decay: 2, reverse: false
 __().
     sampler({path:"../../data/various/stein.mp3"}).
     reverb().
     dac().
     play();
+
         </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
-        <div id="editor2" class="tiny editor">//no remote impulse, uses generated impulse
+        <div id="editor2" class="tiny editor">
+
+//no remote impulse, uses generated impulse
 __().
     sampler({path:"../../data/various/stein.mp3"}).
     reverb({reverse:true,decay:2,seconds:4}).
     dac().
     play();
+
         </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
 
-        <div id="editor3" class="tiny editor">//uses remote impulse
+        <div id="editor3" class="tiny editor">
+
+//uses remote impulse
 __().
     sampler({path:"../../data/various/stein.mp3"}).
     reverb({path:"../../data/ir/hall.wav"}).
     dac().
     play();
+
         </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
         <h3>Delay</h3>
 
-        <div id="editor4" class="tiny editor">//default values : damping - 0.84, cutoff - 1500, feedback - 0.5, delay - 1
+        <div id="editor4" class="tiny editor">
+
+//default values : damping - 0.84, cutoff - 1500, feedback - 0.5, delay - 1
 __().
     sampler({path:"../../data/various/stein.mp3"}).
     delay().
     dac().
     play();
+
         </div>
         <p><button class="play" data-id="editor4">START</button></p>
 
         <div id="editor5" class="tiny editor">
 __().
     sampler({path:"../../data/various/stein.mp3"}).
-    delay({damping:.9,cutoff:3000,feedback:1,delay:3}).
+    delay({damping:.9,cutoff:3000,feedback:0.9,delay:3}).
     dac(.5).
     play();
+
         </div>
         <p><button class="play" data-id="editor5">START</button></p>
 
         <h3>Comb</h3>
 
-        <div id="editor6" class="tiny editor">//default values - feedback:.84,cutoff:3000,damping:.84,delay:0.027
+        <div id="editor6" class="tiny editor">
+
+//default values - feedback:.84,cutoff:3000,damping:.84,delay:0.027
 __().
     sampler({path:"../../data/various/gun-cock.wav",loop:true}).
     comb().
     dac(.25).
     play();
+
         </div>
         <p><button class="play" data-id="editor6">START</button></p>
 
         <div id="editor7" class="tiny editor">
+
 __().
     sampler({path:"../../data/various/gun-cock.wav",loop:true}).
     comb({feedback:1.18,cutoff:6000,damping:.8,delay:.025}).
     dac(.25).
     play();
+
         </div>
         <p><button class="play" data-id="editor7">START</button></p>
     </div>

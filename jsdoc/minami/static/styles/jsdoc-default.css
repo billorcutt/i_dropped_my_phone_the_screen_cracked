@@ -209,7 +209,7 @@ nav > h2 > a {
    color: hsl(202, 71%, 50%) !important;
 }
 
-nav h3 a:active, {
+nav h3 a:active {
   font-size:15px;
 }
 
