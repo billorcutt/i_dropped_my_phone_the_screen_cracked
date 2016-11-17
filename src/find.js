@@ -19,7 +19,7 @@
  * //and set their frequencies to 200
  * __("sine,.bar,#foo").frequency(200);</code></pre>
  *
- * [See more selector examples](../../examples/selector.html)
+ * [See more selector examples](examples/selector.html)
  *
  * If invoked without arguments, cracked() resets the selection/connection state, removing any record of previous nodes and effectively marking the start of a new connection chain. Since a new node will try to connect to any previous node, calling __() tells a node that there is no previous node to connect to.
  * For example:

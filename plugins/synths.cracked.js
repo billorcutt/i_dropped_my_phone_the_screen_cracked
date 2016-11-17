@@ -3,7 +3,7 @@
  *
  * Simple monophonic synth
  *
- * [See more synth examples](../../examples/synth.html)
+ * [See more synth examples](examples/synth.html)
  *
  * @plugin
  * @category Synth
@@ -127,7 +127,7 @@ cracked.monosynth = function (params) {
  *
  * Simple polyphonic synth
  *
- * [See more synth examples](../../examples/synth.html)
+ * [See more synth examples](examples/synth.html)
  *
  * @plugin
  * @category Synth

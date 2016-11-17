@@ -120,7 +120,7 @@ cracked.panner = function (params) {
 /**
  * Sampler - sound file player
  *
- * [See more sampler examples](../../examples/sampler.html)
+ * [See more sampler examples](examples/sampler.html)
  *
  * @plugin
  * @category Miscellaneous

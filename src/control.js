@@ -11,7 +11,7 @@
  * //start the sine node
  * __("sine").start();</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  * @memberof cracked
  * @name cracked#start
  * @category Control
@@ -37,7 +37,7 @@ cracked.start = function () {
  * //stop the sine node
  * __("sine").stop();</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  * 
  * @memberof cracked
  * @name cracked#stop
@@ -62,7 +62,7 @@ cracked.stop = function () {
  * //ramp the frequency of the sine. 220 to 880 in 5 seconds
  * __("sine").ramp(880,5,"frequency",220);</code></pre>
  *
- * [See more envelope examples](../../examples/envelopes.html)
+ * [See more envelope examples](examples/envelopes.html)
  *
  * @function
  * @memberof cracked
@@ -94,7 +94,7 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * //set the frequency of the sine to 880
  * __("sine").attr({"frequency":880});</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @function
  * @memberof cracked

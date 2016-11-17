@@ -1,7 +1,7 @@
 /**
  * Bitcrusher
  *
- * [See more bitcrusher examples](../../examples/distortion.html)
+ * [See more bitcrusher examples](examples/distortion.html)
  *
  * @plugin
  * @category Distortion
@@ -54,7 +54,7 @@ cracked.bitcrusher = function (params) {
 /**
  * Ring Modulator
  *
- * [See more ring modulator examples](../../examples/distortion.html)
+ * [See more ring modulator examples](examples/distortion.html)
  *
  * @plugin
  * @category Distortion
@@ -210,7 +210,7 @@ cracked.ring = function (params) {
 /**
  * Overdrive, waveshaper with additional parameters
  *
- * [See more overdrive examples](../../examples/distortion.html)
+ * [See more overdrive examples](examples/distortion.html)
  *
  * @plugin
  * @category Distortion

@@ -34,7 +34,7 @@ var _isLoopRunning = false,
  * //reset the loop params
  * __.loop("reset");</code></pre>
  *
- * [See sequencing examples](../../examples/sequencing.html)
+ * [See sequencing examples](examples/sequencing.html)
  *
  * @public
  * @memberof cracked

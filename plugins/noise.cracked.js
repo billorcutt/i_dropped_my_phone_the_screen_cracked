@@ -1,7 +1,7 @@
 /**
  * noise parametrized noise node
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -27,7 +27,7 @@ cracked.noise = function (params) {
 /**
  * Pink Noise
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -108,7 +108,7 @@ cracked.pink = function (params) {
 /**
  * White Noise
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -155,7 +155,7 @@ cracked.white = function (params) {
 /**
  * Brown Noise
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise

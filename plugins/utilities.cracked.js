@@ -1,6 +1,6 @@
 /**
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * Frequency setter convenience method
  * @plugin
@@ -23,7 +23,7 @@ cracked.frequency = function (userParam) {
 /**
  * Detune setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @function
@@ -45,7 +45,7 @@ cracked.detune = function (userParam) {
 /**
  * Type setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -67,7 +67,7 @@ cracked.type = function (userParam) {
 /**
  * Gain setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -89,7 +89,7 @@ cracked.volume = function (userParam) {
 /**
  * Delay time setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -111,7 +111,7 @@ cracked.time = function (userParam) {
 /**
  * Feedback setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -134,7 +134,7 @@ cracked.feedback = function (userParam) {
  * Speed setter convenience method
  *
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -156,7 +156,7 @@ cracked.speed = function (userParam) {
 /**
  * Drive setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -178,7 +178,7 @@ cracked.drive = function (userParam) {
 /**
  * Distortion setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -200,7 +200,7 @@ cracked.distortion = function (userParam) {
 /**
  * q setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -222,7 +222,7 @@ cracked.q = function (userParam) {
 /**
  * pan setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -244,7 +244,7 @@ cracked.pan = function (userParam) {
 /**
  * Convenient way to say start everything
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility

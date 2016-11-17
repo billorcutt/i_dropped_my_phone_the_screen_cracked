@@ -36,7 +36,7 @@ var _nodeStore = {},
  * //and set their frequencies to 200
  * __("sine,.bar,#foo").frequency(200);</code></pre>
  *
- * [See more selector examples](../../examples/selector.html)
+ * [See more selector examples](examples/selector.html)
  *
  * If invoked without arguments, cracked() resets the selection/connection state, removing any record of previous nodes and effectively marking the start of a new connection chain. Since a new node will try to connect to any previous node, calling __() tells a node that there is no previous node to connect to.
  * For example:
@@ -886,7 +886,7 @@ function AudioNode(type, creationParams, userSettings) {
  * //start the sine node
  * __("sine").start();</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  * @memberof cracked
  * @name cracked#start
  * @category Control
@@ -912,7 +912,7 @@ cracked.start = function () {
  * //stop the sine node
  * __("sine").stop();</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  * 
  * @memberof cracked
  * @name cracked#stop
@@ -937,7 +937,7 @@ cracked.stop = function () {
  * //ramp the frequency of the sine. 220 to 880 in 5 seconds
  * __("sine").ramp(880,5,"frequency",220);</code></pre>
  *
- * [See more envelope examples](../../examples/envelopes.html)
+ * [See more envelope examples](examples/envelopes.html)
  *
  * @function
  * @memberof cracked
@@ -969,7 +969,7 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * //set the frequency of the sine to 880
  * __("sine").attr({"frequency":880});</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @function
  * @memberof cracked
@@ -1549,7 +1549,7 @@ var _isLoopRunning = false,
  * //reset the loop params
  * __.loop("reset");</code></pre>
  *
- * [See sequencing examples](../../examples/sequencing.html)
+ * [See sequencing examples](examples/sequencing.html)
  *
  * @public
  * @memberof cracked
@@ -2778,7 +2778,7 @@ cracked.isFun = function(fn) {
 /**
  * Convolver Reverb
  *
- * [See more reverb examples](../../examples/delay.html)
+ * [See more reverb examples](examples/delay.html)
  *
  * @plugin
  * @function
@@ -2837,7 +2837,7 @@ cracked.reverb = function (params) {
 /**
  * Delay
  *
- * [See more delay examples](../../examples/delay.html)
+ * [See more delay examples](examples/delay.html)
  *
  * @plugin
  * @category Delay
@@ -2911,7 +2911,7 @@ cracked.delay = function (params) {
 /**
  * Comb
  *
- * [See more reverb examples](../../examples/delay.html)
+ * [See more reverb examples](examples/delay.html)
  *
  * @plugin
  * @category Delay
@@ -2977,7 +2977,7 @@ cracked.comb = function (params) {
 /**
  * Bitcrusher
  *
- * [See more bitcrusher examples](../../examples/distortion.html)
+ * [See more bitcrusher examples](examples/distortion.html)
  *
  * @plugin
  * @category Distortion
@@ -3030,7 +3030,7 @@ cracked.bitcrusher = function (params) {
 /**
  * Ring Modulator
  *
- * [See more ring modulator examples](../../examples/distortion.html)
+ * [See more ring modulator examples](examples/distortion.html)
  *
  * @plugin
  * @category Distortion
@@ -3186,7 +3186,7 @@ cracked.ring = function (params) {
 /**
  * Overdrive, waveshaper with additional parameters
  *
- * [See more overdrive examples](../../examples/distortion.html)
+ * [See more overdrive examples](examples/distortion.html)
  *
  * @plugin
  * @category Distortion
@@ -3257,7 +3257,7 @@ cracked.overdrive = function (params) {
 /**
  * Attack Decay Sustain Release envelope
  *
- * [See more adsr examples](../../examples/envelopes.html)
+ * [See more adsr examples](examples/envelopes.html)
  *
  * Attack time is the time taken for initial run-up of level from nil to peak, beginning when the key is first pressed.
  * Decay time is the time taken for the subsequent run down from the attack level to the designated sustain level.
@@ -3369,7 +3369,7 @@ cracked.adsr = function (userParams) {
 /**
  * Lowpass Filter
  *
- * [See more lowpass examples](../../examples/filters.html)
+ * [See more lowpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3398,7 +3398,7 @@ cracked.lowpass = function (params) {
 /**
  * Highpass Filter
  *
- * [See more highpass examples](../../examples/filters.html)
+ * [See more highpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3427,7 +3427,7 @@ cracked.highpass = function (params) {
 /**
  * Bandpass Filter
  *
- * [See more bandpass examples](../../examples/filters.html)
+ * [See more bandpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3456,7 +3456,7 @@ cracked.bandpass = function (params) {
 /**
  * Lowshelf Filter
  *
- * [See more lowshelf examples](../../examples/filters.html)
+ * [See more lowshelf examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3487,7 +3487,7 @@ cracked.lowshelf = function (params) {
 /**
  * Highshelf Filter
  *
- * [See more highshelf examples](../../examples/filters.html)
+ * [See more highshelf examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3518,7 +3518,7 @@ cracked.highshelf = function (params) {
 /**
  * Peaking Filter
  *
- * [See more peaking examples](../../examples/filters.html)
+ * [See more peaking examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3549,7 +3549,7 @@ cracked.peaking = function (params) {
 /**
  * Notch Filter
  *
- * [See more notch examples](../../examples/filters.html)
+ * [See more notch examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3578,7 +3578,7 @@ cracked.notch = function (params) {
 /**
  * Allpass Filter
  *
- * [See more allpass examples](../../examples/filters.html)
+ * [See more allpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -3727,7 +3727,7 @@ cracked.panner = function (params) {
 /**
  * Sampler - sound file player
  *
- * [See more sampler examples](../../examples/sampler.html)
+ * [See more sampler examples](examples/sampler.html)
  *
  * @plugin
  * @category Miscellaneous
@@ -3754,7 +3754,7 @@ cracked.sampler = function (userParams) {
 /**
  * Low Frequency Oscillator
  *
- * [See more LFO examples](../../examples/modulation.html)
+ * [See more LFO examples](examples/modulation.html)
  *
  * @plugin
  * @category Modulator
@@ -3856,7 +3856,7 @@ cracked.stepper = function (params) {
 /**
  * noise parametrized noise node
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -3882,7 +3882,7 @@ cracked.noise = function (params) {
 /**
  * Pink Noise
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -3963,7 +3963,7 @@ cracked.pink = function (params) {
 /**
  * White Noise
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -4010,7 +4010,7 @@ cracked.white = function (params) {
 /**
  * Brown Noise
  *
- * [See more noise examples](../../examples/noise.html)
+ * [See more noise examples](examples/noise.html)
  *
  * @plugin
  * @category Noise
@@ -4063,7 +4063,7 @@ cracked.brown = function (params) {
 /**
  * Sine Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -4093,7 +4093,7 @@ cracked.sine = function (params) {
 /**
  * Square Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -4123,7 +4123,7 @@ cracked.square = function (params) {
 /**
  * Sawtooth Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -4153,7 +4153,7 @@ cracked.saw = function (params) {
 /**
  * Triangle Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -4186,7 +4186,7 @@ cracked.triangle = function (params) {
  *
  * Simple monophonic synth
  *
- * [See more synth examples](../../examples/synth.html)
+ * [See more synth examples](examples/synth.html)
  *
  * @plugin
  * @category Synth
@@ -4310,7 +4310,7 @@ cracked.monosynth = function (params) {
  *
  * Simple polyphonic synth
  *
- * [See more synth examples](../../examples/synth.html)
+ * [See more synth examples](examples/synth.html)
  *
  * @plugin
  * @category Synth
@@ -4513,7 +4513,7 @@ cracked.polysynth = function (params) {
 
 /**
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * Frequency setter convenience method
  * @plugin
@@ -4536,7 +4536,7 @@ cracked.frequency = function (userParam) {
 /**
  * Detune setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @function
@@ -4558,7 +4558,7 @@ cracked.detune = function (userParam) {
 /**
  * Type setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4580,7 +4580,7 @@ cracked.type = function (userParam) {
 /**
  * Gain setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4602,7 +4602,7 @@ cracked.volume = function (userParam) {
 /**
  * Delay time setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4624,7 +4624,7 @@ cracked.time = function (userParam) {
 /**
  * Feedback setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4647,7 +4647,7 @@ cracked.feedback = function (userParam) {
  * Speed setter convenience method
  *
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4669,7 +4669,7 @@ cracked.speed = function (userParam) {
 /**
  * Drive setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4691,7 +4691,7 @@ cracked.drive = function (userParam) {
 /**
  * Distortion setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4713,7 +4713,7 @@ cracked.distortion = function (userParam) {
 /**
  * q setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4735,7 +4735,7 @@ cracked.q = function (userParam) {
 /**
  * pan setter convenience method
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility
@@ -4757,7 +4757,7 @@ cracked.pan = function (userParam) {
 /**
  * Convenient way to say start everything
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @plugin
  * @category Utility

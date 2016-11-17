@@ -1,7 +1,7 @@
 /**
  * Low Frequency Oscillator
  *
- * [See more LFO examples](../../examples/modulation.html)
+ * [See more LFO examples](examples/modulation.html)
  *
  * @plugin
  * @category Modulator

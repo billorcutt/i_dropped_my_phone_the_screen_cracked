@@ -1,7 +1,7 @@
 /**
  * Convolver Reverb
  *
- * [See more reverb examples](../../examples/delay.html)
+ * [See more reverb examples](examples/delay.html)
  *
  * @plugin
  * @function
@@ -60,7 +60,7 @@ cracked.reverb = function (params) {
 /**
  * Delay
  *
- * [See more delay examples](../../examples/delay.html)
+ * [See more delay examples](examples/delay.html)
  *
  * @plugin
  * @category Delay
@@ -134,7 +134,7 @@ cracked.delay = function (params) {
 /**
  * Comb
  *
- * [See more reverb examples](../../examples/delay.html)
+ * [See more reverb examples](examples/delay.html)
  *
  * @plugin
  * @category Delay
