@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         copy : {
             target: {
                 expand: true,
-                src: ['examples/**'],
+                src: ['examples/**','dist/**'],
                 dest: 'docs/'
             }
         },
