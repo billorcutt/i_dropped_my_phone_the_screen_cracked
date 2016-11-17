@@ -18,13 +18,11 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
-
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
         <h3>Sampler</h3>
 
         <div id="editor1" class="small editor">
+
 //create &amp; connect a sampler to output. at a minimum, sampler requires a
 //path to a file to play. the file must be hosted on the same domain and accessed
 //using the same protocol &amp; port as the document requesting it.
@@ -37,15 +35,20 @@ __("sampler").start();
         <p><button class="play" data-id="editor1">START</button></p>
 
 
-        <div id="editor2" class="tiny editor">//same as above but looping
+        <div id="editor2" class="tiny editor">
+
+//same as above but looping
 __().
     sampler({path:"../../data/various/gun-cock.wav",loop:"true"}).
     dac();
 __("sampler").start();
+
         </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
-        <div id="editor3" class="small editor">//same as above but at 1/4 speed
+        <div id="editor3" class="small editor">
+
+//same as above but at 1/4 speed
 __().
     sampler({
         path:"../../data/various/gun-cock.wav",
@@ -54,11 +57,14 @@ __().
     }).
     dac();
 __("sampler").start();
+
         </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
 
-        <div id="editor4" class="medium-small editor">//same as above but with specified loop points
+        <div id="editor4" class="medium-small editor">
+
+//same as above but with specified loop points
 __().
     sampler({
         path:"../../data/various/gun-cock.wav",

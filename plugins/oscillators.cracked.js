@@ -6,6 +6,11 @@
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#sine
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440]
  * @param {Number} [params.detune=0]
@@ -31,6 +36,11 @@ cracked.sine = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#square
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440]
  * @param {Number} [params.detune=0]
@@ -56,6 +66,11 @@ cracked.square = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#saw
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440]
  * @param {Number} [params.detune=0]
@@ -81,6 +96,11 @@ cracked.saw = function (params) {
  * [See more oscillator examples](../../examples/oscillators.html)
  *
  * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#triangle
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440]
  * @param {Number} [params.detune=0]

@@ -1,6 +1,96 @@
-	body {
-		font-family:Verdana, Arial, Helvetica, sans-serif;
-	}
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+    * {
+        box-sizing: border-box
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        color: #4d4e53;
+        background-color: white;
+        margin: 0 auto;
+        padding: 0 20px;
+
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        line-height: 160%;
+    }
+
+    a,
+    a:active {
+        color: #0095dd;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline
+    }
+
+    p, ul, ol, blockquote {
+        margin-bottom: 1em;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #000;
+        font-weight: 400;
+        margin: 0;
+    }
+
+    h1 {
+        font-weight: 300;
+        font-size: 48px;
+        margin: 1em 0 .5em;
+    }
+
+    h1.page-title {
+        font-size: 48px;
+        margin: 1em 30px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin: 1.5em 0 .3em;
+    }
+
+    h3 {
+        font-size: 24px;
+        margin: 1.2em 0 .3em;
+    }
+
+    h4 {
+        font-size: 18px;
+        margin: 1em 0 .2em;
+        color: #4d4e53;
+    }
+
+    h5, .container-overview .subsection-title {
+        font-size: 120%;
+        letter-spacing: -0.01em;
+        margin: 8px 0 3px 0;
+    }
+
+    h6 {
+        font-size: 100%;
+        letter-spacing: -0.01em;
+        margin: 6px 0 3px 0;
+        font-style: italic;
+    }
+
+    tt, code, kbd, samp {
+        font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        background: #f4f4f4;
+        padding: 1px 5px;
+        border-radius: 5px;
+    }
+
 
     p button.play {
         color:black;
@@ -13,7 +103,7 @@
         width: 150px;
         outline: none;
         cursor:pointer;
-        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-family: 'Montserrat', sans-serif;
     }
     p button.play:hover {
         background-color: #ccc;
@@ -26,6 +116,12 @@
         bottom: 0;
         left: 0;
 		width:750px;
+        margin: 20px 0;
+    }
+
+    .range-label {
+        position: relative;
+        bottom: 8px;
     }
 
 	.large {
@@ -77,4 +173,8 @@
         cursor:pointer;
         background-color: #ccc;
         padding:1px 6px 5px 6px;
+    }
+
+    .example-container {
+        padding-left: 40px;
     }

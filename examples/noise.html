@@ -18,56 +18,65 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
-
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
         <h3>White</h3>
 
         <div id="editor1" class="tiny editor">
+
 //white noise
 //defaults to 1 channel &amp; 1 seconds of buffered noise
 __().white().dac(0.5).play();
+
         </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
         <div id="editor2" class="tiny editor">
+
 //white noise
 //2 seconds buffered &amp; 2 channels.
 //more channels &amp; longer length = slower startup
 __().white({channels:2,length:2}).dac(0.5).play();
+
         </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
         <h3>Pink</h3>
 
         <div id="editor3" class="tiny editor">
+
 //pink noise
 __().pink().dac(0.5).play();
+
         </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
         <div id="editor4" class="tiny editor">
+
 //pink noise
 //2 seconds buffered &amp; 2 channels.
 //more channels &amp; longer length = slower startup
 __().pink({channels:2,length:2}).dac(0.5).play();
+
         </div>
         <p><button class="play" data-id="editor4">START</button></p>
 
         <h3>Brown</h3>
 
         <div id="editor5" class="tiny editor">
+
 //brown noise
 __().brown().dac(0.5).play();
+
         </div>
         <p><button class="play" data-id="editor5">START</button></p>
 
         <div id="editor6" class="tiny editor">
+
 //brown noise
 //2 seconds buffered &amp; 2 channels.
 //more channels &amp; longer length = slower startup
 __().brown({channels:2,length:2}).dac(0.5).play();
+
         </div>
         <p><button class="play" data-id="editor6">START</button></p>
     </div>

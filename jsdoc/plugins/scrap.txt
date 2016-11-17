@@ -1,0 +1,11 @@
+                var cs;
+
+
+                <?js if (m && m.category && cs != m.categoryString)  { ?>
+                    <?js
+                        cs = m.categoryString
+                    ?>
+                    <h1>
+                    <?js= m.categoryString ?>
+                    </h1>
+                <?js } ?>

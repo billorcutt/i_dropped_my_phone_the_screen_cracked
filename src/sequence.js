@@ -2,41 +2,45 @@
  * #Sequencing#
  */
 
-///**
-// * global vars for loop
-// * @type {boolean}
-// * @private
-// */
+/**
+* vars for loop
+* @type {boolean}
+* @private
+*/
 
 var _isLoopRunning = false,
     _ignoreGrid = true,
-    _loopStepSize,
+    _loopStepSize = 0,
     _loopInterval = 100,
     _loopID = 0,
     _loopCB = null,
     _loopData = [],
     _loopIndex = -1,
+    _loopCount = 0,
     _loopListeners = [],
-    _loopTimeToNextStep = 0;
+    _loopTimeToNextStep = 0,
+    _loopTolerance = 0.30;
 
 /**
  * main method for loop
  *
- * <code>
- * //configure the loop: 8 steps, 100ms between steps
- * \_\_.loop({steps:8,interval:100});
+ * <pre><code>//configure the loop: 8 steps, 100ms between steps
+ * __.loop({steps:8,interval:100});
  *
  * //start
- * \_\_.loop("start");
+ * __.loop("start");
  * //stop
- * \_\_.loop("stop");
+ * __.loop("stop");
  * //reset the loop params
- * \_\_.loop("reset");
- * </code>
+ * __.loop("reset");</code></pre>
  *
  * [See sequencing examples](../../examples/sequencing.html)
  *
  * @public
+ * @memberof cracked
+ * @category Sequence
+ * @name cracked#loop
+ * @function
  * @param {String} [arg] stop/start/reset commands
  * @param {Object} [config] configuration object
  * @param {Number} [config.interval=100] step length in ms
@@ -71,33 +75,41 @@ cracked.loop = function () {
     return cracked;
 };
 
-///**
-// * Toggles the state of the _ignoreGrid variable
-// * @private
-// */
+/**
+* Toggles the state of the _ignoreGrid variable
+* @private
+*/
 function toggleGrid() {
     if (_isLoopRunning) {
         _ignoreGrid = !_ignoreGrid;
     }
 }
 
-///**
-// * Starts the loop
-// * @private
-// */
+/**
+* Get the millisecond value for setting timeout
+* @private
+*/
+function calculateTimeout() {
+    return __.sec2ms(_loopTimeToNextStep  - _context.currentTime - (__.ms2sec(_loopInterval * _loopTolerance)));
+}
+
+/**
+* Starts the loop
+* @private
+*/
 function startLoop() {
     if (!_isLoopRunning) {
         _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
-        _loopID = setInterval(checkup, (_loopInterval / 1.75));
+        _loopID = setTimeout(checkup, calculateTimeout());
         _isLoopRunning = true;
         _ignoreGrid = false;
     }
 }
 
-///**
-// * Stops the loop
-// * @private
-// */
+/**
+* Stops the loop
+* @private
+*/
 function stopLoop() {
     if (_isLoopRunning) {
         clearInterval(_loopID);
@@ -107,12 +119,12 @@ function stopLoop() {
     }
 }
 
-///**
-// * Resets the loop to defaults
-// * @private
-// */
+/**
+* Resets the loop to defaults
+* @private
+*/
 function resetLoop() {
-    _loopStepSize = undefined;
+    _loopStepSize = 0;
     _loopInterval = 100;
     _ignoreGrid = true;
     _loopID = 0;
@@ -120,20 +132,21 @@ function resetLoop() {
     _loopData = [];
     _loopListeners = [];
     _loopIndex = -1;
+    _loopCount = 0;
     _isLoopRunning = false;
     _loopTimeToNextStep = 0;
 }
 
-///**
-// * configure the loop options
-// * @param {Object} opts configuration object
-// * @param {Function} fn global callback
-// * @param {Array} data array of data to be passed to the global callback
-// * @private
-// */
+/**
+* configure the loop options
+* @param {Object} opts configuration object
+* @param {Function} fn global callback
+* @param {Array} data array of data to be passed to the global callback
+* @private
+*/
 function configureLoop(opts, fn, data) {
-    if (opts && typeof opts === 'object') {
-        _loopStepSize = opts.steps;
+    if (opts && __.isObj(opts)) {
+        _loopStepSize = opts.steps ? opts.steps : data && data.length ? data.length : 0;
         _loopInterval = opts.interval || 200;
     } else if(opts && __.isNum(opts) && !fn && !data) {
         //just configuring tempo only
@@ -149,23 +162,29 @@ function configureLoop(opts, fn, data) {
     }
 }
 
-///**
-// * called by setInterval - sets the time to next step
-// * @private
-// */
+/**
+* called by setInterval - sets the time to next step
+* @private
+*/
 function checkup() {
     var now = _context.currentTime,
-        timeAtPreviousStep = _loopTimeToNextStep - _loopInterval / 1000;
+        loopIntervalInSecs = __.ms2sec(_loopInterval),
+        timeAtPreviousStep = _loopTimeToNextStep -  loopIntervalInSecs;
     if (now < _loopTimeToNextStep && now > timeAtPreviousStep) {
         loopStep();
-        _loopTimeToNextStep += (_loopInterval / 1000);
+        _loopTimeToNextStep += loopIntervalInSecs;
+    } else if(now > _loopTimeToNextStep) {
+        //we dropped a frame
+        _loopTimeToNextStep += loopIntervalInSecs;
     }
+    clearTimeout(_loopID);
+    _loopID = setTimeout(checkup, calculateTimeout());
 }
 
-///**
-// * call on every step
-// * @private
-// */
+/**
+* call on every step
+* @private
+*/
 function loopStep() {
 
     //globals- tbd deprecate. step size should just be based on available data
@@ -175,7 +194,7 @@ function loopStep() {
     }
     //global callback
     if (__.isFun(_loopCB)) {
-        _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData);
+        _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData, ++_loopCount);
     }
 
     //loop thru any bound step event listeners
@@ -184,7 +203,8 @@ function loopStep() {
             tmp = _selectedNodes,
             index = listener.loopIndex,
             stepSize = listener.loopStepSize,
-            data = listener.data;
+            data = listener.data,
+            count = ++listener.count;
 
         //if step size not configured globally
         listener.loopIndex = (index < (stepSize - 1)) ? index + 1 : 0;
@@ -193,7 +213,7 @@ function loopStep() {
         _selectedNodes = listener.selection;
 
         //run the callback
-        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data);
+        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data, count);
 
         //put the nodes back in place
         _selectedNodes = tmp;
@@ -203,6 +223,10 @@ function loopStep() {
 /**
  * Listener - binds a set of audio nodes and a callback to loop step events
  * @public
+ * @category Sequence
+ * @memberof cracked
+ * @name cracked#bind
+ * @function
  * @param {String} eventType currently just "step"
  * @param {Function} fn callback to be invoked at each step
  * @param {Array} data should the same length as the number of steps
@@ -217,7 +241,8 @@ cracked.bind = function (eventType, fn, data) {
             loopStepSize : data.length || 0,
             loopIndex : -1,
             selection: _selectedNodes.slice(0),
-            selector: _currentSelector
+            selector: _currentSelector,
+            count:0
         });
     }
     return cracked;
@@ -226,6 +251,10 @@ cracked.bind = function (eventType, fn, data) {
 /**
  * Remove any steps listeners registered on these nodes
  * @public
+ * @category Sequence
+ * @memberof cracked
+ * @function
+ * @name cracked#unbind
  * @param {String} eventType
  */
 cracked.unbind = function (eventType) {

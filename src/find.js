@@ -4,11 +4,9 @@
  */
 
 /**
- * Updates the internal selected nodes array with a collection of audio
- * nodes matching the selector provided. Type, Class & Id selectors are
- * supported.
- * <code>
- * //type selector using the node name, sets the frequency for all sines
+ * Updates the internal selected nodes array with a collection of audio nodes matching the selector provided. Type, Class & Id selectors are supported.
+ * <pre>
+ * <code>//type selector using the node name, sets the frequency for all sines
  * __("sine").frequency(200);
  *
  * //set the frequency for the node with id "foo"
@@ -19,34 +17,32 @@
  *
  * //select all sines, any nodes with classname "bar" or id of "foo"
  * //and set their frequencies to 200
- * __("sine,.bar,#foo").frequency(200);</code>
+ * __("sine,.bar,#foo").frequency(200);</code></pre>
  *
  * [See more selector examples](../../examples/selector.html)
  *
- * If invoked without arguments, cracked() resets the selection/connection state,
- * removing any record of previous nodes and effectively marking the start of
- * a new connection chain. Since a new node will try to connect to any previous
- * node, calling \_\_() tells a node that there is no previous node to connect to.
+ * If invoked without arguments, cracked() resets the selection/connection state, removing any record of previous nodes and effectively marking the start of a new connection chain. Since a new node will try to connect to any previous node, calling __() tells a node that there is no previous node to connect to.
  * For example:
- * <code>
- * //Create & connect sine -> lowpass -> dac
- * \_\_().sine();
- * \_\_.lowpass();
- * \_\_.dac();
+ * <pre>
+ * <code>//Create & connect sine -> lowpass -> dac
+ * __().sine();
+ * __.lowpass();
+ * __.dac();
  *
  * //Create but don't connect
- * \_\_().sine();
- * \_\_().lowpass();
- * \_\_().dac();</code>
+ * __().sine();
+ * __().lowpass();
+ * __().dac();</code></pre>
  *
  * cracked is also the namespace for public methods and also can be written as a
- * double underscore \_\_
- * <code>
- * \_\_("sine"); //same as cracked("sine")
- * </code>
+ * double underscore __
+ * <pre>
+ * <code>__("sine"); //same as cracked("sine")</code>
+ * </pre>
  *
  *
  * @public
+ * @category Find
  * @type cracked
  * @function
  * @namespace
@@ -83,11 +79,11 @@ function find() {
     return cracked;
 }
 
-///**
-// * find nodes in a macro with a selector updates the _selectedNodes array
-// * @function
-// * @private
-// */
+/**
+ * find nodes in a macro with a selector updates the _selectedNodes array
+ * @function
+ * @private
+ */
 function findInMacro() {
     if (arguments && arguments.length) {
         if(__.isStr(arguments[0])) {
@@ -128,22 +124,22 @@ function processSelectorForMacro(selector) {
     return selectorArr.join(",");
 }
 
-///**
-// * reset state
-// * @function
-// * @private
-// */
+/**
+ * reset state
+ * @function
+ * @private
+ */
 function reset() {
     _previousNode = null;
     _selectedNodes = [];
     _currentSelector = "";
 }
 
-///**
-// * reset selection
-// * @function
-// * @private
-// */
+/**
+ * reset selection
+ * @function
+ * @private
+ */
 function resetSelection() {
     _selectedNodes = [];
     _currentSelector = "";
@@ -151,10 +147,12 @@ function resetSelection() {
 
 /**
  * resets everything to its initial state
- * <code>
- *  //reset state for the entire app
- *  cracked.reset();</code>
+ * <pre><code>//reset state for the entire app
+ *  cracked.reset();</code></pre>
  * @public
+ * @category Find
+ * @name cracked#reset
+ * @memberof cracked
  * @function
  * @returns {cracked}
  */
@@ -168,10 +166,8 @@ cracked.reset = function() {
 };
 
 /**
- * executes a method with a specific set of selected nodes
- * without modifying the internal selectedNodes array
- * <pre><pre><code style="color:#7f0a0c">
- * //filter everything but the sines from currently selected nodes and
+ * executes a method with a specific set of selected nodes without modifying the internal selectedNodes array
+ * <pre><code>//filter everything but the sines from currently selected nodes and
  * //execute the frequency method against the remaining sines.
  * //the internal _selectedNodes array remains unchanged
  * cracked.exec(
@@ -181,7 +177,10 @@ cracked.reset = function() {
  * );</code></pre>
  *
  * @public
+ * @category Find
  * @function
+ * @name cracked#exec
+ * @memberof cracked
  * @param {String} method method name
  * @param {Array} args arguments to supply to the method
  * @param {Array} nodes node array to execute against
@@ -196,18 +195,18 @@ cracked.exec = function (method, args, nodes) {
 };
 
 /**
- * iterate over the selectedNodes array, executing
- * the supplied function for each element
- * <pre><code style="color:#7f0a0c">
- * __.each(type, function(node,index,array){
+ * iterate over the selectedNodes array, executing the supplied function for each element
+ * <pre><code>__.each(type, function(node,index,array){
      *      //Loops over any selected nodes. Parameters are the
      *      //current node, current index, and the selectedNode array
      * });</code></pre>
  *
- *
  * @public
+ * @category Find
+ * @name cracked#each
+ * @memberof cracked
  * @function
- * @type {String} type string to be checked against the node type
+ * @param {String} type string to be checked against the node type
  * @param {Function} fn function to be called on each node
  * @returns {cracked}
  */
@@ -224,10 +223,8 @@ cracked.each = function (type, fn) {
 };
 
 /**
- * Filter selected nodes with an additional selector
- * returns node array that can used with exec()
- * <pre><code style="color:#7f0a0c">
- * //select any sine & sawtooth oscillators
+ * Filter selected nodes with an additional selector returns node array that can used with exec()
+ * <pre><code>//select any sine & sawtooth oscillators
  * __("sine,saw");
  *
  * //filter out everything but the sines and
@@ -240,6 +237,9 @@ cracked.each = function (type, fn) {
  * );</code></pre>
  *
  * @public
+ * @category Find
+ * @name cracked#filter
+ * @memberof cracked
  * @function
  * @param {String} selector selector expression
  * @returns {Array}
@@ -265,11 +265,8 @@ cracked.filter = function () {
 };
 
 /**
- * Find nodes with a selector
- * returns node array that can used with exec()
- * <pre><code style="color:#7f0a0c">
- *
- * //find all the sines in the patch and
+ * Find nodes with a selector returns node array that can used with exec()
+ * <pre><code>//find all the sines in the patch and
  * //execute the frequency method against those nodes.
  * //the internal _selectedNodes array remains unchanged
  * cracked.exec(
@@ -279,6 +276,9 @@ cracked.filter = function () {
  * );</code></pre>
  *
  * @public
+ * @category Find
+ * @name cracked#find
+ * @memberof cracked
  * @function
  * @param {String} selector selector expression
  * @returns {Array}

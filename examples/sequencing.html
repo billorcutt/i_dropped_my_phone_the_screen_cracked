@@ -18,13 +18,13 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
 
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
         <h3>Loop</h3>
 
-        <div id="editor1" class="medium-large editor">//set up sounds
+        <div id="editor1" class="medium-large editor">
+
+//set up sounds
 __().sine(600).adsr().delay().dac();
 __("adsr").reverb().gain(.5).connect("dac").play();
 
@@ -56,11 +56,15 @@ __("sine,adsr").bind("step",function(index,data,array){
 },[1,1,0,0,1,0,0,1]);
 
 //start the loop
-__.loop("start");</div>
+__.loop("start");
+
+        </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
 
-        <div id="editor2" class="medium-large editor">//set up some sounds
+        <div id="editor2" class="medium-large editor">
+
+//set up some sounds
 __().sine({frequency:180,id:"bass"}).lowpass(120).compressor({release:0}).dac();
 __().sine(80).adsr({id:"kick",envelope:0.1}).connect("compressor"); //100 ms envelope
 __().pink().adsr({id:"snare",envelope:0.05}).connect("compressor"); //50 ms
@@ -95,10 +99,14 @@ __("#hihat").bind("step",function(index,data,array){
 },[1,1,1,1,1,1,1,1]);
 
 //start it
-__.loop("start");</div>
+__.loop("start");
+
+        </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
-        <div id="editor3" class="large editor">//set up sounds- start sine w/ freq = 0
+        <div id="editor3" class="large editor">
+
+//set up sounds- start sine w/ freq = 0
 __().sine(0).dac().play();
 
 //configure loop- step length = 100 ms
@@ -136,7 +144,9 @@ __.frequency(__.pitch2freq(p));
 },[30,31,32,33,34,35,36,37,38,39]);
 
 //start it
-__().loop("start");</div>
+__().loop("start");
+
+        </div>
         <p><button class="play" data-id="editor3">START</button></p>
     </div>
 </div>

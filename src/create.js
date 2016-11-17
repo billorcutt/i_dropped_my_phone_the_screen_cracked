@@ -5,14 +5,14 @@
  *
  */
 
-///**
-// * node factory -  create, configure and connect new nodes. returns an instance of audio node wrapper class
-// * @private
-// * @param {String} type
-// * @param {Object} creationParams hash of params supplied by the invoking factory method
-// * @param {Object} userSettings user supplied params
-// * @returns {AudioNode}
-// */
+/**
+* node factory -  create, configure and connect new nodes. returns an instance of audio node wrapper class
+* @private
+* @param {String} type
+* @param {Object} creationParams hash of params supplied by the invoking factory method
+* @param {Object} userSettings user supplied params
+* @returns {AudioNode}
+*/
 function createNode(type, creationParams, userSettings) {
     var node = new AudioNode(type, creationParams, userSettings || {});
     saveNode(node);
@@ -41,12 +41,12 @@ function createNode(type, creationParams, userSettings) {
     return node;
 }
 
-///**
-// * Native audio nodes are made here.
-// * @param {Object} creationParams
-// * @private
-// * @returns {*}
-// */
+/**
+* Native audio nodes are made here.
+* @param {Object} creationParams
+* @private
+* @returns {*}
+*/
 function audioNodeFactory(creationParams) {
     var node;
     if (_context && creationParams.method && _context[creationParams.method]) {
@@ -68,15 +68,15 @@ function audioNodeFactory(creationParams) {
     return node;
 }
 
-///**
-// * wrapper class for audio nodes
-// * @private
-// * @param {String} type audio node type
-// * @param {Object} creationParams app supplied params
-// * @param {Object} userSettings user supplied params
-// * @type {AudioNode}
-// * @constructor
-// */
+/**
+* wrapper class for audio nodes
+* @private
+* @param {String} type audio node type
+* @param {Object} creationParams app supplied params
+* @param {Object} userSettings user supplied params
+* @type {AudioNode}
+* @constructor
+*/
 function AudioNode(type, creationParams, userSettings) {
 
     var uuid,
@@ -113,7 +113,15 @@ function AudioNode(type, creationParams, userSettings) {
                 var wrapper = getNodeWithUUID(currNode.uuid);
                 if (!wrapper.getIsPlaying()) {
                     var offset = (currNode && currNode.loopStart && __.isNum(currNode.loopStart)) ? currNode.loopStart : 0;
-                    currNode.start(0,offset);
+                    var duration = (currNode && currNode.loopEnd && __.isNum(currNode.loopEnd)) ? currNode.loopEnd - offset : 0;
+                    var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+                    /*if(offset && duration) {
+                        currNode.start(time,offset,duration);
+                    } else*/ if(offset) {
+                        currNode.start(time,offset);
+                    } else {
+                        currNode.start(time);
+                    }
                     wrapper.setIsPlaying(true);
                     this.setIsPlaying(true);
                 }
@@ -133,7 +141,8 @@ function AudioNode(type, creationParams, userSettings) {
             if (currNode && __.isFun(currNode.stop)) {
                 var wrapper = getNodeWithUUID(currNode.uuid);
                 if (wrapper.getIsPlaying()) {
-                    currNode.stop(0);
+                    var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+                    currNode.stop(time);
                     this.resetNode(currNode);
                     wrapper.setIsPlaying(false);
                     this.setIsPlaying(false);
@@ -152,7 +161,7 @@ function AudioNode(type, creationParams, userSettings) {
                 that.ramp(target, time, paramToRamp, _node, initial);
             });
         } else {
-            var now = _isLoopRunning ? _loopTimeToNextStep : _context.currentTime;
+            var now = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
             if (
                 currNode &&
                 currNode[paramToRamp] &&
@@ -507,11 +516,21 @@ function AudioNode(type, creationParams, userSettings) {
             if (__.isArr(rawNode)) {
                 //in a macro connections are made with the first and last node in the macro.
                 //tbd - support a way to designate connection nodes
-                rawNode = (whichNode === "from") ? rawNode[rawNode.length - 1] : rawNode[0];
+                rawNode = (whichNode === "from") ? getRawNode(rawNode,(rawNode.length - 1)) : getRawNode(rawNode,0);
             }
             return rawNode;
         } else {
             return null;
+        }
+    }
+
+    //recursive method extract the raw node
+    function getRawNode(node,position) {
+        if(__.isArr(node)) {
+            var pos = !position ? 0 : node.length-1;
+            return getRawNode(node[position],pos);
+        } else {
+            return node;
         }
     }
 

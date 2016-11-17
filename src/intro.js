@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * set up some variables used throughout the module
+ * @private
+ */
+
 var _nodeStore = {},
     _nodeLookup = {},
     _previousNode = null,

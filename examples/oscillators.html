@@ -18,13 +18,12 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
 
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
         <h3>Sine</h3>
 
         <div id="editor1" class="small editor">
+
 //create &amp; connect a sine to output
 //frequency of 180 and detune of 120
 __().sine({frequency:180,detune:120}).dac(.25);
@@ -34,12 +33,14 @@ __().sine(360).connect("dac");
 __().sine().connect("dac");
 //start all sines
 __("sine").start();
+
         </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
         <h3>Square</h3>
 
         <div id="editor2" class="small editor">
+
 //create &amp; connect a square to output
 //frequency of 180 and detune of 120
 __().square({frequency:180,detune:120}).dac(.10);
@@ -49,12 +50,14 @@ __().square(360).connect("dac");
 __().square().connect("dac");
 //start all squares
 __("square").start();
+
         </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
         <h3>Sawtooth</h3>
 
         <div id="editor3" class="small editor">
+
 //create &amp; connect a sawtooth to output
 //frequency of 180 and detune of 120
 __().saw({frequency:180,detune:120}).dac(.15);
@@ -64,6 +67,7 @@ __().saw(360).connect("dac");
 __().saw().connect("dac");
 //start all sawtooths
 __("saw").start();
+
         </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
@@ -71,6 +75,7 @@ __("saw").start();
         <h3>Triangle</h3>
 
         <div id="editor4" class="small editor">
+
 //create &amp; connect a triangle to output
 //frequency of 180 and detune of 120
 __().triangle({frequency:180,detune:120}).dac(.25);
@@ -80,6 +85,7 @@ __().triangle(360).connect("dac");
 __().triangle().connect("dac");
 //start all triangles
 __("triangle").start();
+
         </div>
         <p><button class="play" data-id="editor4">START</button></p>
     </div>

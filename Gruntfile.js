@@ -55,15 +55,21 @@ module.exports = function(grunt) {
                 }
             }
         },
-        dox: {
-            options: {
-                title: "Cracked Documentation"
-            },
-            files: {
-                src: ['src/find.js','src/control.js','src/nodes.js','src/sequence.js',
-                    'src/macro.js','src/midi.js','src/connect.js','src/debug.js',
-                    'src/type.js', 'plugins/**/*.js'],
-                dest: 'docs'
+        jsdoc : {
+            dist : {
+                src: [
+                    'src/intro.js','src/find.js','src/create.js',
+                    'src/control.js','src/nodes.js','src/sequence.js',
+                    'src/model.js','src/macro.js','src/midi.js','src/connect.js',
+                    'src/utilities.js','src/debug.js','src/outro.js',
+                    'src/type.js', 'plugins/**/*.js'
+                ],
+                options: {
+                    destination: 'docs',
+                    readme:'README.md',
+                    template : "jsdoc/minami",
+                    configure : "jsdoc/jsdoc.conf.json"
+                }
             }
         },
         connect: {
@@ -78,9 +84,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-dox');
+    //grunt.loadNpmTasks('grunt-dox');
+    grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
-    grunt.registerTask('default', ['concat', 'jshint', 'uglify','dox']);
+    grunt.registerTask('default', ['concat', 'jshint', 'uglify','jsdoc']);
 
 };

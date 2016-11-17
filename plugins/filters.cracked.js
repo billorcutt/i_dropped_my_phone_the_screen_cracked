@@ -4,6 +4,10 @@
  * [See more lowpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#lowpass
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -29,6 +33,10 @@ cracked.lowpass = function (params) {
  * [See more highpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#highpass
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -54,6 +62,10 @@ cracked.highpass = function (params) {
  * [See more bandpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#bandpass
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -79,6 +91,10 @@ cracked.bandpass = function (params) {
  * [See more lowshelf examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#lowshelf
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -106,6 +122,10 @@ cracked.lowshelf = function (params) {
  * [See more highshelf examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#highshelf
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -133,6 +153,10 @@ cracked.highshelf = function (params) {
  * [See more peaking examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#peaking
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -160,6 +184,10 @@ cracked.peaking = function (params) {
  * [See more notch examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#notch
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q
@@ -185,6 +213,10 @@ cracked.notch = function (params) {
  * [See more allpass examples](../../examples/filters.html)
  *
  * @plugin
+ * @category Filter
+ * @function
+ * @memberof cracked
+ * @name cracked#allpass
  * @param {Object} [params] map of optional values
  * @param {Number} [params.frequency=440] frequency
  * @param {Number} [params.q=0] Q

@@ -1,0 +1,65 @@
+{
+  "Utility" : {
+    "displayName" : "Utility"
+  },
+  "Delay" : {
+    "displayName" : "Delay"
+  },
+  "Distortion" : {
+    "displayName" : "Distortion"
+  },
+  "Envelope" : {
+    "displayName" : "Envelope"
+  },
+  "Filter" : {
+    "displayName" : "Filter"
+  },
+  "Modulation" : {
+    "displayName" : "Modulation"
+  },
+  "Noise" : {
+    "displayName" : "Noise"
+  },
+  "Miscellaneous" : {
+    "displayName" : "Miscellaneous"
+  },
+  "Modulator" : {
+    "displayName" : "Modulator"
+  },
+  "Oscillator" : {
+    "displayName" : "Oscillator"
+  },
+  "Synth" : {
+    "displayName" : "Synth"
+  },
+  "Filter" : {
+    "displayName" : "Filter"
+  },
+  "Connect" : {
+    "displayName" : "Connect"
+  },
+  "Control" : {
+    "displayName" : "Control"
+  },
+  "Debug" : {
+    "displayName" : "Debug"
+  },
+  "Find" : {
+    "displayName" : "Find"
+  },
+  "Macro" : {
+    "displayName" : "Macro"
+  },
+  "Midi" : {
+    "displayName" : "Midi"
+  },
+  "Node" : {
+    "displayName" : "Node"
+  },
+  "Sequence" : {
+    "displayName" : "Sequence"
+  },
+  "Type" : {
+    "displayName" : "Type"
+  }
+}

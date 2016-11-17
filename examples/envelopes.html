@@ -18,13 +18,11 @@
     </div>
 </div>
 <div class="row">
-    <div id="nav" class="large-2 columns">
-
-    </div>
-    <div class="small-12 large-10 columns">
+    <div class="small-12 columns example-container">
         <h3>Ramp</h3>
 
         <div id="editor1" class="small editor">
+
 //ramp frequency on a lowpass filter
 __().sine().lowpass({q:20}).dac();
 __("sine").start();
@@ -33,10 +31,12 @@ __("sine").start();
 //initialize lowpass to 1000 then ramp the frequency
 //to 100 in .25 seconds.
 __("lowpass").ramp(100,.25,"frequency",1000);
+
         </div>
         <p><button class="play" data-id="editor1">START</button></p>
 
         <div id="editor2" class="small editor">
+
 //target &amp; time can be arrays of values
 __().saw(180).gain(0).dac();
 __("saw").start();
@@ -46,10 +46,13 @@ __("gain").ramp(
     "gain",
     0
 );
+
         </div>
         <p><button class="play" data-id="editor2">START</button></p>
 
-        <div id="editor3" class="small editor">//ramp multiple parameters on multiple nodes
+        <div id="editor3" class="small editor">
+
+//ramp multiple parameters on multiple nodes
 __().sine(1000).gain(0).dac();
 
 __("sine").start();
@@ -60,7 +63,9 @@ __("sine").ramp([80,1000],[5,5],"frequency",1000);
 
 //init gain on the gain node to 0, then ramp to 1 in 5 secs,
 //then ramp back to 0 in another 5 secs
-__("gain").ramp([1,0],[5,5],"gain",0);</div>
+__("gain").ramp([1,0],[5,5],"gain",0);
+
+        </div>
         <p><button class="play" data-id="editor3">START</button></p>
 
 
@@ -72,7 +77,9 @@ __("gain").ramp([1,0],[5,5],"gain",0);</div>
 __().lfo({gain:100}).sine(300).lowpass({q:20}).adsr(10).dac().play();
 __("adsr").adsr("trigger");
 __("lfo").ramp([100,10],[5,5],"frequency",10);
-__("lowpass").ramp([150,900],[5,5],"frequency",900);</div>
+__("lowpass").ramp([150,900],[5,5],"frequency",900);
+
+        </div>
         <p><button class="play" data-id="editor4">START</button></p>
 
         <div id="editor5" class="tiny editor">
@@ -81,7 +88,9 @@ __("lowpass").ramp([150,900],[5,5],"frequency",900);</div>
 __().sine().adsr([1,1,0.35,1,2.25]).gain(0.25).dac().play();
 __().sine(880).adsr([1.2,0.8,0.5,0.5,2.5]).connect("gain");
 __().sine(1760).adsr([2,1,0.35,1,2]).connect("gain");
-__("adsr").adsr("trigger");//trigger all adsr at once</div>
+__("adsr").adsr("trigger");//trigger all adsr at once
+
+        </div>
         <p><button class="play" data-id="editor5">START</button></p>
 
         <div id="editor6" class="tiny editor">

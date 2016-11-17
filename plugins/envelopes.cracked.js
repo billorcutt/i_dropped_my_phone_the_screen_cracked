@@ -9,6 +9,10 @@
  * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
  *
  * @plugin
+ * @category Envelope
+ * @function
+ * @memberof cracked
+ * @name cracked#adsr
  * @param {Array} [userParams] 5 values: attack,decay,sustain,hold,release
  * @param {Array}  [userParams] 4 values: attack,decay,sustain,release
  * @param {Array} [userParams] 3 values: attack,decay,sustain (holds until released)

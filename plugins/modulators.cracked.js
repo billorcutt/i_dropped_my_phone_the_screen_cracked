@@ -4,6 +4,11 @@
  * [See more LFO examples](../../examples/modulation.html)
  *
  * @plugin
+ * @category Modulator
+ * @function
+ * @memberof cracked
+ * @name cracked#lfo
+ * @public
  * @param {Object} [userParams] map of optional values
  * @param {String} [userParams.modulates=frequency]
  * @param {String} [userParams.type=saw]
@@ -47,6 +52,11 @@ cracked.lfo = function (userParams) {
  * fill an audio buffer with a series of discrete values
  *
  * @plugin
+ * @category Modulator
+ * @function
+ * @memberof cracked
+ * @name cracked#stepper
+ * @public
  * @param {Object} [params] map of optional values
  * @param {String} [params.modulates=frequency]
  * @param {Function} [params.fn=function to generate values (if not supplied, then random values between -1 & 1)]

@@ -1,0 +1,33 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "plugins": ["node_modules/grunt-jsdoc/node_modules/jsdoc/plugins/markdown","jsdoc/plugins/categories"],
+    "markdown": {
+        "tags": ["category"]
+    },
+  "templates": {
+    "logoFile": "",
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "dateFormat": "ddd MMM Do YYYY",
+    "outputSourceFiles": true,
+    "outputSourcePath": true,
+    "systemName": "I Dropped My Phone The Screen Cracked",
+    "footer": "",
+    "copyright": "Copyright © 2014-2016 The contributors to \"I Dropped My Phone The Screen Cracked\".",
+    "navType": "vertical",
+    "theme": "cerulean",
+    "sort":false,
+    "linenums": true,
+    "collapseSymbols": false,
+    "inverseNav": false,
+    "protocol": "html://",
+    "methodHeadingReturns": false
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": false
+  },
+  "categoryfile" : "jsdoc/plugins/categoryfile.json"
+}

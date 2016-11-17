@@ -4,6 +4,11 @@
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#noise
+ * @public
  * @param {Object} [params] map of optional values
  * @param {String} [params.type=white]
  */
@@ -25,6 +30,11 @@ cracked.noise = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#pink
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.channels=1]
  * @param {Number} [params.length=1]
@@ -101,6 +111,11 @@ cracked.pink = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#white
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.channels=1]
  * @param {Number} [params.length=1]
@@ -143,6 +158,11 @@ cracked.white = function (params) {
  * [See more noise examples](../../examples/noise.html)
  *
  * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#brown
+ * @public
  * @param {Object} [params] map of optional values
  * @param {Number} [params.channels=1]
  * @param {Number} [params.length=1]
