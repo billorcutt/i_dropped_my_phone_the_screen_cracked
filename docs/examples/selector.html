@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Cracked Documentation</title>
+    <!-- Foundation CSS-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/css/foundation.min.css">
+    <link rel="stylesheet" href="includes/examples.css" type="text/css"/>
+    <!-- Prism CSS-->
+    <script srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/js/vendor/custom.modernizr.js"></script>
+</head>
+
+<body>
+<div class="row">
+    <div class="small-12 columns">
+        <h1 class="page-title">Cracked Documentation<small> examples/selector.html</small></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns example-container">
+        <h3>Type</h3>
+
+        <div id="editor1" class="medium-small editor">
+
+//create a bunch of sines
+__().sine(440);
+__().sine(554.37);
+__().sine(659.26);
+__().sine(880);
+//select all the sines and connect them all to the dac
+__("sine").dac(.5).play();
+
+//use jquery to bind to events from the slider
+$("input[type='range']").bind("input",function(evt){
+    if(evt && evt.target) {
+        //change the detune of the all the sines in one go
+        __("sine").detune(evt.target.value);
+    }
+});
+
+        </div>
+        <input type="range" data-modifies="detune" data-selector="sine" step="1" min=1 max=440> <span class="range-label">Detune</span>
+        <p><button class="play" data-id="editor1">START</button></p>
+
+        <div id="editor2" class="small editor">
+
+//staggered delays & lowpass fitlers in parallel
+__().delay(1).lowpass(330); //one sec
+__().delay(2).lowpass(660); //two
+__().delay(3).lowpass(1220); //three
+__().delay(4).lowpass(1800); //four
+
+//set all the delay feedbacks to 0
+__("delay").feedback(0);
+
+//create a sine and connect them to the delays
+//and then connect the lowpass all delays to the dac
+__().saw(3600).connect("delay");
+__("lowpass").dac().play();
+
+        </div>
+        <p><button class="play" data-id="editor2">START</button></p>
+
+        <h3>Class</h3>
+
+        <div id="editor3" class="medium editor">
+
+//these sines have the classname "foo"
+__().sine({frequency:440,class:"foo"});
+__().sine({frequency:554.37,class:"foo"});
+//these have a classname "bar"
+__().sine({frequency:659.26,class:"bar"});
+__().sine({frequency:880,class:"bar"});
+
+//select all the sines, connect them to the dac
+//and start them playing
+__("sine").dac(.5).play();
+
+//use jquery to bind to events from the slider
+$("input[type='range']").bind("input",function(evt){
+    if(evt && evt.target) {
+        //change the detune of the two "foo" sines
+        __(".foo").detune(evt.target.value);
+    }
+});
+//use jquery to bind to events from the slider
+$("input[type='range']").bind("input",function(evt){
+    if(evt && evt.target) {
+        //change the detune of the two "bar" sines
+        __(".bar").detune(evt.target.value);
+    }
+});
+
+        </div>
+        <input type="range" data-modifies="detune" data-selector=".foo" step="1" min=1 max=440> <span class="range-label">Detune Foo</span>
+        <input type="range" data-modifies="detune" data-selector=".bar" step="1" min=1 max=440> <span class="range-label">Detune Bar</span>
+        <p><button class="play" data-id="editor3">START</button></p>
+
+        <h3>Id</h3>
+
+        <div id="editor4" class="medium-small editor">
+
+//parallel delays- all delay times set to 0
+__().delay({id:"d1"});
+__().delay({id:"d2"});
+__().delay({id:"d3"});
+__().delay({id:"d4"});
+//set all the delay feedbacks to 0 using ids
+__("#d1,#d2,#d3,#d4").feedback(0);
+
+//use ids to address the delays
+__("#d1").time(1); //set the delay time to 1
+__("#d2").time(2); //2
+__("#d3").time(3); //3
+__("#d4").time(4); //4
+
+//create an lfo &amp; sine and connect them to the delays
+//and then connect the all delays to the dac
+__().lfo({frequency:2.5,gain:25}).sine(180).connect("delay").dac().play();
+
+        </div>
+        <p><button class="play" data-id="editor4">START</button></p>
+
+    </div>
+</div>
+<!-- Foundation JS-->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../dist/cracked.js"></script>
+<script src="includes/examples.js"></script>
+</body>
+
+</html>
