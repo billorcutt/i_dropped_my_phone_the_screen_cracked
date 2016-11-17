@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/sequence.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><ul><li><h3><a href="cracked.html">cracked</a></h3><ul class='methods'><li><h5 style="font-size:15px">Find</h5></li><li data-type='method'><a href="cracked.html#reset">reset</a></li><li data-type='method'><a href="cracked.html#exec">exec</a></li><li data-type='method'><a href="cracked.html#each">each</a></li><li data-type='method'><a href="cracked.html#filter">filter</a></li><li data-type='method'><a href="cracked.html#find">find</a></li><li><h5 style="font-size:15px">Control</h5></li><li data-type='method'><a href="cracked.html#start">start</a></li><li data-type='method'><a href="cracked.html#stop">stop</a></li><li data-type='method'><a href="cracked.html#ramp">ramp</a></li><li data-type='method'><a href="cracked.html#attr">attr</a></li><li><h5 style="font-size:15px">Node</h5></li><li data-type='method'><a href="cracked.html#script">script</a></li><li data-type='method'><a href="cracked.html#waveshaper">waveshaper</a></li><li data-type='method'><a href="cracked.html#compressor">compressor</a></li><li data-type='method'><a href="cracked.html#gain">gain</a></li><li data-type='method'><a href="cracked.html#native_delay">native_delay</a></li><li data-type='method'><a href="cracked.html#osc">osc</a></li><li data-type='method'><a href="cracked.html#biquadFilter">biquadFilter</a></li><li data-type='method'><a href="cracked.html#convolver">convolver</a></li><li data-type='method'><a href="cracked.html#stereoPanner">stereoPanner</a></li><li data-type='method'><a href="cracked.html#destination">destination</a></li><li data-type='method'><a href="cracked.html#origin">origin</a></li><li data-type='method'><a href="cracked.html#buffer">buffer</a></li><li><h5 style="font-size:15px">Sequence</h5></li><li data-type='method'><a href="cracked.html#loop">loop</a></li><li data-type='method'><a href="cracked.html#bind">bind</a></li><li data-type='method'><a href="cracked.html#unbind">unbind</a></li><li><h5 style="font-size:15px">Macro</h5></li><li data-type='method'><a href="cracked.html#begin">begin</a></li><li data-type='method'><a href="cracked.html#end">end</a></li><li><h5 style="font-size:15px">Midi</h5></li><li data-type='method'><a href="cracked.html#midi_supported">midi_supported</a></li><li data-type='method'><a href="cracked.html#midi_init">midi_init</a></li><li data-type='method'><a href="cracked.html#midi_receive">midi_receive</a></li><li data-type='method'><a href="cracked.html#midi_noteon">midi_noteon</a></li><li data-type='method'><a href="cracked.html#midi_noteoff">midi_noteoff</a></li><li data-type='method'><a href="cracked.html#midi_control">midi_control</a></li><li><h5 style="font-size:15px">Connect</h5></li><li data-type='method'><a href="cracked.html#connect">connect</a></li><li data-type='method'><a href="cracked.html#remove">remove</a></li><li><h5 style="font-size:15px">Debug</h5></li><li data-type='method'><a href="cracked.html#log">log</a></li><li data-type='method'><a href="cracked.html#size">size</a></li><li data-type='method'><a href="cracked.html#_dumpState">_dumpState</a></li><li data-type='method'><a href="cracked.html#_getNode">_getNode</a></li><li><h5 style="font-size:15px">Type</h5></li><li data-type='method'><a href="cracked.html#ifUndef">ifUndef</a></li><li data-type='method'><a href="cracked.html#isNotUndef">isNotUndef</a></li><li data-type='method'><a href="cracked.html#isUndef">isUndef</a></li><li data-type='method'><a href="cracked.html#isObj">isObj</a></li><li data-type='method'><a href="cracked.html#isNum">isNum</a></li><li data-type='method'><a href="cracked.html#isStr">isStr</a></li><li data-type='method'><a href="cracked.html#isArr">isArr</a></li><li data-type='method'><a href="cracked.html#isFun">isFun</a></li><li><h5 style="font-size:15px">Delay</h5></li><li data-type='method'><a href="cracked.html#reverb">reverb</a></li><li data-type='method'><a href="cracked.html#delay">delay</a></li><li data-type='method'><a href="cracked.html#comb">comb</a></li><li><h5 style="font-size:15px">Distortion</h5></li><li data-type='method'><a href="cracked.html#bitcrusher">bitcrusher</a></li><li data-type='method'><a href="cracked.html#ring">ring</a></li><li data-type='method'><a href="cracked.html#overdrive">overdrive</a></li><li><h5 style="font-size:15px">Envelope</h5></li><li data-type='method'><a href="cracked.html#adsr">adsr</a></li><li><h5 style="font-size:15px">Filter</h5></li><li data-type='method'><a href="cracked.html#lowpass">lowpass</a></li><li data-type='method'><a href="cracked.html#highpass">highpass</a></li><li data-type='method'><a href="cracked.html#bandpass">bandpass</a></li><li data-type='method'><a href="cracked.html#lowshelf">lowshelf</a></li><li data-type='method'><a href="cracked.html#highshelf">highshelf</a></li><li data-type='method'><a href="cracked.html#peaking">peaking</a></li><li data-type='method'><a href="cracked.html#notch">notch</a></li><li data-type='method'><a href="cracked.html#allpass">allpass</a></li><li><h5 style="font-size:15px">Miscellaneous</h5></li><li data-type='method'><a href="cracked.html#clip">clip</a></li><li data-type='method'><a href="cracked.html#dac">dac</a></li><li data-type='method'><a href="cracked.html#adc">adc</a></li><li data-type='method'><a href="cracked.html#out">out</a></li><li data-type='method'><a href="cracked.html#in">in</a></li><li data-type='method'><a href="cracked.html#panner">panner</a></li><li data-type='method'><a href="cracked.html#sampler">sampler</a></li><li><h5 style="font-size:15px">Modulator</h5></li><li data-type='method'><a href="cracked.html#lfo">lfo</a></li><li data-type='method'><a href="cracked.html#stepper">stepper</a></li><li><h5 style="font-size:15px">Noise</h5></li><li data-type='method'><a href="cracked.html#noise">noise</a></li><li data-type='method'><a href="cracked.html#pink">pink</a></li><li data-type='method'><a href="cracked.html#white">white</a></li><li data-type='method'><a href="cracked.html#brown">brown</a></li><li><h5 style="font-size:15px">Oscillator</h5></li><li data-type='method'><a href="cracked.html#sine">sine</a></li><li data-type='method'><a href="cracked.html#square">square</a></li><li data-type='method'><a href="cracked.html#saw">saw</a></li><li data-type='method'><a href="cracked.html#triangle">triangle</a></li><li><h5 style="font-size:15px">Synth</h5></li><li data-type='method'><a href="cracked.html#monosynth">monosynth</a></li><li data-type='method'><a href="cracked.html#polysynth">polysynth</a></li><li><h5 style="font-size:15px">Utility</h5></li><li data-type='method'><a href="cracked.html#frequency">frequency</a></li><li data-type='method'><a href="cracked.html#detune">detune</a></li><li data-type='method'><a href="cracked.html#type">type</a></li><li data-type='method'><a href="cracked.html#volume">volume</a></li><li data-type='method'><a href="cracked.html#time">time</a></li><li data-type='method'><a href="cracked.html#feedback">feedback</a></li><li data-type='method'><a href="cracked.html#speed">speed</a></li><li data-type='method'><a href="cracked.html#drive">drive</a></li><li data-type='method'><a href="cracked.html#distortion">distortion</a></li><li data-type='method'><a href="cracked.html#q">q</a></li><li data-type='method'><a href="cracked.html#pan">pan</a></li><li data-type='method'><a href="cracked.html#play">play</a></li><li data-type='method'><a href="cracked.html#scales">scales</a></li><li data-type='method'><a href="cracked.html#chords">chords</a></li><li data-type='method'><a href="cracked.html#random_scale">random_scale</a></li><li data-type='method'><a href="cracked.html#random_arpeggio">random_arpeggio</a></li><li data-type='method'><a href="cracked.html#pitch2freq">pitch2freq</a></li><li data-type='method'><a href="cracked.html#shuffle">shuffle</a></li><li data-type='method'><a href="cracked.html#random">random</a></li><li data-type='method'><a href="cracked.html#chance">chance</a></li><li data-type='method'><a href="cracked.html#scale">scale</a></li><li data-type='method'><a href="cracked.html#sec2ms">sec2ms</a></li><li data-type='method'><a href="cracked.html#ms2sec">ms2sec</a></li><li data-type='method'><a href="cracked.html#isSupported">isSupported</a></li><li data-type='method'><a href="cracked.html#random_interval">random_interval</a></li><li data-type='method'><a href="cracked.html#random_envelope">random_envelope</a></li><li data-type='method'><a href="cracked.html#fill_array">fill_array</a></li><li data-type='method'><a href="cracked.html#array_next">array_next</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">src/sequence.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Sequencing#
+ */
+
+/**
+* vars for loop
+* @type {boolean}
+* @private
+*/
+
+var _isLoopRunning = false,
+    _ignoreGrid = true,
+    _loopStepSize = 0,
+    _loopInterval = 100,
+    _loopID = 0,
+    _loopCB = null,
+    _loopData = [],
+    _loopIndex = -1,
+    _loopCount = 0,
+    _loopListeners = [],
+    _loopTimeToNextStep = 0,
+    _loopTolerance = 0.30;
+
+/**
+ * main method for loop
+ *
+ * &lt;pre>&lt;code>//configure the loop: 8 steps, 100ms between steps
+ * __.loop({steps:8,interval:100});
+ *
+ * //start
+ * __.loop("start");
+ * //stop
+ * __.loop("stop");
+ * //reset the loop params
+ * __.loop("reset");&lt;/code>&lt;/pre>
+ *
+ * [See sequencing examples](../../examples/sequencing.html)
+ *
+ * @public
+ * @memberof cracked
+ * @category Sequence
+ * @name cracked#loop
+ * @function
+ * @param {String} [arg] stop/start/reset commands
+ * @param {Object} [config] configuration object
+ * @param {Number} [config.interval=100] step length in ms
+ * @param {Number} [config.steps=16] number of steps
+ * @returns {cracked}
+ */
+cracked.loop = function () {
+    if (arguments &amp;&amp; arguments.length) {
+        if (arguments[0] === "stop") {
+            stopLoop();
+        } else if (arguments[0] === "start") {
+            startLoop();
+        } else if (arguments[0] === "reset") {
+            resetLoop();
+        } else if (arguments[0] === "toggle_grid") {
+            toggleGrid();
+        } else if (arguments.length === 3 &amp;&amp; __.isObj(arguments[0]) &amp;&amp; __.isFun(arguments[1])  &amp;&amp; __.isArr(arguments[2])) {
+            //configure loop with options
+            //set data &amp; callback
+            configureLoop(arguments[0], arguments[1], arguments[2]);
+        } else if(arguments.length === 1 &amp;&amp; __.isNum(arguments[0])) {
+            //tempo only
+            configureLoop(arguments[0]);
+        } else if(arguments.length === 1 &amp;&amp; __.isObj(arguments[0])) {
+            //just an options object
+            configureLoop(arguments[0]);
+        } else if(arguments.length === 2 &amp;&amp; __.isNum(arguments[0]) &amp;&amp; __.isFun(arguments[1])) {
+            //configure loop
+            configureLoop({interval:arguments[0]}, arguments[1], []);
+        }
+    }
+    return cracked;
+};
+
+/**
+* Toggles the state of the _ignoreGrid variable
+* @private
+*/
+function toggleGrid() {
+    if (_isLoopRunning) {
+        _ignoreGrid = !_ignoreGrid;
+    }
+}
+
+/**
+* Get the millisecond value for setting timeout
+* @private
+*/
+function calculateTimeout() {
+    return __.sec2ms(_loopTimeToNextStep  - _context.currentTime - (__.ms2sec(_loopInterval * _loopTolerance)));
+}
+
+/**
+* Starts the loop
+* @private
+*/
+function startLoop() {
+    if (!_isLoopRunning) {
+        _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
+        _loopID = setTimeout(checkup, calculateTimeout());
+        _isLoopRunning = true;
+        _ignoreGrid = false;
+    }
+}
+
+/**
+* Stops the loop
+* @private
+*/
+function stopLoop() {
+    if (_isLoopRunning) {
+        clearInterval(_loopID);
+        _isLoopRunning = false;
+        _loopTimeToNextStep = 0;
+        _ignoreGrid = true;
+    }
+}
+
+/**
+* Resets the loop to defaults
+* @private
+*/
+function resetLoop() {
+    _loopStepSize = 0;
+    _loopInterval = 100;
+    _ignoreGrid = true;
+    _loopID = 0;
+    _loopCB = null;
+    _loopData = [];
+    _loopListeners = [];
+    _loopIndex = -1;
+    _loopCount = 0;
+    _isLoopRunning = false;
+    _loopTimeToNextStep = 0;
+}
+
+/**
+* configure the loop options
+* @param {Object} opts configuration object
+* @param {Function} fn global callback
+* @param {Array} data array of data to be passed to the global callback
+* @private
+*/
+function configureLoop(opts, fn, data) {
+    if (opts &amp;&amp; __.isObj(opts)) {
+        _loopStepSize = opts.steps ? opts.steps : data &amp;&amp; data.length ? data.length : 0;
+        _loopInterval = opts.interval || 200;
+    } else if(opts &amp;&amp; __.isNum(opts) &amp;&amp; !fn &amp;&amp; !data) {
+        //just configuring tempo only
+        _loopInterval = opts;
+    }
+    if (__.isFun(fn)) {
+        _loopCB = fn;
+    }
+    if (__.isArr(data) &amp;&amp; data.length === _loopStepSize) {
+        _loopData = data;
+    } else {
+        _loopData = [];
+    }
+}
+
+/**
+* called by setInterval - sets the time to next step
+* @private
+*/
+function checkup() {
+    var now = _context.currentTime,
+        loopIntervalInSecs = __.ms2sec(_loopInterval),
+        timeAtPreviousStep = _loopTimeToNextStep -  loopIntervalInSecs;
+    if (now &lt; _loopTimeToNextStep &amp;&amp; now > timeAtPreviousStep) {
+        loopStep();
+        _loopTimeToNextStep += loopIntervalInSecs;
+    } else if(now > _loopTimeToNextStep) {
+        //we dropped a frame
+        _loopTimeToNextStep += loopIntervalInSecs;
+    }
+    clearTimeout(_loopID);
+    _loopID = setTimeout(checkup, calculateTimeout());
+}
+
+/**
+* call on every step
+* @private
+*/
+function loopStep() {
+
+    //globals- tbd deprecate. step size should just be based on available data
+    if(_loopStepSize) {
+        //if a step size is configured globally, increment the index
+        _loopIndex = (_loopIndex &lt; (_loopStepSize - 1)) ? _loopIndex + 1 : 0;
+    }
+    //global callback
+    if (__.isFun(_loopCB)) {
+        _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData, ++_loopCount);
+    }
+
+    //loop thru any bound step event listeners
+    for (var i = 0; i &lt; _loopListeners.length; i++) {
+        var listener = _loopListeners[i],
+            tmp = _selectedNodes,
+            index = listener.loopIndex,
+            stepSize = listener.loopStepSize,
+            data = listener.data,
+            count = ++listener.count;
+
+        //if step size not configured globally
+        listener.loopIndex = (index &lt; (stepSize - 1)) ? index + 1 : 0;
+
+        //load up the selected nodes for this listener
+        _selectedNodes = listener.selection;
+
+        //run the callback
+        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data, count);
+
+        //put the nodes back in place
+        _selectedNodes = tmp;
+    }
+}
+
+/**
+ * Listener - binds a set of audio nodes and a callback to loop step events
+ * @public
+ * @category Sequence
+ * @memberof cracked
+ * @name cracked#bind
+ * @function
+ * @param {String} eventType currently just "step"
+ * @param {Function} fn callback to be invoked at each step
+ * @param {Array} data should the same length as the number of steps
+ * @returns {cracked}
+ */
+cracked.bind = function (eventType, fn, data) {
+    if (eventType === "step" &amp;&amp; __.isFun(fn)) {
+        _loopListeners.push({
+            eventType: eventType,
+            callback: fn,
+            data: data || [],
+            loopStepSize : data.length || 0,
+            loopIndex : -1,
+            selection: _selectedNodes.slice(0),
+            selector: _currentSelector,
+            count:0
+        });
+    }
+    return cracked;
+};
+
+/**
+ * Remove any steps listeners registered on these nodes
+ * @public
+ * @category Sequence
+ * @memberof cracked
+ * @function
+ * @name cracked#unbind
+ * @param {String} eventType
+ */
+cracked.unbind = function (eventType) {
+    if (eventType === "step") {
+        var tmp = [];
+        _loopListeners.forEach(function (el, i, arr) {
+            if (_currentSelector !== el.selector) {
+                tmp.push(el);
+            }
+        });
+        _loopListeners = tmp;
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Nov 16 2016 16:15:59 GMT-0800 (PST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

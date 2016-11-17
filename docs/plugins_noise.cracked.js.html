@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>plugins/noise.cracked.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><ul><li><h3><a href="cracked.html">cracked</a></h3><ul class='methods'><li><h5 style="font-size:15px">Find</h5></li><li data-type='method'><a href="cracked.html#reset">reset</a></li><li data-type='method'><a href="cracked.html#exec">exec</a></li><li data-type='method'><a href="cracked.html#each">each</a></li><li data-type='method'><a href="cracked.html#filter">filter</a></li><li data-type='method'><a href="cracked.html#find">find</a></li><li><h5 style="font-size:15px">Control</h5></li><li data-type='method'><a href="cracked.html#start">start</a></li><li data-type='method'><a href="cracked.html#stop">stop</a></li><li data-type='method'><a href="cracked.html#ramp">ramp</a></li><li data-type='method'><a href="cracked.html#attr">attr</a></li><li><h5 style="font-size:15px">Node</h5></li><li data-type='method'><a href="cracked.html#script">script</a></li><li data-type='method'><a href="cracked.html#waveshaper">waveshaper</a></li><li data-type='method'><a href="cracked.html#compressor">compressor</a></li><li data-type='method'><a href="cracked.html#gain">gain</a></li><li data-type='method'><a href="cracked.html#native_delay">native_delay</a></li><li data-type='method'><a href="cracked.html#osc">osc</a></li><li data-type='method'><a href="cracked.html#biquadFilter">biquadFilter</a></li><li data-type='method'><a href="cracked.html#convolver">convolver</a></li><li data-type='method'><a href="cracked.html#stereoPanner">stereoPanner</a></li><li data-type='method'><a href="cracked.html#destination">destination</a></li><li data-type='method'><a href="cracked.html#origin">origin</a></li><li data-type='method'><a href="cracked.html#buffer">buffer</a></li><li><h5 style="font-size:15px">Sequence</h5></li><li data-type='method'><a href="cracked.html#loop">loop</a></li><li data-type='method'><a href="cracked.html#bind">bind</a></li><li data-type='method'><a href="cracked.html#unbind">unbind</a></li><li><h5 style="font-size:15px">Macro</h5></li><li data-type='method'><a href="cracked.html#begin">begin</a></li><li data-type='method'><a href="cracked.html#end">end</a></li><li><h5 style="font-size:15px">Midi</h5></li><li data-type='method'><a href="cracked.html#midi_supported">midi_supported</a></li><li data-type='method'><a href="cracked.html#midi_init">midi_init</a></li><li data-type='method'><a href="cracked.html#midi_receive">midi_receive</a></li><li data-type='method'><a href="cracked.html#midi_noteon">midi_noteon</a></li><li data-type='method'><a href="cracked.html#midi_noteoff">midi_noteoff</a></li><li data-type='method'><a href="cracked.html#midi_control">midi_control</a></li><li><h5 style="font-size:15px">Connect</h5></li><li data-type='method'><a href="cracked.html#connect">connect</a></li><li data-type='method'><a href="cracked.html#remove">remove</a></li><li><h5 style="font-size:15px">Debug</h5></li><li data-type='method'><a href="cracked.html#log">log</a></li><li data-type='method'><a href="cracked.html#size">size</a></li><li data-type='method'><a href="cracked.html#_dumpState">_dumpState</a></li><li data-type='method'><a href="cracked.html#_getNode">_getNode</a></li><li><h5 style="font-size:15px">Type</h5></li><li data-type='method'><a href="cracked.html#ifUndef">ifUndef</a></li><li data-type='method'><a href="cracked.html#isNotUndef">isNotUndef</a></li><li data-type='method'><a href="cracked.html#isUndef">isUndef</a></li><li data-type='method'><a href="cracked.html#isObj">isObj</a></li><li data-type='method'><a href="cracked.html#isNum">isNum</a></li><li data-type='method'><a href="cracked.html#isStr">isStr</a></li><li data-type='method'><a href="cracked.html#isArr">isArr</a></li><li data-type='method'><a href="cracked.html#isFun">isFun</a></li><li><h5 style="font-size:15px">Delay</h5></li><li data-type='method'><a href="cracked.html#reverb">reverb</a></li><li data-type='method'><a href="cracked.html#delay">delay</a></li><li data-type='method'><a href="cracked.html#comb">comb</a></li><li><h5 style="font-size:15px">Distortion</h5></li><li data-type='method'><a href="cracked.html#bitcrusher">bitcrusher</a></li><li data-type='method'><a href="cracked.html#ring">ring</a></li><li data-type='method'><a href="cracked.html#overdrive">overdrive</a></li><li><h5 style="font-size:15px">Envelope</h5></li><li data-type='method'><a href="cracked.html#adsr">adsr</a></li><li><h5 style="font-size:15px">Filter</h5></li><li data-type='method'><a href="cracked.html#lowpass">lowpass</a></li><li data-type='method'><a href="cracked.html#highpass">highpass</a></li><li data-type='method'><a href="cracked.html#bandpass">bandpass</a></li><li data-type='method'><a href="cracked.html#lowshelf">lowshelf</a></li><li data-type='method'><a href="cracked.html#highshelf">highshelf</a></li><li data-type='method'><a href="cracked.html#peaking">peaking</a></li><li data-type='method'><a href="cracked.html#notch">notch</a></li><li data-type='method'><a href="cracked.html#allpass">allpass</a></li><li><h5 style="font-size:15px">Miscellaneous</h5></li><li data-type='method'><a href="cracked.html#clip">clip</a></li><li data-type='method'><a href="cracked.html#dac">dac</a></li><li data-type='method'><a href="cracked.html#adc">adc</a></li><li data-type='method'><a href="cracked.html#out">out</a></li><li data-type='method'><a href="cracked.html#in">in</a></li><li data-type='method'><a href="cracked.html#panner">panner</a></li><li data-type='method'><a href="cracked.html#sampler">sampler</a></li><li><h5 style="font-size:15px">Modulator</h5></li><li data-type='method'><a href="cracked.html#lfo">lfo</a></li><li data-type='method'><a href="cracked.html#stepper">stepper</a></li><li><h5 style="font-size:15px">Noise</h5></li><li data-type='method'><a href="cracked.html#noise">noise</a></li><li data-type='method'><a href="cracked.html#pink">pink</a></li><li data-type='method'><a href="cracked.html#white">white</a></li><li data-type='method'><a href="cracked.html#brown">brown</a></li><li><h5 style="font-size:15px">Oscillator</h5></li><li data-type='method'><a href="cracked.html#sine">sine</a></li><li data-type='method'><a href="cracked.html#square">square</a></li><li data-type='method'><a href="cracked.html#saw">saw</a></li><li data-type='method'><a href="cracked.html#triangle">triangle</a></li><li><h5 style="font-size:15px">Synth</h5></li><li data-type='method'><a href="cracked.html#monosynth">monosynth</a></li><li data-type='method'><a href="cracked.html#polysynth">polysynth</a></li><li><h5 style="font-size:15px">Utility</h5></li><li data-type='method'><a href="cracked.html#frequency">frequency</a></li><li data-type='method'><a href="cracked.html#detune">detune</a></li><li data-type='method'><a href="cracked.html#type">type</a></li><li data-type='method'><a href="cracked.html#volume">volume</a></li><li data-type='method'><a href="cracked.html#time">time</a></li><li data-type='method'><a href="cracked.html#feedback">feedback</a></li><li data-type='method'><a href="cracked.html#speed">speed</a></li><li data-type='method'><a href="cracked.html#drive">drive</a></li><li data-type='method'><a href="cracked.html#distortion">distortion</a></li><li data-type='method'><a href="cracked.html#q">q</a></li><li data-type='method'><a href="cracked.html#pan">pan</a></li><li data-type='method'><a href="cracked.html#play">play</a></li><li data-type='method'><a href="cracked.html#scales">scales</a></li><li data-type='method'><a href="cracked.html#chords">chords</a></li><li data-type='method'><a href="cracked.html#random_scale">random_scale</a></li><li data-type='method'><a href="cracked.html#random_arpeggio">random_arpeggio</a></li><li data-type='method'><a href="cracked.html#pitch2freq">pitch2freq</a></li><li data-type='method'><a href="cracked.html#shuffle">shuffle</a></li><li data-type='method'><a href="cracked.html#random">random</a></li><li data-type='method'><a href="cracked.html#chance">chance</a></li><li data-type='method'><a href="cracked.html#scale">scale</a></li><li data-type='method'><a href="cracked.html#sec2ms">sec2ms</a></li><li data-type='method'><a href="cracked.html#ms2sec">ms2sec</a></li><li data-type='method'><a href="cracked.html#isSupported">isSupported</a></li><li data-type='method'><a href="cracked.html#random_interval">random_interval</a></li><li data-type='method'><a href="cracked.html#random_envelope">random_envelope</a></li><li data-type='method'><a href="cracked.html#fill_array">fill_array</a></li><li data-type='method'><a href="cracked.html#array_next">array_next</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plugins/noise.cracked.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * noise parametrized noise node
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
+ * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#noise
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {String} [params.type=white]
+ */
+cracked.noise = function (params) {
+    var userParams = params || {};
+    if (userParams.type === "brown") {
+        __.begin("noise", userParams).brown(userParams).end("noise");
+    } else if (userParams.type === "pink") {
+        __.begin("noise", userParams).pink(userParams).end("noise");
+    } else {
+        __.begin("noise", userParams).white(userParams).end("noise");
+    }
+    return cracked;
+};
+
+/**
+ * Pink Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
+ * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#pink
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
+ */
+cracked.pink = function (params) {
+//http://noisehack.com/generate-noise-web-audio-api/
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
+
+    __().begin("pink", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("pink");
+
+    return cracked;
+
+    function buildBuffer(audioContext) {
+
+        var buf = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buflen = buf.length;
+        var bufNum = buf.numberOfChannels;
+        var buffArr = []; //call only once and cache
+
+        for (var k = 0; k &lt; bufNum; k++) {
+            buffArr.push(buf.getChannelData(k));
+        }
+
+        for (var i = 0; i &lt; buflen; i++) {
+            for (var j = 0; j &lt; bufNum; j++) {
+                buffArr[j][i] = Math.random() * 2 - 1;
+            }
+        }
+
+        pinkify(buf, buffArr);
+
+        function pinkify(buf, buffArr) {
+            var buffer = buf,
+                b = [0, 0, 0, 0, 0, 0, 0],
+                channelData, white, i, j, pink = [],
+                bufNum = buffer.numberOfChannels, buflen = buffer.length;
+            for (i = 0; i &lt; bufNum; i++) {
+                pink[i] = new Float32Array(buflen);
+                channelData = buffArr[i];
+                for (j = 0; j &lt; buflen; j++) {
+                    white = channelData[j];
+                    b[0] = 0.99886 * b[0] + white * 0.0555179;
+                    b[1] = 0.99332 * b[1] + white * 0.0750759;
+                    b[2] = 0.96900 * b[2] + white * 0.1538520;
+                    b[3] = 0.86650 * b[3] + white * 0.3104856;
+                    b[4] = 0.55000 * b[4] + white * 0.5329522;
+                    b[5] = -0.7616 * b[5] - white * 0.0168980;
+                    pink[i][j] = b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + white * 0.5362;
+                    pink[i][j] *= 0.11;
+                    b[6] = white * 0.115926;
+                }
+                b = [0, 0, 0, 0, 0, 0, 0];
+            }
+
+            for (i = 0; i &lt; bufNum; i++) {
+                for (j = 0; j &lt; buflen; j++) {
+                    buffArr[i][j] = pink[i][j];
+                }
+            }
+
+        }
+
+        return buf;
+    }
+};
+/**
+ * White Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
+ * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#white
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
+ */
+cracked.white = function (params) {
+//http://noisehack.com/generate-noise-web-audio-api/
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
+
+    __().begin("white", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("white");
+
+    return cracked;
+
+    function buildBuffer(audioContext) {
+        var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buflen = buffer.length;
+        var bufNum = buffer.numberOfChannels;
+        var buffArr = []; //call only once and cache
+
+        for (var k = 0; k &lt; bufNum; k++) {
+            buffArr.push(buffer.getChannelData(k));
+        }
+
+        for (var i = 0; i &lt; buflen; i++) {
+            for (var j = 0; j &lt; bufNum; j++) {
+                buffArr[j][i] = (Math.random() * 2 - 1) * 0.44;
+            }
+        }
+        return buffer;
+    }
+};
+
+/**
+ * Brown Noise
+ *
+ * [See more noise examples](../../examples/noise.html)
+ *
+ * @plugin
+ * @category Noise
+ * @function
+ * @memberof cracked
+ * @name cracked#brown
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.channels=1]
+ * @param {Number} [params.length=1]
+ */
+cracked.brown = function (params) {
+//http://noisehack.com/generate-noise-web-audio-api/
+    var userParams = params || {};
+    var channels = userParams.channels || 1;
+    var length = userParams.length || 1;
+
+    __().begin("brown", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).end("brown");
+
+    return cracked;
+
+    function buildBuffer(audioContext) {
+        var buffer = audioContext.createBuffer(channels, (length * audioContext.sampleRate), audioContext.sampleRate),
+            lastOut = 0.0, bufLen = buffer.length, bufNum = buffer.numberOfChannels;
+
+        var buffArr = []; //call only once and cache
+
+        for (var k = 0; k &lt; bufNum; k++) {
+            buffArr.push(buffer.getChannelData(k));
+        }
+
+        for (var i = 0; i &lt; bufLen; i++) {
+            for (var j = 0; j &lt; bufNum; j++) {
+                var white = Math.random() * 2 - 1;
+                buffArr[j][i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = buffArr[j][i];
+                buffArr[j][i] *= 3.5; // (roughly) compensate for gain
+            }
+        }
+        return buffer;
+    }
+
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Nov 16 2016 16:15:59 GMT-0800 (PST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
