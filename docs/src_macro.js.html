@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/macro.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,142 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/macro.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Macro#
+ *
+ * Macro support
+ *
+ */
 
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+/**
+ * start macro recording, add any user parameters (id,classname,etc) to the container macro
+ * &lt;pre>&lt;code>//define a simple macro named "microsynth"
+ * __().begin("microsynth").sine().gain(0).dac().end("microsynth");&lt;/code>&lt;/pre>
+ *
+ * @memberof cracked
+ * @category Macro
+ * @name cracked#begin
+ * @public
+ * @function
+ * @param {String} name macro name
+ * @param {Object} userParams options object
+ */
+cracked.begin = function (name, userParams) {
+    if (name) {
+        _currentMacro.push(createMacro(name, userParams));
+    }
     return cracked;
+};
+
+/**
+ * end macro recording
+ * &lt;pre>&lt;code>//define a simple macro named "microsynth"
+ * __().begin("microsynth").sine().gain(0).dac().end("microsynth");&lt;/code>&lt;/pre>
+ *
+ * @memberof cracked
+ * @category Macro
+ * @name cracked#end
+ * @public
+ * @function
+ * @param {String} name macro name
+ */
+cracked.end = function (name) {
+    if (
+        recordingMacro() &amp;&amp;
+        getCurrentMacro().getType() === name
+    ) {
+        getCurrentMacro().setMacroNameSpace(getCurrentMacroNamespace());
+        _currentMacro.pop();
+    }
+    return cracked;
+};
+
+/**
+* create the macro container node
+* @function
+* @private
+*/
+function createMacro(name, userParams) {
+    //tbd - macro needs its own class
+    return createNode(name, {
+        settings: {}
+    }, userParams);
 }
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+* method that updates the current macro
+* container with nodes as they are created
+* @function
+* @private
+*/
+function updateMacro(node) {
+    if (recordingMacro()) {
+        node.setMacroContainerUUID(getCurrentMacro().getUUID());
+        getCurrentMacro().addNativeNode(node.getNativeNode());
+    }
+}
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+/**
+* are we currently recording a macro? returns boolean
+* @function
+* @private
+*/
+function recordingMacro() {
+    return !!_currentMacro.length;
+}
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+* returns the current macro if there is one
+* @function
+* @private
+*/
+function getCurrentMacro() {
+    if (recordingMacro()) {
+        return _currentMacro[_currentMacro.length - 1];
+    } else {
+        return null;
+    }
+}
+
+/**
+* walks the currentMacro stack and returns a
+* str with the current namespace
+* @function
+* @private
+* @return {String} namespace
+*/
+function getCurrentMacroNamespace() {
+    var arr = [],
+        space = " ";
+    if (recordingMacro()) {
+        for (var i = 0; i &lt; _currentMacro.length; i++) {
+            arr.push(_currentMacro[i].getType());
+            arr.push(space);
+        }
+    }
+    return arr.join("");
+}
+
+/**
+* resets the current Macro;
+* @function
+* @private
+*/
+function resetMacro() {
+    _currentMacro = [];
+}</code></pre>
+        </article>
     </section>
-
-
 
 
 

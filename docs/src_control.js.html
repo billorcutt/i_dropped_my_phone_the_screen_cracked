@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/control.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,197 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/control.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Controlling#
+ *
+ * Methods for controlling nodes
+ */
 
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+/**
+ * Calls start() on the currently selected nodes. Throws no error if there aren't any selected nodes with a start method
+ * &lt;pre>&lt;code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //start the sine node
+ * __("sine").start();&lt;/code>&lt;/pre>
+ *
+ * [See more control examples](../../examples/control.html)
+ * @memberof cracked
+ * @name cracked#start
+ * @category Control
+ * @function
+ * @public
+ */
+cracked.start = function () {
+    if (!recordingMacro()) {
+        for (var i = 0; i &lt; _selectedNodes.length; i++) {
+            var currNode = getNodeWithUUID(_selectedNodes[i]);
+            if (currNode &amp;&amp; !currNode.getIsPlaying()) {
+                currNode.start();
+            }
+        }
+    }
     return cracked;
+};
+
+/**
+ * Calls stop() on the currently selected nodes. Throws no error if there are no selected nodes that have a stop method.
+ * &lt;pre>&lt;code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //stop the sine node
+ * __("sine").stop();&lt;/code>&lt;/pre>
+ *
+ * [See more control examples](../../examples/control.html)
+ * 
+ * @memberof cracked
+ * @name cracked#stop
+ * @category Control
+ * @function
+ * @public
+ */
+cracked.stop = function () {
+    for (var i = 0; i &lt; _selectedNodes.length; i++) {
+        var currNode = getNodeWithUUID(_selectedNodes[i]);
+        if (currNode &amp;&amp; currNode.getIsPlaying()) {
+            currNode.stop(0);
+        }
+    }
+    return cracked;
+};
+
+/**
+ * Public method to ramp a parameter on currently selected nodes. Target &amp; timeToRamp parameters can be numbers or arrays of numbers for multisegement ramps. Initial value param is optional, if omitted, then the current value is used as the initial value. If loop is running, then ramp start times are snapped to the sequencer grid.
+ * &lt;pre>&lt;code>//create and connect sine->lowpass->dac &amp; play
+ * __().sine().lowpass().dac().play();
+ * //ramp the frequency of the sine. 220 to 880 in 5 seconds
+ * __("sine").ramp(880,5,"frequency",220);&lt;/code>&lt;/pre>
+ *
+ * [See more envelope examples](../../examples/envelopes.html)
+ *
+ * @function
+ * @memberof cracked
+ * @name cracked#ramp
+ * @public
+ * @category Control
+ * @param {Number|Array} target value to ramp to
+ * @param {Number|Array} timeToRamp length of ramp in seconds
+ * @param {String} paramToRamp name of parameter to ramp
+ * @param {Number} initial value to start the ramp at
+ *
+ */
+cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
+    for (var i = 0; i &lt; _selectedNodes.length; i++) {
+        var currNode = getNodeWithUUID(_selectedNodes[i]);
+        if (currNode) {
+            currNode.ramp(target, timeToRamp, paramToRamp, null, initial);
+        }
+    }
+    return cracked;
+};
+
+/**
+ * Set attribute values on a node. Takes an object with
+ * any number of key:value pairs to set
+ *
+ * &lt;pre>&lt;code>//create and connect sine->lowpass->dac &amp; play
+ * __().sine().lowpass().dac().play();
+ * //set the frequency of the sine to 880
+ * __("sine").attr({"frequency":880});&lt;/code>&lt;/pre>
+ *
+ * [See more control examples](../../examples/control.html)
+ *
+ * @function
+ * @memberof cracked
+ * @name cracked#attr
+ * @public
+ * @category Control
+ * @param {Object} userParams options object
+ * @param {String} userParams.paramName
+ * @param {} userParams.paramValue
+ *
+ */
+cracked.attr = function (userParams) {
+    for (var i = 0; i &lt; _selectedNodes.length; i++) {
+        var currNode = getNodeWithUUID(_selectedNodes[i]);
+        if (currNode &amp;&amp; userParams) {
+            currNode.attr(userParams);
+        }
+    }
+    return cracked;
+};
+
+/**
+ * parses the dot separated keys in the param string and sets the value on the node. helper for the above
+ * @private
+ * @param {Object} node native node we are setting on
+ * @param {String} keyStr unresolved parameter name
+ * @param {*} value value to set
+ * @param {Object} map name/param mapping
+ */
+function applyParam(node, keyStr, value, map) {
+    var mappingResult = resolveParamMapping(keyStr, map),
+        keyArr = mappingResult.path.split("."),
+        keyFunc = mappingResult.fn || function (val) {
+                return val;
+            };
+    for (var i = 0; i &lt; keyArr.length; i++) {
+        if ((i + 1) &lt; keyArr.length &amp;&amp; __.isNotUndef(node[keyArr[i]])) {
+            if (node[keyArr[i]].constructor.name === "AudioParam") {
+                setAudioParam(node[keyArr[i]], value);
+            } else {
+                node = node[keyArr[i]];
+            }
+        } else if (node &amp;&amp; __.isNotUndef(node[keyArr[i]])) {
+            node[keyArr[i]] = keyFunc(value);
+        }
+    }
 }
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+ * helper for above - set value at time
+ * @private
+ * @param node
+ * @param value
+ */
+function setAudioParam(node, value) {
+    if (node &amp;&amp; __.isFun(node.setValueAtTime)) {
+        var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+        if(_ignoreGrid) {
+            node.cancelScheduledValues(time);
+            node.value = value;
+        } else {
+            node.cancelScheduledValues(time);
+            node.setValueAtTime(value, time);
+        }
+    }
+}
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
-
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+ * parameter name mapping resolver takes a native node &amp;
+ * the name to be resolved helper for above
+ * @private
+ * @param name param name
+ * @param map mapping hash
+ * @returns {*}
+ */
+function resolveParamMapping(name, map) {
+    var mapping = map || {},
+        result = mapping[name] || name;
+    return result.path ? result : {
+        path: result
+    };
+}</code></pre>
+        </article>
     </section>
-
-
 
 
 

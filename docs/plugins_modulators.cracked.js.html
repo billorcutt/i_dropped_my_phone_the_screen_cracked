@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>plugins/modulators.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,119 @@
 
 <div id="main">
     
+    <h1 class="page-title">plugins/modulators.cracked.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Low Frequency Oscillator
+ *
+ * [See more LFO examples](../../examples/modulation.html)
+ *
+ * @plugin
+ * @category Modulator
+ * @function
+ * @memberof cracked
+ * @name cracked#lfo
+ * @public
+ * @param {Object} [userParams] map of optional values
+ * @param {String} [userParams.modulates=frequency]
+ * @param {String} [userParams.type=saw]
+ * @param {Number} [userParams.frequency=6]
+ * @param {Number} [userParams.gain=1000]
+ */
+cracked.lfo = function (userParams) {
+    var params = userParams || {};
+    params.modulates = params.modulates || "frequency";
 
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+    if (params.type === "white" || params.type === "pink" || params.type === "brown") {
+        __.
+            begin("lfo", params).
+            noise({
+                "type": (params.type || "white"),
+                "channels": 1,
+                "length": (params.length || 1)
+            }).
+            gain({
+                "gain": __.ifUndef(params.gain, 1000)
+            }).
+            end("lfo");
+    } else {
+        __.
+            begin("lfo", params).
+            osc({
+                "type": (params.type || "sawtooth"),
+                "frequency": (params.frequency || 6)
+            }).
+            gain({
+                "gain": __.ifUndef(params.gain, 1000)
+            }).
+            end("lfo");
+    }
     return cracked;
-}
+};
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+ * Stepper
+ *
+ * fill an audio buffer with a series of discrete values
+ *
+ * @plugin
+ * @category Modulator
+ * @function
+ * @memberof cracked
+ * @name cracked#stepper
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {String} [params.modulates=frequency]
+ * @param {Function} [params.fn=function to generate values (if not supplied, then random values between -1 &amp; 1)]
+ * @param {Number} [params.steps=number of steps in the buffer]
+ * @param {Number} [params.length=length of the buffer in seconds]
+ * @param {Number} [params.gain=1000]
+ */
+cracked.stepper = function (params) {
+    var userParams = params || {};
+    var length = userParams.length || 1;
+    var steps = userParams.steps || 8;
+    var fn = userParams.fn || function(){return (__.random(-100,100)/100);};
+    userParams.modulates = params.modulates || "frequency";
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+    __().begin("stepper", userParams).buffer({
+        fn: buildBuffer,
+        loop: true
+    }).
+    gain({
+        "gain": __.ifUndef(params.gain, 1000)
+    }).
+    end("stepper");
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+    return cracked;
+
+    function buildBuffer(audioContext) {
+        var buffer = audioContext.createBuffer(1, (length * audioContext.sampleRate), audioContext.sampleRate);
+        var buflen = buffer.length;
+        var buffArr = [];
+        var stepSize = Math.floor(buflen/steps);
+        var stepCount = 0;
+        var value = 0;
+
+        buffArr.push(buffer.getChannelData(0)); //call only once and cache
+
+        for (var i = 0; i &lt; buflen; i++) {
+            value = (!i || i % stepSize === 0 &amp;&amp; stepCount &lt; steps) ?  (function(){ stepCount++; return fn(); })() : value;
+            buffArr[0][i] = value;
+        }
+        return buffer;
+    }
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

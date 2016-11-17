@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/debug.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,154 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/debug.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Development/Debug
+/**
+ * @description Debug
+ */
 
+/**
+ * log selected nodes to console if any.
+ * &lt;pre>&lt;code>//create and connect sine -> lowpass -> dac
+ * __().sine().lowpass().dac();
+ *
+ * //logs the [oscillatorNode] object to the console
+ * __("sine").log()&lt;/code>&lt;/pre>
+ *
+ * @memberof cracked
+ * @category Debug
+ * @name cracked#log
+ * @public
+ * @function
+ */
+cracked.log = function () {
+    var arr = [];
+    logNodes(null, arr);
+    console.log(arr);
+};
 
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
-    return cracked;
+/**
+ * helper for above
+ * @private
+ * @param node
+ * @param arr
+ */
+function logNodes(node, arr) {
+    if (_currentSelector) {
+        var nodes = arr || [];
+        var selectedNodes = node || _selectedNodes;
+        selectedNodes.forEach(function (nodeID, i, array) {
+            var tmp = getNodeWithUUID(nodeID).getNativeNode();
+            //recurse thru the node array if its a macro
+            if (__.isArr(tmp)) {
+                logNodes(tmp, nodes);
+            }
+            //if we're in outer loop, add to the output array
+            if (array === _selectedNodes) {
+                nodes.push(tmp);
+            }
+        });
+    }
 }
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+ * return the length of selected nodes array
+ * &lt;pre>&lt;code>//create and connect sine -> lowpass -> dac
+ * __().sine().lowpass().dac();
+ *
+ * //returns 2
+ * __("sine,lowpass").size();&lt;/code>&lt;/pre>
+ *
+ * @memberof cracked
+ * @name cracked#size
+ * @category Debug
+ * @public
+ * @function
+ * @returns {Number}
+ */
+cracked.size = function () {
+    if (_selectedNodes.length) {
+        return _selectedNodes.length;
+    } else {
+        return 0;
+    }
+};
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+//turn on debug flag when the url param is appended
+(function () {
+    if (window.location.href.indexOf("debug=true") !== -1) {
+        _debugEnabled = true;
+    }
+})();
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+ * print a ton of shit to the console
+ * @private
+ * @param msg
+ */
+function logToConsole(msg) {
+    if (_debugEnabled) {
+        console.log(msg);
+    }
+}
+
+/**
+ * dump the node lookup object to the console
+ * works in debug only
+ * @memberof cracked
+ * @category Debug
+ * @name cracked#_dumpState
+ * @public
+ * @function
+ */
+cracked._dumpState = function () {
+    console.log(_nodeLookup,_nodeStore);
+};
+
+/**
+ * debug method to get a node with a uuid
+ * works in debug only
+ * @param uuid
+ * @category Debug
+ * @returns {*}
+ * @public
+ * @function
+ * @memberof cracked
+ * @name cracked#_getNode
+ */
+cracked._getNode = function (uuid) {
+    return (getNodeWithUUID(uuid));
+};
+
+/**
+ * log connections
+ * @param nodeToConnect
+ * @param node
+ * @private
+ */
+function logConnections(nodeToConnect, node) {
+
+    var vals = [
+        nodeToConnect.getType(),
+        nodeToConnect.getID(),
+        node.getType(),
+        node.getID()
+    ];
+
+    logToConsole("connected " + vals[0] + " - " + vals[1] + " to " + vals[2] + " - " + vals[3]);
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>plugins/miscellaneous.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,163 @@
 
 <div id="main">
     
+    <h1 class="page-title">plugins/miscellaneous.cracked.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Clips audio level at 1/-1
+ * @plugin
+ * @category Miscellaneous
+ * @function
+ * @memberof cracked
+ * @name cracked#clip
+ * @public
+ */
+cracked.clip = function (params) {
 
+    var userParams = __.isObj(params) ? params : {};
+    userParams.mapping = userParams.mapping || {};
 
+    var curve = new Float32Array(2);
 
+    // Set some default clipping - just makes everything under -1 be -1, and everything over 1 be 1.
+    curve[0] = -1;
+    curve[1] = 1;
 
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+    __.begin("clip", userParams).waveshaper({curve: curve}).end("clip");
     return cracked;
-}
+};
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+ * System out - destination with a master volume.
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#dac
+ * @public
+ */
+cracked.dac = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    userParams.mapping = userParams.mapping || {};
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    return cracked;
+};
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+ * System in - input with a master volume
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system in gain
+ * @function
+ * @memberof cracked
+ * @name cracked#adc
+ * @public
+ */
+cracked.adc = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("adc", userParams).origin().gain(gain).end("adc");
+    return cracked;
+};
+
+/**
+ * System out - destination with a master volume
+ * Alias for dac
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#out
+ * @public
+ */
+cracked.out = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("out", userParams).gain(gain).destination().end("out");
+    return cracked;
+};
+
+/**
+ * System in - input with a master volume
+ * Alias for adc
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system in gain
+ * @function
+ * @memberof cracked
+ * @name cracked#in
+ * @public
+ */
+cracked.in = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("in", userParams).origin().gain(gain).end("in");
+    return cracked;
+};
+
+/**
+ * Panner - simple stereo panner
+ *
+ * @plugin
+ * @category Miscellaneous
+ * @param {Object} [params] map of optional values
+ * @function
+ * @memberof cracked
+ * @name cracked#panner
+ * @public
+ */
+cracked.panner = function (params) {
+    var pan = __.isNum(params) ? params : (__.isObj(params) &amp;&amp; params.pan) ? params.pan : 0;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("panner", userParams).stereoPanner({'pan':pan}).end("panner");
+    return cracked;
+};
+
+/**
+ * Sampler - sound file player
+ *
+ * [See more sampler examples](../../examples/sampler.html)
+ *
+ * @plugin
+ * @category Miscellaneous
+ * @function
+ * @memberof cracked
+ * @name cracked#sampler
+ * @public
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.speed=1]
+ * @param {Number} [userParams.start=1]
+ * @param {Number} [userParams.end=1]
+ * @param {String} [userParams.path=''] path to sound file to play
+ * @param {Boolean} [userParams.loop=false]
+ */
+cracked.sampler = function (userParams) {
+    //sampler only plays sound files not data from functions
+    if (userParams &amp;&amp; userParams.path) {
+        __.begin("sampler", userParams).buffer(userParams).end("sampler");
+    }
+    return cracked;
+};
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

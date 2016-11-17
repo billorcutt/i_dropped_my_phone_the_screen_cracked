@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/find.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,308 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/find.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Finding#
+ * Methods for selecting &amp; working with audio nodes
+ */
 
+/**
+ * Updates the internal selected nodes array with a collection of audio nodes matching the selector provided. Type, Class &amp; Id selectors are supported.
+ * &lt;pre>
+ * &lt;code>//type selector using the node name, sets the frequency for all sines
+ * __("sine").frequency(200);
+ *
+ * //set the frequency for the node with id "foo"
+ * __("#foo").frequency(200);
+ *
+ * //set the frequency for any nodes with a class of "bar"
+ * __(".bar").frequency(200);
+ *
+ * //select all sines, any nodes with classname "bar" or id of "foo"
+ * //and set their frequencies to 200
+ * __("sine,.bar,#foo").frequency(200);&lt;/code>&lt;/pre>
+ *
+ * [See more selector examples](../../examples/selector.html)
+ *
+ * If invoked without arguments, cracked() resets the selection/connection state, removing any record of previous nodes and effectively marking the start of a new connection chain. Since a new node will try to connect to any previous node, calling __() tells a node that there is no previous node to connect to.
+ * For example:
+ * &lt;pre>
+ * &lt;code>//Create &amp; connect sine -> lowpass -> dac
+ * __().sine();
+ * __.lowpass();
+ * __.dac();
+ *
+ * //Create but don't connect
+ * __().sine();
+ * __().lowpass();
+ * __().dac();&lt;/code>&lt;/pre>
+ *
+ * cracked is also the namespace for public methods and also can be written as a
+ * double underscore __
+ * &lt;pre>
+ * &lt;code>__("sine"); //same as cracked("sine")&lt;/code>
+ * &lt;/pre>
+ *
+ *
+ * @public
+ * @category Find
+ * @type cracked
+ * @function
+ * @namespace
+ * @global
+ * @param {String} [selector] selector expression
+ * @returns {cracked}
+ */
+var cracked = find;
 
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+function find() {
+    if (arguments &amp;&amp; arguments.length) {
+        if (recordingMacro()) {
+            //if we're making a macro right now
+            //search in the macro
+            findInMacro(arguments[0]);
+        } else {
+            //search everywhere
+            if(__.isStr(arguments[0])) {
+                var selector = arguments[0];
+                _currentSelector = selector;
+                _selectedNodes = getNodesWithSelector(selector);
+            } else if(__.isObj(arguments[0]) &amp;&amp; arguments[0].constructor.name === "AudioNode") {
+                _currentSelector = arguments[0].getType();
+                _selectedNodes = [arguments[0].getUUID()];
+            }
+        }
+    } else {
+        //if there are no arguments
+        //then reset the entire state
+        reset();
+    }
+    //if we're finding, then no previous node
+    _previousNode = null;
     return cracked;
 }
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+ * find nodes in a macro with a selector updates the _selectedNodes array
+ * @function
+ * @private
+ */
+function findInMacro() {
+    if (arguments &amp;&amp; arguments.length) {
+        if(__.isStr(arguments[0])) {
+            var macroUUID = getCurrentMacro().getUUID();
+            //update the shared _currentSelector variable
+            //then find the nodes
+            _currentSelector = processSelectorForMacro(arguments[0]);
+            //update selectedNodes
+            _selectedNodes = getNodesWithSelector(_currentSelector);
+            //strip out anything we found that's not part of this
+            //container macro
+            _selectedNodes.forEach(function (el, i, arr) {
+                if (el &amp;&amp; getNodeWithUUID(el).getMacroContainerUUID() !== macroUUID) {
+                    arr.splice(i, 1);
+                }
+            });
+        } else if(__.isObj(arguments[0]) &amp;&amp; arguments[0].constructor.name === "AudioNode") {
+            _currentSelector = getCurrentMacroNamespace()+" "+arguments[0].getType();
+            _selectedNodes = [arguments[0].getUUID()];
+        }
+    }
+}
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+//helper method used above and in cracked.find()
+//prepends macro name to incoming selectors
+function processSelectorForMacro(selector) {
+    //look for the macro namespace in the incoming selector
+    //if its there, do nothing, else add it.
+    var selectorArr = selector.split(","),
+        prefix = getCurrentMacroNamespace();
+    //insert the prefix
+    //use a loop to handle comma delimited selectors
+    for (var i = 0; i &lt; selectorArr.length; i++) {
+        selectorArr[i] = (selectorArr[i].indexOf(prefix) !== -1) ?
+            selectorArr[i] : prefix + selectorArr[i];
+    }
+    //re-join the now prefixed selectors and return
+    return selectorArr.join(",");
+}
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+ * reset state
+ * @function
+ * @private
+ */
+function reset() {
+    _previousNode = null;
+    _selectedNodes = [];
+    _currentSelector = "";
+}
+
+/**
+ * reset selection
+ * @function
+ * @private
+ */
+function resetSelection() {
+    _selectedNodes = [];
+    _currentSelector = "";
+}
+
+/**
+ * resets everything to its initial state
+ * &lt;pre>&lt;code>//reset state for the entire app
+ *  cracked.reset();&lt;/code>&lt;/pre>
+ * @public
+ * @category Find
+ * @name cracked#reset
+ * @memberof cracked
+ * @function
+ * @returns {cracked}
+ */
+cracked.reset = function() {
+    __("*").remove();
+    resetMacro();
+    reset();
+    resetModel();
+    resetLoop();
+    return cracked;
+};
+
+/**
+ * executes a method with a specific set of selected nodes without modifying the internal selectedNodes array
+ * &lt;pre>&lt;code>//filter everything but the sines from currently selected nodes and
+ * //execute the frequency method against the remaining sines.
+ * //the internal _selectedNodes array remains unchanged
+ * cracked.exec(
+ *    "frequency",
+ *    200,
+ *    cracked.filter("sine")
+ * );&lt;/code>&lt;/pre>
+ *
+ * @public
+ * @category Find
+ * @function
+ * @name cracked#exec
+ * @memberof cracked
+ * @param {String} method method name
+ * @param {Array} args arguments to supply to the method
+ * @param {Array} nodes node array to execute against
+ * @returns {cracked}
+ */
+cracked.exec = function (method, args, nodes) {
+    var save = _selectedNodes;
+    _selectedNodes = nodes;
+    cracked[method].apply(cracked, args);
+    _selectedNodes = save;
+    return cracked;
+};
+
+/**
+ * iterate over the selectedNodes array, executing the supplied function for each element
+ * &lt;pre>&lt;code>__.each(type, function(node,index,array){
+     *      //Loops over any selected nodes. Parameters are the
+     *      //current node, current index, and the selectedNode array
+     * });&lt;/code>&lt;/pre>
+ *
+ * @public
+ * @category Find
+ * @name cracked#each
+ * @memberof cracked
+ * @function
+ * @param {String} type string to be checked against the node type
+ * @param {Function} fn function to be called on each node
+ * @returns {cracked}
+ */
+cracked.each = function (type, fn) {
+    if (__.isFun(fn)) {
+        for (var i = 0; i &lt; _selectedNodes.length; i++) {
+            var node = getNodeWithUUID(_selectedNodes[i]);
+            if (!type || (type &amp;&amp; node.getType() === type)) {
+                fn(node, i, _selectedNodes);
+            }
+        }
+    }
+    return cracked;
+};
+
+/**
+ * Filter selected nodes with an additional selector returns node array that can used with exec()
+ * &lt;pre>&lt;code>//select any sine &amp; sawtooth oscillators
+ * __("sine,saw");
+ *
+ * //filter out everything but the sines and
+ * //execute the frequency method against those nodes.
+ * //the internal _selectedNodes array remains unchanged
+ * cracked.exec(
+ *    "frequency",
+ *    200,
+ *    cracked.filter("sine")
+ * );&lt;/code>&lt;/pre>
+ *
+ * @public
+ * @category Find
+ * @name cracked#filter
+ * @memberof cracked
+ * @function
+ * @param {String} selector selector expression
+ * @returns {Array}
+ */
+cracked.filter = function () {
+    var tmp = [];
+    if (arguments &amp;&amp; arguments.length) {
+        var str = arguments[0],
+            selectorType = getSelectorType(str),
+            match = str.match(/^\.|\#/) ? str.substring(1) : str;
+        _selectedNodes.forEach(function (nodeID, i, arr) {
+            var node = getNodeWithUUID(nodeID);
+            if (
+                selectorType === "type" &amp;&amp; node.getType() === match ||
+                selectorType === "class" &amp;&amp; node.getClass() === match ||
+                selectorType === "id" &amp;&amp; node.getID() === match
+            ) {
+                tmp.push(nodeID);
+            }
+        });
+    }
+    return tmp;
+};
+
+/**
+ * Find nodes with a selector returns node array that can used with exec()
+ * &lt;pre>&lt;code>//find all the sines in the patch and
+ * //execute the frequency method against those nodes.
+ * //the internal _selectedNodes array remains unchanged
+ * cracked.exec(
+ *    "frequency",
+ *    200,
+ *    cracked.find("sine")
+ * );&lt;/code>&lt;/pre>
+ *
+ * @public
+ * @category Find
+ * @name cracked#find
+ * @memberof cracked
+ * @function
+ * @param {String} selector selector expression
+ * @returns {Array}
+ */
+cracked.find = function () {
+    var selector = recordingMacro() ? processSelectorForMacro(arguments[0]) : arguments[0];
+    return getNodesWithSelector(selector);
+};
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

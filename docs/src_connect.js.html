@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/connect.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,115 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/connect.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Connecting#
+ * Methods for connecting and removing nodes
+ *
+ */
 
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+/**
+ * chainable method to connect nodes to previously instantiated nodes. Takes a selector to find the nodes to connect to.
+ * &lt;pre>&lt;code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //create a sawtooth and connect to the lowpass instantiated above
+ * __().saw().connect("lowpass");&lt;/code>&lt;/pre>
+ *
+ * @public
+ * @category Connect
+ * @memberof cracked
+ * @name cracked#connect
+ * @function
+ * @param {String} selector selector expression
+ * @return cracked
+ */
+cracked.connect = function () {
+    //save a copy of previous node
+    var tmp = getPreviousNode();
+    //if we're arriving directly from find()
+    if (!tmp &amp;&amp; _selectedNodes.length) {
+        //overwrite the previous node with a selected node
+        tmp = getNodeWithUUID(_selectedNodes[0]);
+        //tbd - this should work w the entire selectednodes array
+    }
+    find(arguments[0]);
+    //find() resets the previous node to null.
+    //it's needed however in connectPreviousToSelected()
+    //so restore it with one from _selectednodes we stored in tmp.
+    setPreviousNode(tmp);
+    //do the connection
+    connectPreviousToSelected();
     return cracked;
+};
+
+/**
+ * helper for connect method above
+ * @function
+ * @private
+ */
+function connectPreviousToSelected() {
+    var pNode = getPreviousNode();
+    _selectedNodes.forEach(function (node, i, array) {
+        node = getNodeWithUUID(node);
+        if (node &amp;&amp; pNode) {
+            pNode.connect(node);
+            pNode.pushNextNode(node);
+            node.setPrevNode(pNode);
+            logConnections(pNode, node);
+        }
+    });
 }
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+//disconnects and removes all references to selected nodes
+/**
+ * chainable method to stop, disconnect and remove the currently selected nodes. Takes a time in ms to schedule the node removal.
+ * &lt;pre>&lt;code>//create and connect sine->lowpass->dac
+ * __().sine().lowpass().dac();
+ * //remove the lowpass instantiated above in 100ms
+ * __("lowpass").remove(100);&lt;/code>&lt;/pre>
+ *
+ * @public
+ * @category Connect
+ * @memberof cracked
+ * @name cracked#remove
+ * @function
+ * @param {Number} time in ms to schedule node removal
+ * @return cracked
+ */
+cracked.remove = function(time) {
+    var nodesToRemove = _selectedNodes.slice();
+    var when = __.isNum(time) ? time : 0;
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+    if(when) {
+        setTimeout(function(){
+            _remove(nodesToRemove);
+        },when);
+    } else {
+        _remove(nodesToRemove);
+    }
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+    function _remove(nodes) {
+        nodes.forEach(function (node, i, array) {
+            node = getNodeWithUUID(node);
+            if (node) {
+                node.stop();
+                node.disconnect();
+            }
+        });
+        removeModelReferences(nodes);
+    }
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

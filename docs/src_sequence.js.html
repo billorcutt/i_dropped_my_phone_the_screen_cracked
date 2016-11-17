@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/sequence.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,288 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/sequence.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Sequencing#
+ */
 
+/**
+* vars for loop
+* @type {boolean}
+* @private
+*/
 
+var _isLoopRunning = false,
+    _ignoreGrid = true,
+    _loopStepSize = 0,
+    _loopInterval = 100,
+    _loopID = 0,
+    _loopCB = null,
+    _loopData = [],
+    _loopIndex = -1,
+    _loopCount = 0,
+    _loopListeners = [],
+    _loopTimeToNextStep = 0,
+    _loopTolerance = 0.30;
 
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
+/**
+ * main method for loop
+ *
+ * &lt;pre>&lt;code>//configure the loop: 8 steps, 100ms between steps
+ * __.loop({steps:8,interval:100});
+ *
+ * //start
+ * __.loop("start");
+ * //stop
+ * __.loop("stop");
+ * //reset the loop params
+ * __.loop("reset");&lt;/code>&lt;/pre>
+ *
+ * [See sequencing examples](../../examples/sequencing.html)
+ *
+ * @public
+ * @memberof cracked
+ * @category Sequence
+ * @name cracked#loop
+ * @function
+ * @param {String} [arg] stop/start/reset commands
+ * @param {Object} [config] configuration object
+ * @param {Number} [config.interval=100] step length in ms
+ * @param {Number} [config.steps=16] number of steps
+ * @returns {cracked}
+ */
+cracked.loop = function () {
+    if (arguments &amp;&amp; arguments.length) {
+        if (arguments[0] === "stop") {
+            stopLoop();
+        } else if (arguments[0] === "start") {
+            startLoop();
+        } else if (arguments[0] === "reset") {
+            resetLoop();
+        } else if (arguments[0] === "toggle_grid") {
+            toggleGrid();
+        } else if (arguments.length === 3 &amp;&amp; __.isObj(arguments[0]) &amp;&amp; __.isFun(arguments[1])  &amp;&amp; __.isArr(arguments[2])) {
+            //configure loop with options
+            //set data &amp; callback
+            configureLoop(arguments[0], arguments[1], arguments[2]);
+        } else if(arguments.length === 1 &amp;&amp; __.isNum(arguments[0])) {
+            //tempo only
+            configureLoop(arguments[0]);
+        } else if(arguments.length === 1 &amp;&amp; __.isObj(arguments[0])) {
+            //just an options object
+            configureLoop(arguments[0]);
+        } else if(arguments.length === 2 &amp;&amp; __.isNum(arguments[0]) &amp;&amp; __.isFun(arguments[1])) {
+            //configure loop
+            configureLoop({interval:arguments[0]}, arguments[1], []);
+        }
+    }
     return cracked;
+};
+
+/**
+* Toggles the state of the _ignoreGrid variable
+* @private
+*/
+function toggleGrid() {
+    if (_isLoopRunning) {
+        _ignoreGrid = !_ignoreGrid;
+    }
 }
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+/**
+* Get the millisecond value for setting timeout
+* @private
+*/
+function calculateTimeout() {
+    return __.sec2ms(_loopTimeToNextStep  - _context.currentTime - (__.ms2sec(_loopInterval * _loopTolerance)));
+}
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+/**
+* Starts the loop
+* @private
+*/
+function startLoop() {
+    if (!_isLoopRunning) {
+        _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
+        _loopID = setTimeout(checkup, calculateTimeout());
+        _isLoopRunning = true;
+        _ignoreGrid = false;
+    }
+}
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+* Stops the loop
+* @private
+*/
+function stopLoop() {
+    if (_isLoopRunning) {
+        clearInterval(_loopID);
+        _isLoopRunning = false;
+        _loopTimeToNextStep = 0;
+        _ignoreGrid = true;
+    }
+}
+
+/**
+* Resets the loop to defaults
+* @private
+*/
+function resetLoop() {
+    _loopStepSize = 0;
+    _loopInterval = 100;
+    _ignoreGrid = true;
+    _loopID = 0;
+    _loopCB = null;
+    _loopData = [];
+    _loopListeners = [];
+    _loopIndex = -1;
+    _loopCount = 0;
+    _isLoopRunning = false;
+    _loopTimeToNextStep = 0;
+}
+
+/**
+* configure the loop options
+* @param {Object} opts configuration object
+* @param {Function} fn global callback
+* @param {Array} data array of data to be passed to the global callback
+* @private
+*/
+function configureLoop(opts, fn, data) {
+    if (opts &amp;&amp; __.isObj(opts)) {
+        _loopStepSize = opts.steps ? opts.steps : data &amp;&amp; data.length ? data.length : 0;
+        _loopInterval = opts.interval || 200;
+    } else if(opts &amp;&amp; __.isNum(opts) &amp;&amp; !fn &amp;&amp; !data) {
+        //just configuring tempo only
+        _loopInterval = opts;
+    }
+    if (__.isFun(fn)) {
+        _loopCB = fn;
+    }
+    if (__.isArr(data) &amp;&amp; data.length === _loopStepSize) {
+        _loopData = data;
+    } else {
+        _loopData = [];
+    }
+}
+
+/**
+* called by setInterval - sets the time to next step
+* @private
+*/
+function checkup() {
+    var now = _context.currentTime,
+        loopIntervalInSecs = __.ms2sec(_loopInterval),
+        timeAtPreviousStep = _loopTimeToNextStep -  loopIntervalInSecs;
+    if (now &lt; _loopTimeToNextStep &amp;&amp; now > timeAtPreviousStep) {
+        loopStep();
+        _loopTimeToNextStep += loopIntervalInSecs;
+    } else if(now > _loopTimeToNextStep) {
+        //we dropped a frame
+        _loopTimeToNextStep += loopIntervalInSecs;
+    }
+    clearTimeout(_loopID);
+    _loopID = setTimeout(checkup, calculateTimeout());
+}
+
+/**
+* call on every step
+* @private
+*/
+function loopStep() {
+
+    //globals- tbd deprecate. step size should just be based on available data
+    if(_loopStepSize) {
+        //if a step size is configured globally, increment the index
+        _loopIndex = (_loopIndex &lt; (_loopStepSize - 1)) ? _loopIndex + 1 : 0;
+    }
+    //global callback
+    if (__.isFun(_loopCB)) {
+        _loopCB(_loopIndex, cracked.ifUndef(_loopData[_loopIndex], null), _loopData, ++_loopCount);
+    }
+
+    //loop thru any bound step event listeners
+    for (var i = 0; i &lt; _loopListeners.length; i++) {
+        var listener = _loopListeners[i],
+            tmp = _selectedNodes,
+            index = listener.loopIndex,
+            stepSize = listener.loopStepSize,
+            data = listener.data,
+            count = ++listener.count;
+
+        //if step size not configured globally
+        listener.loopIndex = (index &lt; (stepSize - 1)) ? index + 1 : 0;
+
+        //load up the selected nodes for this listener
+        _selectedNodes = listener.selection;
+
+        //run the callback
+        listener.callback(listener.loopIndex, cracked.ifUndef(data[listener.loopIndex], null), data, count);
+
+        //put the nodes back in place
+        _selectedNodes = tmp;
+    }
+}
+
+/**
+ * Listener - binds a set of audio nodes and a callback to loop step events
+ * @public
+ * @category Sequence
+ * @memberof cracked
+ * @name cracked#bind
+ * @function
+ * @param {String} eventType currently just "step"
+ * @param {Function} fn callback to be invoked at each step
+ * @param {Array} data should the same length as the number of steps
+ * @returns {cracked}
+ */
+cracked.bind = function (eventType, fn, data) {
+    if (eventType === "step" &amp;&amp; __.isFun(fn)) {
+        _loopListeners.push({
+            eventType: eventType,
+            callback: fn,
+            data: data || [],
+            loopStepSize : data.length || 0,
+            loopIndex : -1,
+            selection: _selectedNodes.slice(0),
+            selector: _currentSelector,
+            count:0
+        });
+    }
+    return cracked;
+};
+
+/**
+ * Remove any steps listeners registered on these nodes
+ * @public
+ * @category Sequence
+ * @memberof cracked
+ * @function
+ * @name cracked#unbind
+ * @param {String} eventType
+ */
+cracked.unbind = function (eventType) {
+    if (eventType === "step") {
+        var tmp = [];
+        _loopListeners.forEach(function (el, i, arr) {
+            if (_currentSelector !== el.selector) {
+                tmp.push(el);
+            }
+        });
+        _loopListeners = tmp;
+    }
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

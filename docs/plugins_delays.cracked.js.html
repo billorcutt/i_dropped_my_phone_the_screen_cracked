@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>plugins/delays.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,216 @@
 
 <div id="main">
     
+    <h1 class="page-title">plugins/delays.cracked.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Convolver Reverb
+ *
+ * [See more reverb examples](../../examples/delay.html)
+ *
+ * @plugin
+ * @function
+ * @category Delay
+ * @memberof cracked
+ * @name cracked#reverb
+ * @param {Object} [params] map of optional values
+ * @param {Boolean} [params.reverse=false] reverse reverb
+ * @param {String} [params.path] path to impulse file. if no path, impulse is generated.
+ * @param {Number} [params.seconds=3] if generated impulse, length in seconds.
+ * @param {Number} [params.decay=2] if generated impulse, length of decay in seconds
+ * @param {Function} [params.fn=buildImpulse] custom function to generate an impulse buffer
+ */
 
+cracked.reverb = function (params) {
 
+    params = __.ifUndef(params, {});
 
+    //if there's no path to an impulse
+    //then generate our own
+    if (!params.path) {
+        params.fn = params.fn || buildImpulse;
+    }
 
+    //if building an impulse
+    var _seconds = __.ifUndef(params.seconds, 3);
+    var _reverse = __.ifUndef(params.reverse, false);
+    var _decay = __.ifUndef(params.decay, 2);
 
+    __.begin("reverb", params).convolver(params).end("reverb");
 
+    //default method to generate an impules
+    function buildImpulse(audioContext) {
 
+        var rate = audioContext.sampleRate,
+            length = rate * _seconds,
+            decay = _decay,
+            impulse = audioContext.createBuffer(2, length, rate),
+            impulseL = impulse.getChannelData(0),
+            impulseR = impulse.getChannelData(1),
+            n, i;
 
+        for (i = 0; i &lt; length; i++) {
+            n = _reverse ? length - i : i;
+            impulseL[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+            impulseR[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+        }
+        return impulse;
+    }
 
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
     return cracked;
-}
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+};
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+/**
+ * Delay
+ *
+ * [See more delay examples](../../examples/delay.html)
+ *
+ * @plugin
+ * @category Delay
+ * @function
+ * @memberof cracked
+ * @name cracked#delay
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.delay=1] delay time in seconds
+ * @param {Number} [params.damping=0.84] feedback input gain
+ * @param {Number} [params.cutoff=1500] frequency of lowpass filtering on feedback loop
+ * @param {Number} [params.feedback=0.5] feedback gain output
+ */
+
+cracked.delay = function (params) {
+
+    params = __.ifUndef(params, {});
+    var time = __.isObj(params) ? (__.ifUndef(params.delay, 1)) : params;
+
+    __.begin("delay", params);
+
+    __.gain({
+        id: "delay-input"
+    }).
+
+        native_delay({
+            id: "native-delay",
+            delay: time,
+            mapping: {
+                "delay": "delayTime.value"
+            }
+        }).
+
+        gain({
+            id: "delay-damping",
+            gain: __.ifUndef(params.damping, 0.84),
+            mapping: {
+                "damping": "gain.value"
+            }
+        }).
+
+        lowpass({
+            id: "delay-cutoff",
+            frequency: __.ifUndef(params.cutoff, 1500),
+            mapping: {
+                "cutoff": "frequency.value"
+            }
+        }).
+
+        gain({
+            id: "delay-feedback",
+            gain: __.ifUndef(params.feedback, 0.5),
+            mapping: {
+                "feedback": "gain.value"
+            }
+        }).
+
+        gain({
+            id: "delay-output"
+        });
+
+    __("#delay-feedback").connect("#delay-input");
+
+    __("#native-delay").gain(0.5).connect("#delay-output");
+
+    __.end("delay");
+
+    return cracked;
+
+};
+
+/**
+ * Comb
+ *
+ * [See more reverb examples](../../examples/delay.html)
+ *
+ * @plugin
+ * @category Delay
+ * @function
+ * @memberof cracked
+ * @name cracked#comb
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.delay=0.027] delay time in seconds
+ * @param {Number} [params.damping=0.84] feedback input gain
+ * @param {Number} [params.cutoff=3000] frequency of lowpass filtering on feedback loop
+ * @param {Number} [params.feedback=0.84] feedback gain output
+ */
+cracked.comb = function (params) {
+//adapted from https://github.com/web-audio-components
+    var userParams = __.ifUndef(params, {});
+
+    __.begin("comb", userParams);
+
+    __.gain({
+        id: "comb-input"
+    }).
+        native_delay({
+            id: "comb-delay",
+            delay: __.ifUndef(userParams.delay, 0.027),
+            mapping: {
+                "delay": "delayTime.value"
+            }
+        }).
+        gain({
+            id: "comb-damping",
+            gain: __.ifUndef(userParams.damping, 0.84),
+            mapping: {
+                "damping": "gain.value"
+            }
+        }).
+        lowpass({
+            id: "comb-cutoff",
+            frequency: __.ifUndef(userParams.cutoff, 3000),
+            mapping: {
+                "cutoff": "frequency.value"
+            }
+        }).
+        gain({
+            id: "comb-feedback",
+            gain: __.ifUndef(userParams.feedback, 0.84),
+            mapping: {
+                "feedback": "gain.value"
+            }
+        }).
+        connect("#comb-input");
+
+    __("#comb-damping").
+        gain({
+            id: "output"
+        });
+
+    __.end("comb");
+
+    return cracked;
+
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

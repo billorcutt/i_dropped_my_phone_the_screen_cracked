@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>plugins/distortion.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,297 @@
 
 <div id="main">
     
+    <h1 class="page-title">plugins/distortion.cracked.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Bitcrusher
+ *
+ * [See more bitcrusher examples](../../examples/distortion.html)
+ *
+ * @plugin
+ * @category Distortion
+ * @function
+ * @memberof cracked
+ * @name cracked#bitcrusher
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=0.1]
+ * @param {Number} [params.bits=6]
+ */
+cracked.bitcrusher = function (params) {
+//adapted from http://noisehack.com/custom-audio-effects-javascript-web-audio-api/
+    params = params || {};
 
+    __.begin("bitcrusher", params);
 
+    __.script({
+        fn: (function (options) {
 
+            var bits = options.bits || 6; // between 1 and 16
+            var normfreq = __.ifUndef(options.frequency, 0.1); // between 0.0 and 1.0
+            var step = Math.pow(1 / 2, bits);
+            var phaser = 0;
+            var last = 0;
 
+            function crusher(e) {
+                var input = e.inputBuffer.getChannelData(0);
+                var output = e.outputBuffer.getChannelData(0);
+                for (var i = 0; i &lt; 4096; i++) {
+                    phaser += normfreq;
+                    if (phaser >= 1.0) {
+                        phaser -= 1.0;
+                        last = step * Math.floor(input[i] / step + 0.5);
+                    }
+                    output[i] = last;
+                }
+            }
 
+            return crusher;
 
+        })(params)
+    });
 
+    __.end("bitcrusher");
 
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
     return cracked;
-}
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+};
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+/**
+ * Ring Modulator
+ *
+ * [See more ring modulator examples](../../examples/distortion.html)
+ *
+ * @plugin
+ * @category Distortion
+ * @function
+ * @memberof cracked
+ * @name cracked#ring
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.distortion=1]
+ * @param {Number} [params.frequency=30]
+ */
+cracked.ring = function (params) {
+//adapted from http://webaudio.prototyping.bbc.co.uk/ring-modulator/
+    var options = params || {};
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+    var thisCurve = setCurve(__.ifUndef(options.distortion, 1));
+
+    __.begin("ring", params);
+
+    __.gain({
+        id: "player"
+    }).
+        gain({
+            id: "vcInverter1",
+            gain: -1
+        }).
+        waveshaper({
+            id: "vcDiode3",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        compressor({
+            threshold: -12
+        });
+
+    __("#player").
+        waveshaper({
+            id: "vInDiode4",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        connect("compressor");
+
+    __().sine({
+        id: "vIn",
+        frequency: options.frequency || 30,
+        mapping: {
+            "frequency": "frequency.value"
+        }
+    }).
+        gain({
+            id: "vInGain",
+            gain: 0.5
+        }).
+        gain({
+            id: "vInInverter1",
+            gain: -1
+        }).
+        gain({
+            id: "vInInverter2",
+            gain: -1
+        }).
+        waveshaper({
+            id: "vInDiode1",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        gain({
+            id: "vInInverter3",
+            gain: -1
+        }).
+        connect("compressor");
+
+    __("#vInGain").
+        connect("#vInDiode4");
+
+    __("#vInGain").
+        connect("#vcInverter1");
+
+    __("#vInInverter1").
+        waveshaper({
+            id: "vInDiode2",
+            curve: thisCurve,
+            mapping: {
+                "distortion": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return setCurve;
+                    })()
+                }
+            }
+        }).
+        connect("#vInInverter3");
+
+    __("compressor").
+        gain({
+            id: "outGain",
+            gain: 4
+        });
+
+    __.end("ring");
+
+    return cracked;
+
+    function setCurve(distortion) {
+
+        var i, samples, v, value, wsCurve, _i, _ref, vb, vl, h;
+
+        vb = 0.2;
+        vl = 0.4;
+        h = __.ifUndef(distortion, 1);
+
+        samples = 1024;
+        wsCurve = new Float32Array(samples);
+
+        for (i = _i = 0, _ref = wsCurve.length; 0 &lt;= _ref ? _i &lt; _ref : _i > _ref; i = 0 &lt;= _ref ? ++_i : --_i) {
+            v = (i - samples / 2) / (samples / 2);
+            v = Math.abs(v);
+            if (v &lt;= vb) {
+                value = 0;
+            } else if ((vb &lt; v) &amp;&amp; (v &lt;= vl)) {
+                value = h * ((Math.pow(v - vb, 2)) / (2 * vl - 2 * vb));
+            } else {
+                value = h * v - h * vl + (h * ((Math.pow(vl - vb, 2)) / (2 * vl - 2 * vb)));
+            }
+            wsCurve[i] = value;
+        }
+        return wsCurve;
+    }
+
+};
+//adapted from https://github.com/web-audio-components
+/**
+ * Overdrive, waveshaper with additional parameters
+ *
+ * [See more overdrive examples](../../examples/distortion.html)
+ *
+ * @plugin
+ * @category Distortion
+ * @function
+ * @memberof cracked
+ * @name cracked#overdrive
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.drive=0.5]
+ * @param {Number} [params.color=800]
+ * @param {Number} [params.postCut=3000]
+ */
+cracked.overdrive = function (params) {
+
+    params = params || {};
+    var drive = __.isObj(params) ? __.ifUndef(params.drive, 0.5) : params;
+
+    __.begin("overdrive", params);
+
+    __.gain({
+        id: "input"
+    }).
+        bandpass({
+            frequency: __.ifUndef(params.color, 800),
+            mapping: {
+                "color": "frequency.value"
+            }
+        }).
+        waveshaper({
+            curve: makeCurve(drive),
+            mapping: {
+                "drive": {
+                    "path": "curve",
+                    "fn": (function () {
+                        return makeCurve;
+                    })()
+                }
+            }
+        }).
+        lowpass({
+            frequency: __.ifUndef(params.postCut, 3000),
+            mapping: {
+                "postCut": "frequency.value"
+            }
+        }).
+        gain({
+            id: "output"
+        });
+
+    __.end("overdrive");
+
+    function makeCurve(value) {
+        var k = value * 100,
+            n = 22050,
+            curve = new Float32Array(n),
+            deg = Math.PI / 180;
+
+        for (var i = 0; i &lt; n; i++) {
+            var x = i * 2 / n - 1;
+            curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+        }
+        return curve;
+    }
+
+    return cracked;
+
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

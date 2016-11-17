@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>src/midi.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,219 @@
 
 <div id="main">
     
+    <h1 class="page-title">src/midi.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * #Midi#
+ */
 
+/**
+ * vars for midi
+ * @type {Object}
+ * @private
+ */
+var _midi_access = null,
+    _midi_inputs = null,
+    _midi_outputs = null,
+    _midi_callbacks = {noteon:function(){},noteoff:function(){},control:function(){}},
+    _midi_noteons = {};
 
+/**
+ * Is midi supported?
+ * &lt;pre>&lt;code>if(__.midi_supported()) {
+ *      //do midi stuff here
+ *      //cuz you can
+ * }&lt;/code>&lt;/pre>
+ * @public
+ * @category Midi
+ * @memberof cracked
+ * @function
+ * @name cracked#midi_supported
+ * @returns {boolean}
+ */
+cracked.midi_supported = function(){
+    return typeof navigator.requestMIDIAccess === "function";
+};
 
+/**
+ * Initialize midi. Callback is invoked when ready.
+ * &lt;pre>&lt;code>//when midi is ready...
+ * __.midi_init(function(){
+ *      //...call this function
+ * });&lt;/code>&lt;/pre>
+ * @param {Function} callback
+ * @memberof cracked
+ * @name cracked#midi_init
+ * @public
+ * @category Midi
+ * @function
+ */
+cracked.midi_init = function(callback) {
+    if(_midi_access) {
+        //midi already initialized
+        callback.apply(cracked,[true]);
+    } else if(__.midi_supported()) {
+        navigator.requestMIDIAccess().then( function(access) {
+            _midi_access = access;
+            _midi_inputs = access.inputs; // inputs = MIDIInputMaps, you can retrieve the inputs with iterators
+            _midi_outputs = access.outputs; // outputs = MIDIOutputMaps, you can retrieve the outputs with iterators
+            callback.apply(cracked,[true]);
+        }, function( err ) {
+            console.error( "midi_init: Initialization failed. Error code: " + err.code );
+            callback.apply(cracked,[false]);
+        } );
+    } else {
+        console.error("midi_init: Failed. Midi not supported by your browser");
+        callback.apply(cracked,[false]);
+    }
+};
 
+/**
+ * Midi input. Bind handler for the onMIDIMessage event.
+ * &lt;pre>&lt;code>//when midi is ready...
+ * __.midi_init(function(){
+ *      __.midi_receive(function(midiEvent){
+ *          //handle incoming raw midi events here...
+ *      });
+ * });&lt;/code>&lt;/pre>
+ * @param {Function} callback
+ * @memberof cracked
+ * @name cracked#midi_receive
+ * @public
+ * @category Midi
+ * @function
+ */
+cracked.midi_receive = function(callback){
+    if(_midi_access) {
+        var fun = __.isFun(callback) ? callback : function(){};
+        var inputs = _midi_inputs.values();
+        // loop over all available inputs and listen for any MIDI input
+        for (var input = inputs.next(); input &amp;&amp; !input.done; input = inputs.next()) {
+            // each time there is a midi message call the onMIDIMessage function
+            input.value.onmidimessage = function(ev){
+                if(ev.data) {
 
+                    //data
+                    var status=ev.data[0],
+                        pitch=ev.data[1],
+                        velocity=ev.data[2],
+                        note_data = [status,pitch,velocity];
 
+                    //general midi receive
+                    fun(ev);
 
+                    //note on/off/control methods
+                    switch(status) {
+                        case 144:
+                            if(velocity > 0) {
+                                if(!_midi_noteons[pitch]) {
+                                    _midi_noteons[pitch]=pitch;
+                                    _midi_callbacks.noteon(note_data);
+                                }
+                            } else {
+                                _midi_callbacks.noteoff(note_data);
+                                delete _midi_noteons[pitch];
+                            }
+                            break;
+                        case 128:
+                            _midi_callbacks.noteoff(note_data);
+                            delete _midi_noteons[pitch];
+                            break;
+                        case 176:
+                            _midi_callbacks.control(note_data);
+                            break;
+                    }
+                }
+            };
+        }
+    } else {
+        console.error("midi_receive: midi not available");
+    }
+};
 
+/**
+ * Midi input. Shorthand binding for note ons
+ * &lt;pre>&lt;code>//when midi is ready...
+ * __.midi_init(function(){
+ *      //get midi noteon events
+ *      __.midi_noteon(function(noteData){
+ *          //note data = [status,pitch,velocity]
+ *          //handle midi note ons...
+ *      });
+ * });&lt;/code>&lt;/pre>
+ * @param {Function} callback
+ * @public
+ * @category Midi
+ * @memberof cracked
+ * @name cracked#midi_noteon
+ * @function
+ */
+cracked.midi_noteon = function(callback) {
+    if(__.isFun(callback)) {
+        _midi_callbacks.noteon = callback;
+        cracked.midi_receive();
+    }
+};
 
-    
+/**
+ * Midi input. Shorthand binding for note offs
+ * &lt;pre>&lt;code>//when midi is ready...
+ * __.midi_init(function(){
+ *      //get midi noteoff events
+ *      __.midi_noteoff(function(noteData){
+ *          //note data = [status,pitch,velocity]
+ *          //handle midi note offs...
+ *      });
+ * });&lt;/code>&lt;/pre>
+ * @param {Function} callback
+ * @public
+ * @category Midi
+ * @memberof cracked
+ * @name cracked#midi_noteoff
+ * @function
+ */
+cracked.midi_noteoff = function(callback) {
+    if(__.isFun(callback)) {
+        _midi_callbacks.noteoff = callback;
+        cracked.midi_receive();
+    }
+};
 
+/**
+ * Midi input. Shorthand binding for midi control messages
+ * &lt;pre>&lt;code>//when midi is ready...
+ * __.midi_init(function(){
+ *      //get midi control events
+ *      __.midi_control(function(noteData){
+ *          //note data = [status,pitch,velocity]
+ *          //handle midi control events...
+ *      });
+ * });&lt;/code>&lt;/pre>
+ * @param {Function} callback
+ * @public
+ * @category Midi
+ * @memberof cracked
+ * @name cracked#midi_control
+ * @function
+ */
+cracked.midi_control = function(callback) {
+    if(__.isFun(callback)) {
+        _midi_callbacks.control = callback;
+        cracked.midi_receive();
+    }
+};
 
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
-    return cracked;
-}
-
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
-
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
-
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

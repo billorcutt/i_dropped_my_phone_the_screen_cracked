@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>plugins/oscillators.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,140 @@
 
 <div id="main">
     
+    <h1 class="page-title">plugins/oscillators.cracked.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//need a custom wave osc
 
+/**
+ * Sine Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#sine
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
+ */
+cracked.sine = function (params) {
 
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.type = userParams.type || "sine";
+    options.frequency = userParams.frequency || freq;
+    options.detune = userParams.detune || 0;
+    options.mapping = userParams.mapping || {};
 
+    __.begin("sine", userParams).osc(options).end("sine");
 
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
-
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
-
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
-
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
     return cracked;
-}
+};
+/**
+ * Square Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#square
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
+ */
+cracked.square = function (params) {
 
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.type = userParams.type || "square";
+    options.frequency = userParams.frequency || freq;
+    options.detune = userParams.detune || 0;
+    options.mapping = userParams.mapping || {};
 
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
+    __.begin("square", userParams).osc(options).end("square");
 
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+    return cracked;
+};
+/**
+ * Sawtooth Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#saw
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
+ */
+cracked.saw = function (params) {
+
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.type = userParams.type || "sawtooth";
+    options.frequency = userParams.frequency || freq;
+    options.detune = userParams.detune || 0;
+    options.mapping = userParams.mapping || {};
+
+    __.begin("saw", userParams).osc(options).end("saw");
+
+    return cracked;
+};
+/**
+ * Triangle Wave Oscillator
+ *
+ * [See more oscillator examples](../../examples/oscillators.html)
+ *
+ * @plugin
+ * @category Oscillator
+ * @function
+ * @memberof cracked
+ * @name cracked#triangle
+ * @public
+ * @param {Object} [params] map of optional values
+ * @param {Number} [params.frequency=440]
+ * @param {Number} [params.detune=0]
+ * @param {String} [params.type=sine]
+ */
+cracked.triangle = function (params) {
+
+    var freq = __.isNum(params) ? params : 440;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    options.type = userParams.type || "triangle";
+    options.frequency = userParams.frequency || freq;
+    options.detune = userParams.detune || 0;
+    options.mapping = userParams.mapping || {};
+
+    __.begin("triangle", userParams).osc(options).end("triangle");
+
+    return cracked;
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

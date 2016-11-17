@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>plugins/envelopes.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,83 +28,129 @@
 
 <div id="main">
     
+    <h1 class="page-title">plugins/envelopes.cracked.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Attack Decay Sustain Release envelope
+ *
+ * [See more adsr examples](../../examples/envelopes.html)
+ *
+ * Attack time is the time taken for initial run-up of level from nil to peak, beginning when the key is first pressed.
+ * Decay time is the time taken for the subsequent run down from the attack level to the designated sustain level.
+ * Sustain level is the level during the main sequence of the sound's duration, until the key is released.
+ * Release time is the time taken for the level to decay from the sustain level to zero after the key is released.
+ *
+ * @plugin
+ * @category Envelope
+ * @function
+ * @memberof cracked
+ * @name cracked#adsr
+ * @param {Array} [userParams] 5 values: attack,decay,sustain,hold,release
+ * @param {Array}  [userParams] 4 values: attack,decay,sustain,release
+ * @param {Array} [userParams] 3 values: attack,decay,sustain (holds until released)
+ * @param {String} [userParams] "slow" or "fast"
+ * @param {Number} [userParams=0.5] length of the total envelope
+ */
+cracked.adsr = function (userParams) {
+    var methods = {
+        init: function (options) {
 
+            options = options || {};
 
+            options = __.isNum(options) ||
+                __.isArr(options) ||
+                __.isStr(options) ? {envelope: options} : options;
 
+            __.begin("adsr", options).gain({
 
+                gain: 0
 
+            }).end("adsr");
 
+        },
+        trigger: function (params) {
+            cracked.each("adsr", function (el, i, arr) {
+                var p = makeEnv(params, el.getParams().settings.envelope);
+                //options = attack,decay,sustain,hold,release
+                el.ramp(
+                    [1, p[2], p[2], 0],
+                    [p[0], p[1], p[3], p[4]],
+                    "gain",
+                    null,
+                    0
+                );
+            });
+        },
+        release: function (time) {
+            time = __.ifUndef(time,0);
+            cracked.each("adsr", function (el, i, arr) {
+                    el.ramp(0, time, "gain");
+            });
+        }
+    };
 
+    if (methods[userParams]) {
+        methods[userParams].apply(this, Array.prototype.slice.call(arguments, 1));
+    } else {
+        methods.init(userParams);
+    }
 
+    function makeEnv(userParams, nodeParams) {
 
-    
+        //user params take precedence over the ones stored in the node
+        var args = userParams || nodeParams;
 
+        //trigger arguments :
+        //an array of 5 values [attack,decay,sustain,hold,release]
+        //or 4 values [attack,decay,sustain,release] ()
+        //or a one number specifying the total length of the envelope
+        //or a string (either "fast" or "slow") to specify the length
+        //tbd - add a proper default
 
-    <section class="readme">
-        <article><h2>I Dropped My Phone The Screen Cracked</h2><p><em>I Dropped My Phone The Screen Cracked</em> is a <a href="https://webaudio.github.io/web-audio-api/">web audio</a> library that uses method chaining and CSS-style selectors to simplify creating, configuring and connecting audio nodes in the browser. Here's hello world:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect sine and system out. start the sine
-__().sine().dac().play();</code></pre><p>and a slightly more complex example:</p>
-<pre class="prettyprint source lang-javascript"><code>//create and connect a sine oscillator (frequency of 180), lowpass,
-//compressor and system output (level of .5).
-__().sine(180).lowpass({frequency:160,q:5,id:&quot;lp1&quot;}).compressor().dac(.5);
+        var p = [0, 0, 0, 0, 0],
+            segment,
+            options = args || 0.5;
 
-//select the sine using its type and change the detune to 10
-__(&quot;sine&quot;).detune(10);
+        if (__.isArr(options)) {
+            if (options.length === 5) {
+                p = options;
+            } else if (options.length === 4) {
+                var sum = options[0] + options[1] + options[3];
+                p = [options[0], options[1], options[2], (sum / 3), options[3]];
+            } else if (options.length === 3) {
+                //a,d,s, hold for two hours, r = 0
+                p = [options[0], options[1], options[2], 7200, 0];
+            }
 
-//use the id to get a reference to the lowpass
-//filter and set the frequency to 600
-__(&quot;#lp1&quot;).frequency(600);
+        } else if (__.isNum(options)) {
+            segment = options / 4;
+            p = [segment, segment, 0.5, segment, segment];
+        } else if (__.isStr(options)) {
+            if (options === "slow") {
+                options = 1;
+            } else if (options === "fast") {
+                options = 0.25;
+            } else {
+                options = 0.5;
+            }
+            segment = options / 4;
+            p = [segment, segment, 0.5, segment, segment];
+        }
+        return p;
+    }
 
-//create and connect a sawtooth oscillator, waveshaper & compressor
-//and connect the compressor to the existing dac we created above.
-__().saw(800).waveshaper().compressor().connect(&quot;dac&quot;);
-
-//change the ratio of both compressors to 12
-__(&quot;compressor&quot;).attr(&quot;ratio&quot;,12);
-
-//start the sine and the sawtooth
-__(&quot;sine,saw&quot;).start();</code></pre><p>Audio node chains can be encapsulated as units using macros</p>
-<pre class="prettyprint source lang-javascript"><code>//define a simple macro named &quot;microsynth&quot;
-__().begin(&quot;microsynth&quot;).sine().gain().end(&quot;microsynth&quot;).dac();
-
-//change the frequency of the sine
-__(&quot;microsynth&quot;).frequency(100);
-
-//start it up
-__(&quot;microsynth&quot;).start();</code></pre><p>and macros can be wrapped in simple factory functions to create plugins, making it possible
-to instantiate instances, connect them to other nodes, address them individually or as a group, 
-nest them within other macros, etc.</p>
-<pre class="prettyprint source lang-javascript"><code>//define a plugin called microsynth
-cracked.microsynth = function(params) {
-    //pass any params to begin() so they can associated with the instance
-    __().begin(&quot;microsynth&quot;,params).sine().gain(0).end(&quot;microsynth&quot;);
-    //return cracked so we can chain methods
     return cracked;
-}
-
-//create two instances with different ids
-__().microsynth({id:&quot;micro1&quot;}).lowpass().dac();
-__().microsynth({id:&quot;micro2&quot;}).lowpass().connect(&quot;dac&quot;);
-
-//change the frequency in the first
-__(&quot;#micro1&quot;).frequency(1200);
-//change the frequency in the second
-__(&quot;#micro2&quot;).frequency(600);
-
-//set the gain in both and start them
-__(&quot;microsynth&quot;).volume(1).start();</code></pre><p>Generally, the goal of <em>I Dropped My Phone The Screen Cracked</em> is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.</p>
-<p>If you're interested in knowing more, there's a one page <a href="OVERVIEW.md">overview</a>, full source <a href="http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html">documentation</a> and a useful app for the Mac to <a href="https://github.com/billorcutt/Cracked">try it all out</a>.</p>
-<p>Also <a href="http://idroppedmyphonethescreencracked.tumblr.com">cat pictures</a>.</p>
-<p>If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an <a href="https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues">issue</a> for bugs or feature enhancements or best of all, submit a pull request.</p></article>
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 
