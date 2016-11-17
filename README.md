@@ -69,7 +69,7 @@ __("microsynth").volume(1).start();
 ```
 Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
 
-If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full source [documentation](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/docs/index.html) and a useful app for the Mac to [try it all out](https://github.com/billorcutt/Cracked).
+If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full source [documentation](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/) and a useful app for the Mac to [try it all out](https://github.com/billorcutt/Cracked).
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
 
