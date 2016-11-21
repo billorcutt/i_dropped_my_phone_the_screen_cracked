@@ -56,6 +56,7 @@ cracked.end = function (name) {
 function createMacro(name, userParams) {
     //tbd - macro needs its own class
     return createNode(name, {
+        method: "createMacro",
         settings: {}
     }, userParams);
 }

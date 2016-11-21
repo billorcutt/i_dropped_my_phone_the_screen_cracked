@@ -60,9 +60,11 @@ function audioNodeFactory(creationParams) {
         node = _context.destination;
     } else if (_context && creationParams.method === "createOrigin") {
         node = createMockMediaStream(creationParams);
-    } else {
+    } else if (_context && creationParams.method === "createMacro") {
         //its a macro
         node = [];
+    } else {
+        throw new Error("Couldn't create audio node. Create method "+creationParams.method+" not supported.");
     }
     logToConsole(node);
     return node;
