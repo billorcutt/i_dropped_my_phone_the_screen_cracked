@@ -760,7 +760,10 @@ function AudioNode(type, creationParams, userSettings) {
         } else {
             if (currNode && __.isFun(currNode.disconnect)) {
                 var wrapper = getNodeWithUUID(currNode.uuid);
-                currNode.disconnect();
+                //fixes a bug in Firefox and Safari when disconnecting a destination node
+                try {
+                    currNode.disconnect();
+                } catch (e) {}
                 wrapper.setIsPlaying(false);
                 this.setIsPlaying(false);
             }
