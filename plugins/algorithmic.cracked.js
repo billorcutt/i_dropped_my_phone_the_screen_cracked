@@ -258,11 +258,11 @@ cracked.random = function (min, max) {
  * @public
  * @param {Number} num
  */
-function throttleFactory(num) {
+cracked.throttle_factory = function  (num) {
     var index = 0;
     var number = num;
     return function() {
         index++;
         return index % number===0;
     };
-}
+};
