@@ -2,6 +2,12 @@
   "Utility" : {
     "displayName" : "Utility"
   },
+  "Algorithmic" : {
+    "displayName" : "Algorithmic"
+  },
+  "Setters" : {
+    "displayName" : "Setters"
+  },
   "Delay" : {
     "displayName" : "Delay"
   },
@@ -31,9 +37,6 @@
   },
   "Synth" : {
     "displayName" : "Synth"
-  },
-  "Filter" : {
-    "displayName" : "Filter"
   },
   "Connect" : {
     "displayName" : "Connect"
