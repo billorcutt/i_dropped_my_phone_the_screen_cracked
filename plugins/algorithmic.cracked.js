@@ -260,9 +260,9 @@ cracked.random = function (min, max) {
  */
 function throttleFactory(num) {
     var index = 0;
-    var _number = num;
+    var number = num;
     return function() {
         index++;
-        return index % _number===0;
-    }
+        return index % number===0;
+    };
 }
