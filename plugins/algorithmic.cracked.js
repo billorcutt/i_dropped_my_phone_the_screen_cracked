@@ -1,7 +1,7 @@
 /**
  * execute a callback at random intervals within a range
  * @function
- * @category Utility
+ * @category Algorithmic
  * @memberof cracked
  * @name cracked#random_interval
  * @public
@@ -28,7 +28,7 @@ cracked.random_interval = function(callback, minTime, maxTime) {
 /**
  * create a adsr envelope with random values scaled to a length
  * @function
- * @category Utility
+ * @category Algorithmic
  * @memberof cracked
  * @name cracked#random_envelope
  * @public
@@ -62,7 +62,7 @@ cracked.random_envelope = function(length) {
 /**
  * fill an array with some values
  * @function
- * @category Utility
+ * @category Algorithmic
  * @memberof cracked
  * @name cracked#fill_array
  * @public
@@ -88,7 +88,7 @@ cracked.fill_array = function(size,fn) {
  * @param {Number} offset added to index
  * @param {Number} limit upper bound to iteration
  * @function
- * @category Utility
+ * @category Algorithmic
  * @memberof cracked
  * @name cracked#array_next
  * @public
@@ -107,7 +107,7 @@ cracked.array_next = function(arr,offset,limit) {
 /**
  * Returns a boolean based on percentage.
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#chance
@@ -122,7 +122,7 @@ cracked.chance = function(percentage) {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#scales
@@ -144,7 +144,7 @@ cracked.scales = function (type) {
 /**
  * Returns a musical scale/mode based on type
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#chords
@@ -169,7 +169,7 @@ cracked.chords = function (type) {
 /**
  * Return a random series of frequencies from randomly selected octaves from a given scale
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#random_scale
@@ -187,7 +187,7 @@ cracked.random_scale = function (scale,octave_lower,octave_upper) {
 /**
  * Return a random series of frequencies from a randomly selected octave from a given chord
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#random_arpeggio
@@ -206,7 +206,7 @@ cracked.random_arpeggio = function (chord,octave_lower,octave_upper) {
  * Takes a reference to an array, shuffles it
  * and returns it
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#shuffle
@@ -236,7 +236,7 @@ cracked.shuffle = function (arr) {
 /**
  * Returns a random number between min & max
  * @plugin
- * @category Utility
+ * @category Algorithmic
  * @function
  * @memberof cracked
  * @name cracked#random
@@ -247,3 +247,22 @@ cracked.shuffle = function (arr) {
 cracked.random = function (min, max) {
     return Math.round(min + Math.random() * (max - min));
 };
+
+/**
+ * Create a throttling function that returns true when called every nth times
+ * @plugin
+ * @category Algorithmic
+ * @function
+ * @memberof cracked
+ * @name cracked#throttleFactory
+ * @public
+ * @param {Number} num
+ */
+function throttleFactory(num) {
+    var index = 0;
+    var _number = num;
+    return function() {
+        index++;
+        return index % _number===0;
+    }
+}

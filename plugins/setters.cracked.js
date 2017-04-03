@@ -4,7 +4,7 @@
  *
  * Frequency setter convenience method
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#frequency
@@ -27,7 +27,7 @@ cracked.frequency = function (userParam) {
  *
  * @plugin
  * @function
- * @category Utility
+ * @category Setters
  * @memberof cracked
  * @name cracked#detune
  * @public
@@ -48,7 +48,7 @@ cracked.detune = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#type
@@ -70,7 +70,7 @@ cracked.type = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#volume
@@ -92,7 +92,7 @@ cracked.volume = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#time
@@ -114,7 +114,7 @@ cracked.time = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#feedback
@@ -137,7 +137,7 @@ cracked.feedback = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#speed
@@ -159,7 +159,7 @@ cracked.speed = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#drive
@@ -181,7 +181,7 @@ cracked.drive = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#distortion
@@ -203,7 +203,7 @@ cracked.distortion = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#q
@@ -225,7 +225,7 @@ cracked.q = function (userParam) {
  * [See more control examples](examples/control.html)
  *
  * @plugin
- * @category Utility
+ * @category Setters
  * @function
  * @memberof cracked
  * @name cracked#pan
