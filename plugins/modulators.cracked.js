@@ -49,7 +49,7 @@ cracked.lfo = function (userParams) {
 /**
  * Stepper
  *
- * fill an audio buffer with a series of discrete values
+ * fill an audio buffer with a series of discrete values.
  *
  * @plugin
  * @category Modulator
@@ -70,11 +70,24 @@ cracked.stepper = function (params) {
     var steps = userParams.steps || 8;
     var fn = userParams.fn || function(){return (__.random(-100,100)/100);};
     userParams.modulates = params.modulates || "frequency";
-
-    __().begin("stepper", userParams).buffer({
+    var step_size = length / steps;
+    var bufferParams = {
         fn: buildBuffer,
         loop: true
-    }).
+    };
+
+    var start_point = (userParams.start * step_size) || 0;
+    var end_point = (userParams.end * step_size) || 0;
+
+    if(start_point) {
+        bufferParams.start = start_point;
+    }
+
+    if(end_point) {
+        bufferParams.end = end_point;
+    }
+
+    __().begin("stepper", userParams).buffer(bufferParams).
     gain({
         "gain": __.ifUndef(params.gain, 1000)
     }).

@@ -23,7 +23,7 @@ cracked.clip = function (params) {
 };
 
 /**
- * System out - destination with a master volume.
+ * System out - destination with a master volume. Output is clipped if gain is 1 or less.
  * @plugin
  * @category Miscellaneous
  * @param {Number} [params=1] system out gain
@@ -36,8 +36,11 @@ cracked.dac = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
     userParams.mapping = userParams.mapping || {};
-
-    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    if(gain > 1) {
+        __.begin("dac", userParams).gain(gain).destination().end("dac");
+    } else {
+        __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    }
     return cracked;
 };
 

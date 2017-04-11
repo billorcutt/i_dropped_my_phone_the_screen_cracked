@@ -3041,14 +3041,14 @@ cracked.random = function (min, max) {
  * @public
  * @param {Number} num
  */
-function throttleFactory(num) {
+cracked.throttle_factory = function  (num) {
     var index = 0;
     var number = num;
     return function() {
         index++;
         return index % number===0;
     };
-}
+};
 
 
 /**
@@ -3906,7 +3906,7 @@ cracked.clip = function (params) {
 };
 
 /**
- * System out - destination with a master volume.
+ * System out - destination with a master volume. Output is clipped if gain is 1 or less.
  * @plugin
  * @category Miscellaneous
  * @param {Number} [params=1] system out gain
@@ -3919,8 +3919,11 @@ cracked.dac = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
     userParams.mapping = userParams.mapping || {};
-
-    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    if(gain > 1) {
+        __.begin("dac", userParams).gain(gain).destination().end("dac");
+    } else {
+        __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    }
     return cracked;
 };
 
@@ -4078,7 +4081,7 @@ cracked.lfo = function (userParams) {
 /**
  * Stepper
  *
- * fill an audio buffer with a series of discrete values
+ * fill an audio buffer with a series of discrete values. play it and
  *
  * @plugin
  * @category Modulator
@@ -4099,11 +4102,24 @@ cracked.stepper = function (params) {
     var steps = userParams.steps || 8;
     var fn = userParams.fn || function(){return (__.random(-100,100)/100);};
     userParams.modulates = params.modulates || "frequency";
-
-    __().begin("stepper", userParams).buffer({
+    var step_size = length / steps;
+    var bufferParams = {
         fn: buildBuffer,
         loop: true
-    }).
+    };
+
+    var start_point = (userParams.start * step_size) || 0;
+    var end_point = (userParams.end * step_size) || 0;
+
+    if(start_point) {
+        bufferParams.start = start_point;
+    }
+
+    if(end_point) {
+        bufferParams.end = end_point;
+    }
+
+    __().begin("stepper", userParams).buffer(bufferParams).
     gain({
         "gain": __.ifUndef(params.gain, 1000)
     }).
