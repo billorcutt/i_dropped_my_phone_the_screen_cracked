@@ -87,6 +87,7 @@ cracked.fill_array = function(size,fn) {
  * @param {Array} arr to loop over
  * @param {Number} offset added to index
  * @param {Number} limit upper bound to iteration
+ * @param {Function} callback invoked when the count resets
  * @function
  * @category Algorithmic
  * @memberof cracked
@@ -94,13 +95,18 @@ cracked.fill_array = function(size,fn) {
  * @public
  */
 
-cracked.array_next = function(arr,offset,limit) {
+cracked.array_next = function(arr,offset,limit,callback) {
     offset = offset || 0;
     limit = limit || arr.length;
+    var old_index = 0;
     var adjusted_limit = Math.min(limit,arr.length);
     var adjusted_offset = Math.min(offset,adjusted_limit-1);
     var current_index = arr.current_index = arr.current_index  ||   0;
     arr.current_index = (arr.current_index+1+adjusted_offset) >= adjusted_limit ? 0 : arr.current_index+1;
+    if((old_index > arr.current_index) && (typeof callback === "function")) {
+        callback();
+    }
+    old_index = arr.current_index;
     return arr[current_index + adjusted_offset];
 };
 

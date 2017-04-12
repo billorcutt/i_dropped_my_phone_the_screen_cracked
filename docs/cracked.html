@@ -8593,7 +8593,7 @@ works in debug only</p>
 
     
 
-    <h4 class="name" id="array_next"><span class="type-signature"></span>array_next<span class="signature">(arr, offset, limit)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="array_next"><span class="type-signature"></span>array_next<span class="signature">(arr, offset, limit, callback)</span><span class="type-signature"></span></h4>
 
     
 
@@ -8700,6 +8700,29 @@ start over when arriving at the end</p>
             
 
             <td class="description last"><p>upper bound to iteration</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>invoked when the count resets</p></td>
         </tr>
 
     
@@ -8872,7 +8895,7 @@ start over when arriving at the end</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line107">line 107</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -9022,7 +9045,7 @@ start over when arriving at the end</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line122">line 122</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -9154,7 +9177,7 @@ start over when arriving at the end</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line144">line 144</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -9332,7 +9355,7 @@ start over when arriving at the end</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line169">line 169</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -9510,7 +9533,7 @@ start over when arriving at the end</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line187">line 187</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -9643,7 +9666,7 @@ and returns it</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line205">line 205</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line211">line 211</a>
     </li></ul></dd>
     
 
@@ -9798,7 +9821,7 @@ and returns it</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line236">line 236</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -9930,7 +9953,7 @@ and returns it</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line251">line 251</a>
+        <a href="plugins_algorithmic.cracked.js.html">plugins/algorithmic.cracked.js</a>, <a href="plugins_algorithmic.cracked.js.html#line257">line 257</a>
     </li></ul></dd>
     
 
@@ -15812,7 +15835,7 @@ Alias for adc</p>
 
 <div class="description">
     <p>Stepper</p>
-<p>fill an audio buffer with a series of discrete values. play it and</p>
+<p>fill an audio buffer with a series of discrete values.</p>
 </div>
 
 
@@ -20918,7 +20941,7 @@ web audio</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Apr 11 2017 11:30:30 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Apr 12 2017 14:23:38 GMT-0700 (PDT) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
