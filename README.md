@@ -69,13 +69,11 @@ __("microsynth").volume(1).start();
 ```
 Generally, the goal of _I Dropped My Phone The Screen Cracked_ is simplicity, brevity without obscurity and making audio coding as intuitive as patching a modular, so that noise makers can focus on keeping it weird and fun.
 
-If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full source [documentation](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/) and a useful app for the Mac to [try it all out](https://github.com/billorcutt/Cracked).
-
-Additionally there's a [Reddit interview](https://www.reddit.com/r/WeAreTheMusicMakers/comments/4g6bic/cracked_is_an_opensource_coding_program_for/) and something like a [manifesto](https://www.thewire.co.uk/news/41540/bill-orcutt-releases-open-source-audio-programme).
+If you're interested in knowing more, there's a one page [overview](OVERVIEW.md), full source [documentation](http://billorcutt.github.io/i_dropped_my_phone_the_screen_cracked/), a [Reddit interview](https://www.reddit.com/r/WeAreTheMusicMakers/comments/4g6bic/cracked_is_an_opensource_coding_program_for/), some [press](https://www.thewire.co.uk/news/41540/bill-orcutt-releases-open-source-audio-programme), and a useful app for Mac or Linux to [try it all out](https://github.com/billorcutt/Cracked).
 
 Also [cat pictures](http://idroppedmyphonethescreencracked.tumblr.com).
 
-If you'd like to contribute, you can send a comment to cracked@fastinversesquare.com, open an [issue](https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues) for bugs or feature enhancements or best of all, submit a pull request.
+If you'd like to contribute, you can send a comment to info@fastinversesquare.com, open an [issue](https://github.com/billorcutt/i_dropped_my_phone_the_screen_cracked/issues) for bugs or feature enhancements or best of all, submit a pull request.
 
 
 
