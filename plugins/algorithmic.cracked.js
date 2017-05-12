@@ -100,13 +100,12 @@ cracked.array_next = function(arr,offset,limit,callback) {
     limit = limit || arr.length;
     var adjusted_limit = Math.min(limit,arr.length);
     var adjusted_offset = Math.min(offset,adjusted_limit-1);
-    var current_index = arr.current_index = __.isUndef(arr.current_index,-1);
-    var old_index = current_index;
+    var old_index = arr.current_index = __.ifUndef(arr.current_index,-1);
     arr.current_index = (arr.current_index+1+adjusted_offset) >= adjusted_limit ? 0 : arr.current_index+1;
     if((old_index > arr.current_index) && (typeof callback === "function")) {
         callback();
     }
-    return arr[current_index + adjusted_offset];
+    return arr[arr.current_index + adjusted_offset];
 };
 
 /**
