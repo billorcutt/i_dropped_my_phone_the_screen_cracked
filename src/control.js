@@ -76,10 +76,38 @@ cracked.stop = function () {
  *
  */
 cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
+
+    //helper function to get param mapping
+    var mapParam = function (node,param) {
+        if(node.getParamMapping) {
+            var mapping = node.getParamMapping() || {};
+            var mappingResult = mapping[param] || "";
+            //strip off .value
+            if(mappingResult.indexOf(".")!==-1) {
+                mappingResult = mappingResult.split(".")[0];
+            }
+            return mappingResult;
+        }
+    };
+
+    //loop over selected nodes
     for (var i = 0; i < _selectedNodes.length; i++) {
+
         var currNode = getNodeWithUUID(_selectedNodes[i]);
+        var native = currNode.isMacro() ? currNode.getNativeNode() : [currNode.getNativeNode()];
+        var mappedParam = "";
+        for(var z=0;z<native.length;z++) {
+            var nativeWrapper = getNodeWithUUID(native[z].uuid);
+            if(nativeWrapper) {
+                mappedParam = mapParam(nativeWrapper,paramToRamp);
+                if(mappedParam) {
+                    break;
+                }
+            }
+        }
+
         if (currNode) {
-            currNode.ramp(target, timeToRamp, paramToRamp, null, initial);
+            currNode.ramp(target, timeToRamp, (mappedParam || paramToRamp), null, initial);
         }
     }
     return cracked;
