@@ -959,15 +959,16 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
 
     //helper function to get param mapping
     var mapParam = function (node,param) {
+        var mappingResult = "";
         if(node.getParamMapping) {
             var mapping = node.getParamMapping() || {};
-            var mappingResult = mapping[param] || "";
+            mappingResult = mapping[param] || "";
             //strip off .value
             if(mappingResult.indexOf(".")!==-1) {
                 mappingResult = mappingResult.split(".")[0];
             }
-            return mappingResult;
         }
+        return mappingResult;
     };
 
     //loop over selected nodes
