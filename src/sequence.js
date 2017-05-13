@@ -112,7 +112,7 @@ function startLoop() {
 */
 function stopLoop() {
     if (_isLoopRunning) {
-        clearInterval(_loopID);
+        clearTimeout(_loopID);
         _isLoopRunning = false;
         _loopTimeToNextStep = 0;
         _ignoreGrid = true;
@@ -167,18 +167,22 @@ function configureLoop(opts, fn, data) {
 * @private
 */
 function checkup() {
-    var now = _context.currentTime,
-        loopIntervalInSecs = __.ms2sec(_loopInterval),
-        timeAtPreviousStep = _loopTimeToNextStep -  loopIntervalInSecs;
-    if (now < _loopTimeToNextStep && now > timeAtPreviousStep) {
-        loopStep();
-        _loopTimeToNextStep += loopIntervalInSecs;
-    } else if(now > _loopTimeToNextStep) {
-        //we dropped a frame
-        _loopTimeToNextStep += loopIntervalInSecs;
+    if (_isLoopRunning) {
+        var now = _context.currentTime,
+            loopIntervalInSecs = __.ms2sec(_loopInterval),
+            timeAtPreviousStep = _loopTimeToNextStep - loopIntervalInSecs;
+        if (now < _loopTimeToNextStep && now > timeAtPreviousStep) {
+            loopStep();
+            _loopTimeToNextStep += loopIntervalInSecs;
+        } else if (now > _loopTimeToNextStep) {
+            //we dropped a frame
+            _loopTimeToNextStep += loopIntervalInSecs;
+        }
+        clearTimeout(_loopID);
+        _loopID = setTimeout(checkup, calculateTimeout());
+    } else {
+        clearTimeout(_loopID);
     }
-    clearTimeout(_loopID);
-    _loopID = setTimeout(checkup, calculateTimeout());
 }
 
 /**
