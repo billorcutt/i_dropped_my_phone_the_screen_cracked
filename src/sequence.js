@@ -12,14 +12,14 @@ var _isLoopRunning = false,
     _ignoreGrid = true,
     _loopStepSize = 0,
     _loopInterval = 100,
-    _loopID = 0,
     _loopCB = null,
     _loopData = [],
     _loopIndex = -1,
     _loopCount = 0,
     _loopListeners = [],
     _loopTimeToNextStep = 0,
-    _loopTolerance = 0.30;
+    _loopTolerance = 0.30,
+    _timerWorker = null;     // The Web Worker used to fire timer messages
 
 /**
  * main method for loop
@@ -99,10 +99,13 @@ function calculateTimeout() {
 */
 function startLoop() {
     if (!_isLoopRunning) {
+        _loopInit();
         _loopTimeToNextStep = _context.currentTime + (_loopInterval / 1000);
-        _loopID = setTimeout(checkup, calculateTimeout());
         _isLoopRunning = true;
         _ignoreGrid = false;
+        if(_timerWorker) {
+            _timerWorker.postMessage("start");
+        }
     }
 }
 
@@ -112,10 +115,12 @@ function startLoop() {
 */
 function stopLoop() {
     if (_isLoopRunning) {
-        clearTimeout(_loopID);
         _isLoopRunning = false;
         _loopTimeToNextStep = 0;
         _ignoreGrid = true;
+        if(_timerWorker) {
+            _timerWorker.postMessage("stop");
+        }
     }
 }
 
@@ -127,7 +132,6 @@ function resetLoop() {
     _loopStepSize = 0;
     _loopInterval = 100;
     _ignoreGrid = true;
-    _loopID = 0;
     _loopCB = null;
     _loopData = [];
     _loopListeners = [];
@@ -178,10 +182,6 @@ function checkup() {
             //we dropped a frame
             _loopTimeToNextStep += loopIntervalInSecs;
         }
-        clearTimeout(_loopID);
-        _loopID = setTimeout(checkup, calculateTimeout());
-    } else {
-        clearTimeout(_loopID);
     }
 }
 
@@ -223,6 +223,29 @@ function loopStep() {
         _selectedNodes = tmp;
     }
 }
+
+function _loopInit() {
+    //based on https://github.com/cwilso/metronome, thanks Chris Wilson!
+    //prepare worker blob
+    var jstext = 'var timerID=null,interval=100;self.onmessage=function(a){"start"==a.data?timerID=setInterval(function(){postMessage("tick")},interval):a.data.interval?(interval=a.data.interval,timerID&&(clearInterval(timerID),timerID=setInterval(function(){postMessage("tick")},interval))):"stop"==a.data&&(clearInterval(timerID),timerID=null)};';
+    var blob = new Blob([jstext]);
+    var blobURL = window.URL.createObjectURL(blob);
+
+    //make worker
+    _timerWorker = new Worker(blobURL);
+
+    //setup method for communicating w/ worker
+    _timerWorker.onmessage = function(e) {
+        if (e.data === "tick") {
+            checkup();
+        } else {
+            console.error("message: " + e.data);
+        }
+    };
+    //set the worker interval
+    _timerWorker.postMessage({"interval":calculateTimeout()});
+}
+
 
 /**
  * Listener - binds a set of audio nodes and a callback to loop step events
