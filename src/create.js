@@ -164,6 +164,7 @@ function AudioNode(type, creationParams, userSettings) {
             });
         } else {
             var now = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
+            console.log(_loopTimeToNextStep - _context.currentTime);
             if (
                 currNode &&
                 currNode[paramToRamp] &&
@@ -172,8 +173,7 @@ function AudioNode(type, creationParams, userSettings) {
                 currNode[paramToRamp].cancelScheduledValues(now);
                 var initialValue = __.ifUndef(initial, currNode[paramToRamp].value),
                     prevTime = 0;
-                //currNode[paramToRamp].setValueAtTime(initialValue, now);
-                currNode[paramToRamp].value = initialValue;
+                currNode[paramToRamp].setValueAtTime(initialValue, now);
                 if (
                     __.isArr(target) &&
                     __.isArr(time) &&
