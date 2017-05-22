@@ -480,7 +480,8 @@ function AudioNode(type, creationParams, userSettings) {
                 currNode[paramToRamp].cancelScheduledValues(now);
                 var initialValue = __.ifUndef(initial, currNode[paramToRamp].value),
                     prevTime = 0;
-                currNode[paramToRamp].setValueAtTime(initialValue, now);
+                //currNode[paramToRamp].setValueAtTime(initialValue, now);
+                currNode[paramToRamp].value = initialValue;
                 if (
                     __.isArr(target) &&
                     __.isArr(time) &&
