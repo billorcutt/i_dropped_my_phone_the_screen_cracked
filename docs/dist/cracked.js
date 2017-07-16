@@ -472,7 +472,6 @@ function AudioNode(type, creationParams, userSettings) {
             });
         } else {
             var now = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-            console.log(_loopTimeToNextStep - _context.currentTime);
             if (
                 currNode &&
                 currNode[paramToRamp] &&
