@@ -184,6 +184,11 @@ function AudioNode(type, creationParams, userSettings) {
                         currNode[paramToRamp].linearRampToValueAtTime(target[i], (now + prevTime + time[i]));
                     }
                 } else {
+                    //if we're looping and the user seems to be trying to sync to the loop, we'll clamp it
+                    if(!_ignoreGrid && __.sec2ms(time) === _loopInterval) {
+                        time = Math.min(time,(_loopTimeToNextStep - _context.currentTime));
+                    }
+                    //and yes, this is some bullshit code to fix a bug i dont understand...
                     logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time) + " current time " + (_context.currentTime));
                     currNode[paramToRamp].linearRampToValueAtTime(target, (now + time));
                 }
