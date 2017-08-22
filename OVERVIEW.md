@@ -12,7 +12,7 @@ A node is created by calling it's method. Node methods are factories: there's no
 
 ```javascript
 //create and connect sine->compressor->waveshaper->gain->dac
-__().sine().compressor().wavehshaper().gain().dac();
+__().sine().compressor().waveshaper().gain().dac();
 ```
 # Configuring #
 Nodes are configurable at creation by passing an options JSON object that sets
@@ -109,11 +109,11 @@ __("sine").delay();
 
  //create and connect saw and gain nodes
  //the gain will connect to the sine's frequency audio param
- __.saw(5).gain(gain:100,modulates:"frequency").connect("sine");
+ __().saw(5).gain({gain:100,modulates:"frequency"}).connect("sine");
 
  //create and connect saw and gain nodes
  //the gain node will connect to the lowpass's q audio param
- __.saw(5).gain(gain:100,modulates:"q").connect("lowpass");
+ __().saw(5).gain({gain:100,modulates:"q"}).connect("lowpass");
 
   ```
 # Controlling #
@@ -158,7 +158,7 @@ Sequencing in cracked uses the loop() method to schedule events. It's configured
 //set up a sound and start it playing
 __().sine().dac().play();
 
-//cinfigure the loop: 8 steps, 100ms between steps
+//configure the loop: 8 steps, 100ms between steps
 __.loop({steps:8,interval:100});
 
 //bind to the step event. the callback is passed
