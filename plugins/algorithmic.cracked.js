@@ -81,6 +81,30 @@ cracked.fill_array = function(size,fn) {
     return tmp;
 };
 
+
+/**
+ * return an array of randomly selected elements from an array
+ * @function
+ * @category Algorithmic
+ * @memberof cracked
+ * @name cracked#random_array
+ * @public
+ * @param {Array} arr to select from
+ * @param {Number} size of the array to return
+ * @returns {Array}
+ */
+
+cracked.random_array = function(arr,size) {
+    if(arr && arr.length && size) {
+        var result = [];
+        for(var i=0;i<size;i++) {
+            result.push(arr[__.random(0,arr.length)]);
+        }
+        return result;
+    }
+};
+
+
 /**
  * advance thru array one step at a time.
  * start over when arriving at the end
