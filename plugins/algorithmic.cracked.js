@@ -109,6 +109,18 @@ cracked.array_next = function(arr,offset,limit,callback) {
 };
 
 /**
+ * reset the current index on the array.
+ * Used with array_next()
+ * @param {Array} arr to loop over
+ */
+
+cracked.array_reset = function(arr) {
+    if(arr) {
+        delete arr.current_index;
+    }
+};
+
+/**
  * Returns a boolean based on percentage.
  * @plugin
  * @category Algorithmic
