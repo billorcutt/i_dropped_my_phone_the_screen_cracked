@@ -258,7 +258,7 @@ cracked.random = function (min, max) {
  * @category Algorithmic
  * @function
  * @memberof cracked
- * @name cracked#throttleFactory
+ * @name cracked#throttle_factory
  * @public
  * @param {Number} num
  */
