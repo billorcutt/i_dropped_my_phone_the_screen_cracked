@@ -1066,13 +1066,8 @@ function applyParam(node, keyStr, value, map) {
 function setAudioParam(node, value) {
     if (node && __.isFun(node.setValueAtTime)) {
         var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-        if(_ignoreGrid) {
-            node.cancelScheduledValues(time);
-            node.value = value;
-        } else {
-            node.cancelScheduledValues(time);
-            node.setValueAtTime(value, time);
-        }
+        node.cancelScheduledValues(time);
+        node.setValueAtTime(value, time);
     }
 }
 
@@ -2942,14 +2937,26 @@ cracked.fill_array = function(size,fn) {
 cracked.array_next = function(arr,offset,limit,callback) {
     offset = offset || 0;
     limit = limit || arr.length;
-    var adjusted_limit = Math.min(limit,arr.length);
-    var adjusted_offset = Math.min(offset,adjusted_limit-1);
+    var adjusted_offset = Math.min(offset,arr.length-1);
+    var adjusted_limit = Math.min(limit+adjusted_offset,arr.length);
     var old_index = arr.current_index = __.ifUndef(arr.current_index,-1);
     arr.current_index = (arr.current_index+1+adjusted_offset) >= adjusted_limit ? 0 : arr.current_index+1;
     if((old_index > arr.current_index) && (typeof callback === "function")) {
         callback();
     }
     return arr[arr.current_index + adjusted_offset];
+};
+
+/**
+ * reset the current index on the array.
+ * Used with array_next()
+ * @param {Array} arr to loop over
+ */
+
+cracked.array_reset = function(arr) {
+    if(arr) {
+        delete arr.current_index;
+    }
 };
 
 /**
@@ -3102,7 +3109,7 @@ cracked.random = function (min, max) {
  * @category Algorithmic
  * @function
  * @memberof cracked
- * @name cracked#throttleFactory
+ * @name cracked#throttle_factory
  * @public
  * @param {Number} num
  */
