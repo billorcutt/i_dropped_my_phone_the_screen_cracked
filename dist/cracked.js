@@ -904,14 +904,27 @@ function AudioNode(type, creationParams, userSettings) {
  * @public
  */
 cracked.start = function () {
-    if (!recordingMacro()) {
-        for (var i = 0; i < _selectedNodes.length; i++) {
-            var currNode = getNodeWithUUID(_selectedNodes[i]);
-            if (currNode && !currNode.getIsPlaying()) {
-                currNode.start();
+
+    //workaround for https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+    if(_context.state === 'suspended') {
+        _context.resume().then(function() {
+            _start();
+        });
+    } else {
+        _start();
+    }
+
+    function _start() {
+        if (!recordingMacro()) {
+            for (var i = 0; i < _selectedNodes.length; i++) {
+                var currNode = getNodeWithUUID(_selectedNodes[i]);
+                if (currNode && !currNode.getIsPlaying()) {
+                    currNode.start();
+                }
             }
         }
     }
+
     return cracked;
 };
 
@@ -3102,7 +3115,7 @@ cracked.random = function (min, max) {
  * @category Algorithmic
  * @function
  * @memberof cracked
- * @name cracked#throttleFactory
+ * @name cracked#throttle_factory
  * @public
  * @param {Number} num
  */
