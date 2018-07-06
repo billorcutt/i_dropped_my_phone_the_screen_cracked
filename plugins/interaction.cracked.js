@@ -11,7 +11,7 @@
 cracked.mouse_movement = function(callback) {
     function moveHandler(e) {
         if(callback) {
-            callback(e)
+            callback(e);
         }
     }
     window.parent.document.removeEventListener("mousemove", moveHandler, false);
@@ -31,7 +31,7 @@ cracked.mouse_movement = function(callback) {
 cracked.key_press = function(callback) {
     function keyPressHandler(e) {
         if(callback) {
-            callback(e)
+            callback(e);
         }
     }
     window.parent.document.removeEventListener("keypress", keyPressHandler, false);

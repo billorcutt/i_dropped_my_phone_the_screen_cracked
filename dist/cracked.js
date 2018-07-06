@@ -1079,13 +1079,8 @@ function applyParam(node, keyStr, value, map) {
 function setAudioParam(node, value) {
     if (node && __.isFun(node.setValueAtTime)) {
         var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-        if(_ignoreGrid) {
-            node.cancelScheduledValues(time);
-            node.value = value;
-        } else {
-            node.cancelScheduledValues(time);
-            node.setValueAtTime(value, time);
-        }
+        node.cancelScheduledValues(time);
+        node.setValueAtTime(value, time);
     }
 }
 
@@ -3970,8 +3965,33 @@ cracked.allpass = function (params) {
  * @public
  */
 cracked.mouse_movement = function(callback) {
-    window.parent.document.removeEventListener("mousemove", callback, false);
-    window.parent.document.addEventListener("mousemove", callback, false);
+    function moveHandler(e) {
+        if(callback) {
+            callback(e);
+        }
+    }
+    window.parent.document.removeEventListener("mousemove", moveHandler, false);
+    window.parent.document.addEventListener("mousemove", moveHandler, false);
+};
+
+/**
+ * Passes key press events to a callback. Tracks keyboard activity.
+ * web audio
+ * @plugin
+ * @category Interaction
+ * @function
+ * @memberof cracked
+ * @name cracked#key_press
+ * @public
+ */
+cracked.key_press = function(callback) {
+    function keyPressHandler(e) {
+        if(callback) {
+            callback(e);
+        }
+    }
+    window.parent.document.removeEventListener("keypress", keyPressHandler, false);
+    window.parent.document.addEventListener("keypress", keyPressHandler, false);
 };
 
 /**
