@@ -50,6 +50,9 @@
   "Find" : {
     "displayName" : "Find"
   },
+  "Interaction" : {
+    "displayName" : "Interaction"
+  },
   "Macro" : {
     "displayName" : "Macro"
   },
