@@ -101,6 +101,46 @@ cracked.in = function (params) {
 };
 
 /**
+ * Splitter - channel splitter
+ *
+ * @plugin
+ * @category Miscellaneous
+ * @param {Object} [params] map of optional values
+ * @function
+ * @memberof cracked
+ * @name cracked#splitter
+ * @public
+ */
+cracked.splitter = function (params) {
+    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("splitter", userParams).channelSplitter({'channels':channels}).end("splitter");
+    return cracked;
+};
+
+/**
+ * Merger - channel merger
+ *
+ * @plugin
+ * @category Miscellaneous
+ * @param {Object} [params] map of optional values
+ * @function
+ * @memberof cracked
+ * @name cracked#merger
+ * @public
+ */
+cracked.merger = function (params) {
+    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("merger", userParams).channelMerger({'channels':channels}).end("merger");
+    return cracked;
+};
+
+/**
  * Panner - simple stereo panner
  *
  * @plugin

@@ -1328,6 +1328,48 @@ cracked.biquadFilter = function (userParams) {
 };
 
 /**
+ * Native channelMerger
+ * @function
+ * @category Node
+ * @memberof cracked
+ * @name cracked#channelMerger
+ * @public
+ * @param {Object} [userParams] map of optional values
+ */
+cracked.channelMerger = function (userParams) {
+    userParams = userParams || 2;
+    var channels = __.isNum(userParams) ? userParams : (__.isObj(userParams) && userParams.channels) ? userParams.channels : 2;
+    var creationParams = {
+        "method": "createChannelMerger",
+        "methodParams":[channels],
+        "settings": {}
+    };
+    createNode("channelMerger", creationParams, userParams);
+    return cracked;
+};
+
+/**
+ * Native channelSplitter
+ * @function
+ * @category Node
+ * @memberof cracked
+ * @name cracked#channelSplitter
+ * @public
+ * @param {Object} [userParams] map of optional values
+ */
+cracked.channelSplitter = function (userParams) {
+    userParams = userParams || 2;
+    var channels = __.isNum(userParams) ? userParams : (__.isObj(userParams) && userParams.channels) ? userParams.channels : 2;
+    var creationParams = {
+        "method": "createChannelSplitter",
+        "methodParams":[channels],
+        "settings": {}
+    };
+    createNode("channelSplitter", creationParams, userParams);
+    return cracked;
+};
+
+/**
  * Native convolver, used by reverb
  * @function
  * @category Node
@@ -4093,6 +4135,46 @@ cracked.in = function (params) {
     var userParams = __.isObj(params) ? params : {};
     userParams.mapping = userParams.mapping || {};
     __.begin("in", userParams).origin().gain(gain).end("in");
+    return cracked;
+};
+
+/**
+ * Splitter - channel splitter
+ *
+ * @plugin
+ * @category Miscellaneous
+ * @param {Object} [params] map of optional values
+ * @function
+ * @memberof cracked
+ * @name cracked#splitter
+ * @public
+ */
+cracked.splitter = function (params) {
+    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("splitter", userParams).channelSplitter({'channels':channels}).end("splitter");
+    return cracked;
+};
+
+/**
+ * Merger - channel merger
+ *
+ * @plugin
+ * @category Miscellaneous
+ * @param {Object} [params] map of optional values
+ * @function
+ * @memberof cracked
+ * @name cracked#merger
+ * @public
+ */
+cracked.merger = function (params) {
+    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
+    var userParams = __.isObj(params) ? params : {};
+    var options = {};
+    userParams.mapping = userParams.mapping || {};
+    __.begin("merger", userParams).channelMerger({'channels':channels}).end("merger");
     return cracked;
 };
 
