@@ -53,7 +53,11 @@ function audioNodeFactory(creationParams) {
         node = _context[creationParams.method].apply(_context, creationParams.methodParams || []);
         for (var creationParam in creationParams.settings) {
             if (creationParams.settings.hasOwnProperty(creationParam)) {
-                applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+                if(creationParam === "to_channel" || creationParam === "from_channel") {
+                    node[creationParam] = creationParams.settings[creationParam];
+                } else {
+                    applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+                }
             }
         }
     } else if (_context && creationParams.method === "createDestination") {

@@ -361,7 +361,11 @@ function audioNodeFactory(creationParams) {
         node = _context[creationParams.method].apply(_context, creationParams.methodParams || []);
         for (var creationParam in creationParams.settings) {
             if (creationParams.settings.hasOwnProperty(creationParam)) {
-                applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+                if(creationParam === "to_channel" || creationParam === "from_channel") {
+                    node[creationParam] = creationParams.settings[creationParam];
+                } else {
+                    applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+                }
             }
         }
     } else if (_context && creationParams.method === "createDestination") {
@@ -4151,10 +4155,9 @@ cracked.in = function (params) {
  */
 cracked.splitter = function (params) {
     var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
-    var userParams = __.isObj(params) ? params : {};
-    var options = {};
+    var userParams = __.isObj(params) ? params : {channels:channels};
     userParams.mapping = userParams.mapping || {};
-    __.begin("splitter", userParams).channelSplitter({'channels':channels}).end("splitter");
+    __.begin("splitter", userParams).channelSplitter(userParams).end("splitter");
     return cracked;
 };
 
@@ -4171,10 +4174,9 @@ cracked.splitter = function (params) {
  */
 cracked.merger = function (params) {
     var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
-    var userParams = __.isObj(params) ? params : {};
-    var options = {};
+    var userParams = __.isObj(params) ? params : {channels:channels};
     userParams.mapping = userParams.mapping || {};
-    __.begin("merger", userParams).channelMerger({'channels':channels}).end("merger");
+    __.begin("merger", userParams).channelMerger(userParams).end("merger");
     return cracked;
 };
 
