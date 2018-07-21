@@ -1357,12 +1357,15 @@ cracked.biquadFilter = function (userParams) {
  * @param {Object} [userParams] map of optional values
  */
 cracked.channelMerger = function (userParams) {
-    userParams = userParams || 2;
-    var channels = __.isNum(userParams) ? userParams : (__.isObj(userParams) && userParams.channels) ? userParams.channels : 2;
+    var channels = __.isNum(userParams) ? userParams : (__.isObj(userParams) && userParams.channels) ? userParams.channels : _context.destination.maxChannelCount;
     var creationParams = {
         "method": "createChannelMerger",
         "methodParams":[channels],
-        "settings": {}
+        "settings": {
+            channelCount:1,
+            channelCountMode:"explicit",
+            channelInterpretation:"discrete"
+        }
     };
     createNode("channelMerger", creationParams, userParams);
     return cracked;
@@ -4150,11 +4153,11 @@ cracked.out = function (params) {
  * @public
  */
 cracked.multi_out = function (params) {
-    var gain = __.isNum(params) ? params : 1;
+    var to_channel = __.isNum(params) ? params : __.isObj(params) && params.channel ?  params.channel : 0;
     var userParams = __.isObj(params) ? params : {};
-    var to_channel = userParams.channel || 0;
+    var gain = userParams.gain ? userParams.gain : 1;
     userParams.mapping = userParams.mapping || {};
-    __.begin("multi_out", userParams).gain({from_channel:0,to_channel:to_channel}).merger().destination().end("multi_out");
+    __.begin("multi_out", userParams).gain({from_channel:0,to_channel:to_channel,gain:gain}).channelMerger().destination().end("multi_out");
     return cracked;
 };
 
@@ -4177,43 +4180,42 @@ cracked.in = function (params) {
     return cracked;
 };
 
-/**
- * Splitter - channel splitter
- *
- * @plugin
- * @category Miscellaneous
- * @param {Object} [params] map of optional values
- * @function
- * @memberof cracked
- * @name cracked#splitter
- * @public
- */
-cracked.splitter = function (params) {
-    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
-    var userParams = __.isObj(params) ? params : {channels:channels};
-    userParams.mapping = userParams.mapping || {};
-    __.begin("splitter", userParams).channelSplitter(userParams).end("splitter");
-    return cracked;
-};
+///**
+// * Splitter - channel splitter
+// *
+// * @plugin
+// * @category Miscellaneous
+// * @param {Object} [params] map of optional values
+// * @function
+// * @memberof cracked
+// * @name cracked#splitter
+// * @public
+// */
+//cracked.splitter = function (params) {
+//    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
+//    var userParams = __.isObj(params) ? params : {channels:channels};
+//    userParams.mapping = userParams.mapping || {};
+//    __.begin("splitter", userParams).channelSplitter(userParams).end("splitter");
+//    return cracked;
+//};
 
-/**
- * Merger - channel merger
- *
- * @plugin
- * @category Miscellaneous
- * @param {Object} [params] map of optional values
- * @function
- * @memberof cracked
- * @name cracked#merger
- * @public
- */
-cracked.merger = function (params) {
-    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
-    var userParams = __.isObj(params) ? params : {channels:channels};
-    userParams.mapping = userParams.mapping || {};
-    __.begin("merger", userParams).channelMerger(userParams).end("merger");
-    return cracked;
-};
+///**
+// * Merger - channel merger
+// *
+// * @plugin
+// * @category Miscellaneous
+// * @param {Object} [params] map of optional values
+// * @function
+// * @memberof cracked
+// * @name cracked#merger
+// * @public
+// */
+//cracked.merger = function (params) {
+//    var userParams = __.isObj(params) ? params : {};
+//    userParams.mapping = userParams.mapping || {};
+//    __.begin("merger", userParams).channelMerger(userParams).end("merger");
+//    return cracked;
+//};
 
 /**
  * Panner - simple stereo panner
