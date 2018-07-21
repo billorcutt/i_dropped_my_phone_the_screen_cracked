@@ -82,10 +82,12 @@ cracked.out = function (params) {
 };
 
 /**
- * System out - destination with a master volume w/ multi-channel support
+ * System multi_out - destination with a master volume w/ multi-channel support
  * @plugin
  * @category Miscellaneous
- * @param {Number} [params=1] system out gain
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.gain=1]
+ * @param {Number} [userParams.channel=1]
  * @function
  * @memberof cracked
  * @name cracked#out
