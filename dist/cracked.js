@@ -15,9 +15,6 @@ var _nodeStore = {},
     _debugEnabled = false,
     _context = window.AudioContext ? new AudioContext() : new webkitAudioContext(),
     _maxChannelCount = _context.destination.maxChannelCount;
-    _context.destination.channelCount = _maxChannelCount;
-    _context.destination.channelCountMode = "explicit";
-    _context.destination.channelInterpretation = "discrete";
 
 /**
  * #Finding#
@@ -1357,6 +1354,13 @@ cracked.biquadFilter = function (userParams) {
  * @param {Object} [userParams] map of optional values
  */
 cracked.channelMerger = function (userParams) {
+
+    if(_maxChannelCount > 2) {
+        _context.destination.channelCount = _maxChannelCount;
+        _context.destination.channelCountMode = "explicit";
+        _context.destination.channelInterpretation = "discrete";
+    }
+
     var channels = __.isNum(userParams) ? userParams : (__.isObj(userParams) && userParams.channels) ? userParams.channels : _context.destination.maxChannelCount;
     var creationParams = {
         "method": "createChannelMerger",
@@ -4143,10 +4147,12 @@ cracked.out = function (params) {
 };
 
 /**
- * System out - destination with a master volume w/ multi-channel support
+ * System multi_out - destination with a master volume w/ multi-channel support
  * @plugin
  * @category Miscellaneous
- * @param {Number} [params=1] system out gain
+ * @param {Object} [userParams] map of optional values
+ * @param {Number} [userParams.gain=1]
+ * @param {Number} [userParams.channel=1]
  * @function
  * @memberof cracked
  * @name cracked#out

@@ -14,6 +14,3 @@ var _nodeStore = {},
     _debugEnabled = false,
     _context = window.AudioContext ? new AudioContext() : new webkitAudioContext(),
     _maxChannelCount = _context.destination.maxChannelCount;
-    _context.destination.channelCount = _maxChannelCount;
-    _context.destination.channelCountMode = "explicit";
-    _context.destination.channelInterpretation = "discrete";
