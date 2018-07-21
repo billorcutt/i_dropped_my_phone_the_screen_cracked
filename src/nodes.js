@@ -235,6 +235,13 @@ cracked.biquadFilter = function (userParams) {
  * @param {Object} [userParams] map of optional values
  */
 cracked.channelMerger = function (userParams) {
+
+    if(_maxChannelCount > 2) {
+        _context.destination.channelCount = _maxChannelCount;
+        _context.destination.channelCountMode = "explicit";
+        _context.destination.channelInterpretation = "discrete";
+    }
+
     var channels = __.isNum(userParams) ? userParams : (__.isObj(userParams) && userParams.channels) ? userParams.channels : _context.destination.maxChannelCount;
     var creationParams = {
         "method": "createChannelMerger",

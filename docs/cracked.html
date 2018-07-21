@@ -3748,7 +3748,7 @@ max buffer size three minutes</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line252">line 252</a>
+        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -3986,7 +3986,7 @@ max buffer size three minutes</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line273">line 273</a>
+        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line280">line 280</a>
     </li></ul></dd>
     
 
@@ -4130,7 +4130,7 @@ max buffer size three minutes</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line298">line 298</a>
+        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line305">line 305</a>
     </li></ul></dd>
     
 
@@ -4274,7 +4274,7 @@ max buffer size three minutes</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line321">line 321</a>
+        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -4419,7 +4419,7 @@ origin = opposite of destination</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line338">line 338</a>
+        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line345">line 345</a>
     </li></ul></dd>
     
 
@@ -4786,7 +4786,7 @@ origin = opposite of destination</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line417">line 417</a>
+        <a href="src_nodes.js.html">src/nodes.js</a>, <a href="src_nodes.js.html#line424">line 424</a>
     </li></ul></dd>
     
 
@@ -15285,14 +15285,14 @@ Alias for dac</p>
 
     
 
-    <h4 class="name" id="out"><span class="type-signature"></span>out<span class="signature">(params<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="out"><span class="type-signature"></span>out<span class="signature">(userParams<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>System out - destination with a master volume w/ multi-channel support</p>
+    <p>System multi_out - destination with a master volume w/ multi-channel support</p>
 </div>
 
 
@@ -15320,6 +15320,60 @@ Alias for dac</p>
         
 
         
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userParams</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>map of optional values</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
         <th>Default</th>
         
 
@@ -15332,7 +15386,7 @@ Alias for dac</p>
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>gain</code></td>
             
 
             <td class="type">
@@ -15364,7 +15418,53 @@ Alias for dac</p>
                 </td>
             
 
-            <td class="description last"><p>system out gain</p></td>
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -15558,7 +15658,7 @@ Alias for adc</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_miscellaneous.cracked.js.html">plugins/miscellaneous.cracked.js</a>, <a href="plugins_miscellaneous.cracked.js.html#line103">line 103</a>
+        <a href="plugins_miscellaneous.cracked.js.html">plugins/miscellaneous.cracked.js</a>, <a href="plugins_miscellaneous.cracked.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -15702,7 +15802,7 @@ Alias for adc</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_miscellaneous.cracked.js.html">plugins/miscellaneous.cracked.js</a>, <a href="plugins_miscellaneous.cracked.js.html#line159">line 159</a>
+        <a href="plugins_miscellaneous.cracked.js.html">plugins/miscellaneous.cracked.js</a>, <a href="plugins_miscellaneous.cracked.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -16072,7 +16172,7 @@ Alias for adc</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plugins_miscellaneous.cracked.js.html">plugins/miscellaneous.cracked.js</a>, <a href="plugins_miscellaneous.cracked.js.html#line179">line 179</a>
+        <a href="plugins_miscellaneous.cracked.js.html">plugins/miscellaneous.cracked.js</a>, <a href="plugins_miscellaneous.cracked.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -21554,7 +21654,7 @@ web audio</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Jul 21 2018 12:42:36 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Jul 21 2018 14:03:15 GMT-0700 (PDT) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
