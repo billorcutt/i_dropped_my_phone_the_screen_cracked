@@ -13,7 +13,11 @@ var _nodeStore = {},
     _currentSelector = "",
     _currentMacro = [],
     _debugEnabled = false,
-    _context = window.AudioContext ? new AudioContext() : new webkitAudioContext();
+    _context = window.AudioContext ? new AudioContext() : new webkitAudioContext(),
+    _maxChannelCount = _context.destination.maxChannelCount;
+    _context.destination.channelCount = _maxChannelCount;
+    _context.destination.channelCountMode = "explicit";
+    _context.destination.channelInterpretation = "discrete";
 
 /**
  * #Finding#
@@ -786,7 +790,13 @@ function AudioNode(type, creationParams, userSettings) {
         if (nodeToConnect && this.getUUID() !== nodeToConnect.getUUID()) {
             var nodes = getNodesToConnect(this, nodeToConnect);
             if (nodes.from && __.isFun(nodes.from.connect) && nodes.to) {
-                nodes.from.connect(nodes.to);
+                var from_channel = nodes.from.from_channel;
+                var to_channel = nodes.from.to_channel;
+                if(__.isNotUndef(from_channel) && __.isNotUndef(to_channel)) {
+                    nodes.from.connect(nodes.to,from_channel,to_channel);
+                } else {
+                    nodes.from.connect(nodes.to);
+                }
             } else {
                 logToConsole("ERROR - connect did not happen");
             }
@@ -799,7 +809,13 @@ function AudioNode(type, creationParams, userSettings) {
         if (pNode && this.getUUID() !== pNode.getUUID()) {
             var nodes = getNodesToConnect(pNode, this);
             if (nodes.from && __.isFun(nodes.from.connect) && nodes.to) {
-                nodes.from.connect(nodes.to);
+                var from_channel = nodes.from.from_channel;
+                var to_channel = nodes.from.to_channel;
+                if(__.isNotUndef(from_channel) && __.isNotUndef(to_channel)) {
+                    nodes.from.connect(nodes.to,from_channel,to_channel);
+                } else {
+                    nodes.from.connect(nodes.to);
+                }
             } else {
                 logToConsole("ERROR - connect did not happen");
             }
@@ -4120,6 +4136,25 @@ cracked.out = function (params) {
     var userParams = __.isObj(params) ? params : {};
     userParams.mapping = userParams.mapping || {};
     __.begin("out", userParams).gain(gain).destination().end("out");
+    return cracked;
+};
+
+/**
+ * System out - destination with a master volume w/ multi-channel support
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#out
+ * @public
+ */
+cracked.multi_out = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    var to_channel = userParams.channel || 0;
+    userParams.mapping = userParams.mapping || {};
+    __.begin("multi_out", userParams).gain({from_channel:0,to_channel:to_channel}).merger().destination().end("multi_out");
     return cracked;
 };
 

@@ -478,7 +478,13 @@ function AudioNode(type, creationParams, userSettings) {
         if (nodeToConnect && this.getUUID() !== nodeToConnect.getUUID()) {
             var nodes = getNodesToConnect(this, nodeToConnect);
             if (nodes.from && __.isFun(nodes.from.connect) && nodes.to) {
-                nodes.from.connect(nodes.to);
+                var from_channel = nodes.from.from_channel;
+                var to_channel = nodes.from.to_channel;
+                if(__.isNotUndef(from_channel) && __.isNotUndef(to_channel)) {
+                    nodes.from.connect(nodes.to,from_channel,to_channel);
+                } else {
+                    nodes.from.connect(nodes.to);
+                }
             } else {
                 logToConsole("ERROR - connect did not happen");
             }
@@ -491,7 +497,13 @@ function AudioNode(type, creationParams, userSettings) {
         if (pNode && this.getUUID() !== pNode.getUUID()) {
             var nodes = getNodesToConnect(pNode, this);
             if (nodes.from && __.isFun(nodes.from.connect) && nodes.to) {
-                nodes.from.connect(nodes.to);
+                var from_channel = nodes.from.from_channel;
+                var to_channel = nodes.from.to_channel;
+                if(__.isNotUndef(from_channel) && __.isNotUndef(to_channel)) {
+                    nodes.from.connect(nodes.to,from_channel,to_channel);
+                } else {
+                    nodes.from.connect(nodes.to);
+                }
             } else {
                 logToConsole("ERROR - connect did not happen");
             }

@@ -82,6 +82,25 @@ cracked.out = function (params) {
 };
 
 /**
+ * System out - destination with a master volume w/ multi-channel support
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#out
+ * @public
+ */
+cracked.multi_out = function (params) {
+    var gain = __.isNum(params) ? params : 1;
+    var userParams = __.isObj(params) ? params : {};
+    var to_channel = userParams.channel || 0;
+    userParams.mapping = userParams.mapping || {};
+    __.begin("multi_out", userParams).gain({from_channel:0,to_channel:to_channel}).merger().destination().end("multi_out");
+    return cracked;
+};
+
+/**
  * System in - input with a master volume
  * Alias for adc
  * @plugin
