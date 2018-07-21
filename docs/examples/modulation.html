@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Cracked Documentation</title>
+    <!-- Foundation CSS-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/css/foundation.min.css">
+    <link rel="stylesheet" href="includes/examples.css" type="text/css"/>
+    <!-- Prism CSS-->
+    <script srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/js/vendor/custom.modernizr.js"></script>
+</head>
+
+<body>
+<div class="row">
+    <div class="small-12 columns">
+        <h1 class="page-title">Cracked Documentation<small> examples/modulation.html</small></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns example-container">
+        <div id="editor1" class="tiny editor">
+
+//simple frequency modulation
+//the "modulates" parameter on the gain tells it to connect
+//to the frequency audio param of the 2nd sine.
+__().sine(.1).gain({gain:100,modulates:"frequency"}).sine().dac(.25);
+
+//start up the sines
+__("sine").start();
+
+        </div>
+        <p><button class="play" data-id="editor1">START</button></p>
+
+        <div id="editor2" class="small editor">
+
+//slightly more complex example
+//the "modulates" parameter on the gain tells it to connect
+//to the frequency audio param of the 2nd sine.
+__().sine(.1).gain({gain:100,modulates:"frequency"}).sine().dac(.15);
+//same as the line above, but add a delay after the gain
+__().sine(.1).gain(100).delay({modulates:"frequency",delay:1}).sine().connect("dac");
+
+//start up the sines
+__("sine").start();
+
+        </div>
+        <p><button class="play" data-id="editor2">START</button></p>
+
+        <div id="editor3" class="small editor">
+
+//brown noise as a modulation source
+__().
+    brown().
+    lowpass({frequency:20,q:30}).
+    gain({gain:1000,modulates:"frequency"}).
+    sine(40).
+    dac(.15);
+
+//lfo modulates the frequency of the lowpass
+__().lfo({frequency:.15,gain:5}).connect("lowpass");
+
+//start it up
+__("sine,brown,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor3">START</button></p>
+
+        <h2>LFO</h2>
+
+        <div id="editor4" class="tiny editor">
+
+//create &amp; connect an lfo to a sine and then to output
+//lfo defaults: type=sawtooth, frequency=6, gain=1000, modulates=frequency
+__().lfo().sine().dac(.15);
+
+//start up lfo &amp; sine
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor4">START</button></p>
+
+
+        <div id="editor5" class="small editor">
+
+//create &amp; connect an lfo to a sine and then to output
+//set master gain to .25
+__().lfo({frequency:4,type:"sine",gain:10,id:"lfo1"}).sine().dac(.25);
+
+//connect lfo #2 to lfo#1, modulate gain
+__().lfo({frequency:.1,modulates:"gain",gain:50,type:"sine"}).connect("#lfo1");
+
+//start
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor5">START</button></p>
+
+
+        <div id="editor6" class="small editor">
+
+//create &amp; connect a sine to output
+//set master gain to .25
+__().sine().gain(.5).dac(.25);
+
+//create a 2nd sine with double the frequency
+__().sine(880).gain(.25).connect("dac");
+
+//connect an lfo to both sines
+__().lfo({frequency:4,type:"sine",gain:20}).connect("sine");
+
+//start
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor6">START</button></p>
+
+
+        <div id="editor7" class="small editor">
+
+//create sine &amp; gain nodes and connect to output
+__().sine(180).gain(.75).dac(.5);
+
+//create an lfo and connect to the gain node
+//slow sawtooth ramp
+__().lfo({modulates:"gain",frequency:.15,gain:1}).connect("gain");
+
+//start
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor7">START</button></p>
+
+
+        <div id="editor8" class="tiny editor">
+
+//create sine &amp; gain nodes and connect to output
+__().sine(180).gain().dac(.5);
+
+//cheap tremolo effect
+__().lfo({modulates:"gain",frequency:10,gain:1,type:"triangle"}).connect("gain");
+
+//start
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor8">START</button></p>
+
+        <div id="editor9" class="tiny editor">
+
+//lfo with pink noise as its type.
+__().
+    lfo({type:"pink",gain:500,modulates:"detune"}).
+    sine(180).
+    dac();
+
+//start it up
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor9">START</button></p>
+
+        <div id="editor10" class="small editor">
+
+//set up a sine with a delay
+__().sine(300).delay().dac(0.25);
+
+//lfo modulating the delay time & feedback parameters of the delay
+__().lfo({type:"sine",modulates:"feedback",frequency:0.05,gain:0.01}).connect("delay");
+__().lfo({type:"sine",modulates:"delay",frequency:0.1,gain:0.015}).connect("delay");
+
+__("sine,lfo").start();
+
+        </div>
+        <p><button class="play" data-id="editor10">START</button></p>
+
+        <div id="editor11" class="tiny editor">
+
+//create saw->panner->dac
+__().saw().panner().dac(0.25);
+//create an lfo and connect it to modulate the panner
+__().lfo({type:"square", modulates:"pan", frequency:1}).connect("panner").play();
+
+        </div>
+        <p><button class="play" data-id="editor11">START</button></p>
+
+
+    </div>
+</div>
+
+
+<!-- Foundation JS-->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../dist/cracked.js"></script>
+<script src="includes/examples.js"></script>
+</body>
+
+</html>

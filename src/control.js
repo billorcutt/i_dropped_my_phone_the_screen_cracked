@@ -11,7 +11,7 @@
  * //start the sine node
  * __("sine").start();</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  * @memberof cracked
  * @name cracked#start
  * @category Control
@@ -19,14 +19,27 @@
  * @public
  */
 cracked.start = function () {
-    if (!recordingMacro()) {
-        for (var i = 0; i < _selectedNodes.length; i++) {
-            var currNode = getNodeWithUUID(_selectedNodes[i]);
-            if (currNode && !currNode.getIsPlaying()) {
-                currNode.start();
+
+    //workaround for https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+    if(_context.state === 'suspended') {
+        _context.resume().then(function() {
+            _start();
+        });
+    } else {
+        _start();
+    }
+
+    function _start() {
+        if (!recordingMacro()) {
+            for (var i = 0; i < _selectedNodes.length; i++) {
+                var currNode = getNodeWithUUID(_selectedNodes[i]);
+                if (currNode && !currNode.getIsPlaying()) {
+                    currNode.start();
+                }
             }
         }
     }
+
     return cracked;
 };
 
@@ -37,7 +50,7 @@ cracked.start = function () {
  * //stop the sine node
  * __("sine").stop();</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  * 
  * @memberof cracked
  * @name cracked#stop
@@ -62,7 +75,7 @@ cracked.stop = function () {
  * //ramp the frequency of the sine. 220 to 880 in 5 seconds
  * __("sine").ramp(880,5,"frequency",220);</code></pre>
  *
- * [See more envelope examples](../../examples/envelopes.html)
+ * [See more envelope examples](examples/envelopes.html)
  *
  * @function
  * @memberof cracked
@@ -76,10 +89,39 @@ cracked.stop = function () {
  *
  */
 cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
+
+    //helper function to get param mapping
+    var mapParam = function (node,param) {
+        var mappingResult = "";
+        if(node.getParamMapping) {
+            var mapping = node.getParamMapping() || {};
+            mappingResult = mapping[param] || "";
+            //strip off .value
+            if(mappingResult.indexOf(".")!==-1) {
+                mappingResult = mappingResult.split(".")[0];
+            }
+        }
+        return mappingResult;
+    };
+
+    //loop over selected nodes
     for (var i = 0; i < _selectedNodes.length; i++) {
+
         var currNode = getNodeWithUUID(_selectedNodes[i]);
+        var native = currNode.isMacro() ? currNode.getNativeNode() : [currNode.getNativeNode()];
+        var mappedParam = "";
+        for(var z=0;z<native.length;z++) {
+            var nativeWrapper = getNodeWithUUID(native[z].uuid);
+            if(nativeWrapper) {
+                mappedParam = mapParam(nativeWrapper,paramToRamp);
+                if(mappedParam) {
+                    break;
+                }
+            }
+        }
+
         if (currNode) {
-            currNode.ramp(target, timeToRamp, paramToRamp, null, initial);
+            currNode.ramp(target, timeToRamp, (mappedParam || paramToRamp), null, initial);
         }
     }
     return cracked;
@@ -94,7 +136,7 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * //set the frequency of the sine to 880
  * __("sine").attr({"frequency":880});</code></pre>
  *
- * [See more control examples](../../examples/control.html)
+ * [See more control examples](examples/control.html)
  *
  * @function
  * @memberof cracked
@@ -152,13 +194,8 @@ function applyParam(node, keyStr, value, map) {
 function setAudioParam(node, value) {
     if (node && __.isFun(node.setValueAtTime)) {
         var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-        if(_ignoreGrid) {
-            node.cancelScheduledValues(time);
-            node.value = value;
-        } else {
-            node.cancelScheduledValues(time);
-            node.setValueAtTime(value, time);
-        }
+        node.cancelScheduledValues(time);
+        node.setValueAtTime(value, time);
     }
 }
 

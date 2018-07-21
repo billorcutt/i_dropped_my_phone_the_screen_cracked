@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Cracked Documentation</title>
+    <!-- Foundation CSS-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/css/foundation.min.css">
+    <link rel="stylesheet" href="includes/examples.css" type="text/css"/>
+    <!-- Prism CSS-->
+    <script srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/js/vendor/custom.modernizr.js"></script>
+</head>
+
+<body>
+<div class="row">
+    <div class="small-12 columns">
+        <h1 class="page-title">Cracked Documentation<small> examples/control.html</small></h1>
+    </div>
+</div>
+<div class="row">
+
+    <div class="small-12 columns example-container">
+
+        <h3>Attr</h3>
+
+        <div id="editor1" class="small editor">
+
+//set up sounds to control
+__().sine().lowpass().gain().dac();
+
+//add a delay in parallel
+__("sine").delay().connect("gain");
+
+//use attr() to set any attribute in any combination on a node
+__("lowpass").attr({"frequency":200,"q":5});
+__("sine").attr({"detune":6});
+__("gain").attr({"gain":0.5});
+__("delay").attr({"delay":1,feedback:0.9});
+
+        </div>
+        <p><button class="play" data-id="editor1">START</button></p>
+
+        <h3>Start, Stop &amp Play</h3>
+
+        <div id="editor2" class="medium editor">
+
+//set up sounds to control
+__().sine().lowpass().gain().dac();
+
+//start the sine
+__("sine").start();
+
+//stop the sine
+__("sine").stop();
+
+//add a sawtooth
+__().saw().connect("lowpass");
+
+//start the saw and the sine
+__("saw,sine").start();
+
+//stop the saw
+__("saw").stop();
+
+//stop everything;
+__("*").stop();
+
+//start everything
+__.play();
+
+        </div>
+        <p><button class="play" data-id="editor2">START</button></p>
+
+        <h3>Convenience Methods</h3>
+
+        <div id="editor3" class="small editor">
+
+//set up sounds to control
+__().sine().lowpass().gain().dac();
+
+//add a delay in parallel
+__("sine").delay().connect("gain");
+
+//example convenience methods to set a single parameter
+__("lowpass").frequency(200);
+__("sine").detune(6);
+__("gain").volume(0.5);
+__("delay").time(1);
+__("delay").feedback(0.9);
+
+        </div>
+        <p><button class="play" data-id="editor3">START</button></p>
+
+        <div id="editor4" class="medium editor">
+
+//set up sounds to control
+__().
+        sampler({path:"../../data/various/gun-cock.wav",loop:true}).
+        ring().
+        gain().
+        dac(0.5).
+        play();
+
+//use jquery to bind to events from the slider
+$("input[type='range']").bind("input",function(evt){
+    if(evt && evt.target) {
+        var mods = $(evt.target).data("modifies");
+        if(mods==="speed") {
+            __("sampler").speed(evt.target.value);
+        } else if(mods==="distortion") {
+            __("ring").distortion(evt.target.value);
+        } else if(mods==="frequency") {
+            __("ring").frequency(evt.target.value);
+        }
+    }
+});
+
+</div>
+
+        <input type="range" data-modifies="speed" data-selector="sampler" step=".001" min=0.001 max=2> <span class="range-label">Speed</span>
+        <input type="range" data-modifies="distortion" data-selector="ring" min=1 max=100> <span class="range-label">Distortion</span>
+        <input type="range" data-modifies="frequency" data-selector="ring" min=1 max=2000> <span class="range-label">Frequency</span>
+        <p><button class="play" data-id="editor4">START</button></p>
+
+    </div>
+</div>
+<!-- Foundation JS-->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../dist/cracked.js"></script>
+<script src="includes/examples.js"></script>
+</body>
+
+</html>

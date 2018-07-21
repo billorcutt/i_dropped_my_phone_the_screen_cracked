@@ -3,7 +3,7 @@
 /**
  * Sine Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -33,7 +33,7 @@ cracked.sine = function (params) {
 /**
  * Square Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -63,7 +63,7 @@ cracked.square = function (params) {
 /**
  * Sawtooth Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator
@@ -93,7 +93,7 @@ cracked.saw = function (params) {
 /**
  * Triangle Wave Oscillator
  *
- * [See more oscillator examples](../../examples/oscillators.html)
+ * [See more oscillator examples](examples/oscillators.html)
  *
  * @plugin
  * @category Oscillator

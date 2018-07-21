@@ -1,7 +1,7 @@
 /**
  * Attack Decay Sustain Release envelope
  *
- * [See more adsr examples](../../examples/envelopes.html)
+ * [See more adsr examples](examples/envelopes.html)
  *
  * Attack time is the time taken for initial run-up of level from nil to peak, beginning when the key is first pressed.
  * Decay time is the time taken for the subsequent run down from the attack level to the designated sustain level.

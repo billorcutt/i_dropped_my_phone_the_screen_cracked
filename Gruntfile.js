@@ -72,6 +72,13 @@ module.exports = function(grunt) {
                 }
             }
         },
+        copy : {
+            target: {
+                expand: true,
+                src: ['examples/**','dist/**'],
+                dest: 'docs/'
+            }
+        },
         connect: {
             server: {
                 options: {
@@ -82,12 +89,13 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     //grunt.loadNpmTasks('grunt-dox');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
-    grunt.registerTask('default', ['concat', 'jshint', 'uglify','jsdoc']);
+    grunt.registerTask('default', ['concat', 'jshint', 'uglify','jsdoc','copy']);
 
 };

@@ -23,7 +23,7 @@ cracked.clip = function (params) {
 };
 
 /**
- * System out - destination with a master volume.
+ * System out - destination with a master volume. Output is clipped if gain is 1 or less.
  * @plugin
  * @category Miscellaneous
  * @param {Number} [params=1] system out gain
@@ -36,8 +36,11 @@ cracked.dac = function (params) {
     var gain = __.isNum(params) ? params : 1;
     var userParams = __.isObj(params) ? params : {};
     userParams.mapping = userParams.mapping || {};
-
-    __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    if(gain > 1) {
+        __.begin("dac", userParams).gain(gain).destination().end("dac");
+    } else {
+        __.begin("dac", userParams).clip().gain(gain).destination().end("dac");
+    }
     return cracked;
 };
 
@@ -79,6 +82,25 @@ cracked.out = function (params) {
 };
 
 /**
+ * System out - destination with a master volume w/ multi-channel support
+ * @plugin
+ * @category Miscellaneous
+ * @param {Number} [params=1] system out gain
+ * @function
+ * @memberof cracked
+ * @name cracked#out
+ * @public
+ */
+cracked.multi_out = function (params) {
+    var to_channel = __.isNum(params) ? params : __.isObj(params) && params.channel ?  params.channel : 0;
+    var userParams = __.isObj(params) ? params : {};
+    var gain = userParams.gain ? userParams.gain : 1;
+    userParams.mapping = userParams.mapping || {};
+    __.begin("multi_out", userParams).gain({from_channel:0,to_channel:to_channel,gain:gain}).channelMerger().destination().end("multi_out");
+    return cracked;
+};
+
+/**
  * System in - input with a master volume
  * Alias for adc
  * @plugin
@@ -96,6 +118,43 @@ cracked.in = function (params) {
     __.begin("in", userParams).origin().gain(gain).end("in");
     return cracked;
 };
+
+///**
+// * Splitter - channel splitter
+// *
+// * @plugin
+// * @category Miscellaneous
+// * @param {Object} [params] map of optional values
+// * @function
+// * @memberof cracked
+// * @name cracked#splitter
+// * @public
+// */
+//cracked.splitter = function (params) {
+//    var channels = __.isNum(params) ? params : (__.isObj(params) && params.channels) ? params.channels : 2;
+//    var userParams = __.isObj(params) ? params : {channels:channels};
+//    userParams.mapping = userParams.mapping || {};
+//    __.begin("splitter", userParams).channelSplitter(userParams).end("splitter");
+//    return cracked;
+//};
+
+///**
+// * Merger - channel merger
+// *
+// * @plugin
+// * @category Miscellaneous
+// * @param {Object} [params] map of optional values
+// * @function
+// * @memberof cracked
+// * @name cracked#merger
+// * @public
+// */
+//cracked.merger = function (params) {
+//    var userParams = __.isObj(params) ? params : {};
+//    userParams.mapping = userParams.mapping || {};
+//    __.begin("merger", userParams).channelMerger(userParams).end("merger");
+//    return cracked;
+//};
 
 /**
  * Panner - simple stereo panner
@@ -120,7 +179,7 @@ cracked.panner = function (params) {
 /**
  * Sampler - sound file player
  *
- * [See more sampler examples](../../examples/sampler.html)
+ * [See more sampler examples](examples/sampler.html)
  *
  * @plugin
  * @category Miscellaneous

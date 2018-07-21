@@ -1,7 +1,7 @@
 /**
  * Lowpass Filter
  *
- * [See more lowpass examples](../../examples/filters.html)
+ * [See more lowpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -30,7 +30,7 @@ cracked.lowpass = function (params) {
 /**
  * Highpass Filter
  *
- * [See more highpass examples](../../examples/filters.html)
+ * [See more highpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -59,7 +59,7 @@ cracked.highpass = function (params) {
 /**
  * Bandpass Filter
  *
- * [See more bandpass examples](../../examples/filters.html)
+ * [See more bandpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -88,7 +88,7 @@ cracked.bandpass = function (params) {
 /**
  * Lowshelf Filter
  *
- * [See more lowshelf examples](../../examples/filters.html)
+ * [See more lowshelf examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -119,7 +119,7 @@ cracked.lowshelf = function (params) {
 /**
  * Highshelf Filter
  *
- * [See more highshelf examples](../../examples/filters.html)
+ * [See more highshelf examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -150,7 +150,7 @@ cracked.highshelf = function (params) {
 /**
  * Peaking Filter
  *
- * [See more peaking examples](../../examples/filters.html)
+ * [See more peaking examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -181,7 +181,7 @@ cracked.peaking = function (params) {
 /**
  * Notch Filter
  *
- * [See more notch examples](../../examples/filters.html)
+ * [See more notch examples](examples/filters.html)
  *
  * @plugin
  * @category Filter
@@ -210,7 +210,7 @@ cracked.notch = function (params) {
 /**
  * Allpass Filter
  *
- * [See more allpass examples](../../examples/filters.html)
+ * [See more allpass examples](examples/filters.html)
  *
  * @plugin
  * @category Filter

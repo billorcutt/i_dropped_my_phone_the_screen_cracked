@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Cracked Documentation</title>
+    <!-- Foundation CSS-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/css/foundation.min.css">
+    <link rel="stylesheet" href="includes/examples.css" type="text/css"/>
+    <!-- Prism CSS-->
+    <script srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.1.6/js/vendor/custom.modernizr.js"></script>
+</head>
+
+<body>
+<div class="row">
+    <div class="small-12 columns">
+        <h1 class="page-title">Cracked Documentation<small> examples/envelopes.html</small></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns example-container">
+        <h3>Ramp</h3>
+
+        <div id="editor1" class="small editor">
+
+//ramp frequency on a lowpass filter
+__().sine().lowpass({q:20}).dac();
+__("sine").start();
+
+//parameters: target, time (in secs), param to ramp &amp; init value (optional)
+//initialize lowpass to 1000 then ramp the frequency
+//to 100 in .25 seconds.
+__("lowpass").ramp(100,.25,"frequency",1000);
+
+        </div>
+        <p><button class="play" data-id="editor1">START</button></p>
+
+        <div id="editor2" class="small editor">
+
+//target &amp; time can be arrays of values
+__().saw(180).gain(0).dac();
+__("saw").start();
+__("gain").ramp(
+    [1,0,1,0,1,0,1,0],
+    [1,0.25,0.25,0.25,0.25,0.25,0.25,1],
+    "gain",
+    0
+);
+
+        </div>
+        <p><button class="play" data-id="editor2">START</button></p>
+
+        <div id="editor3" class="small editor">
+
+//ramp multiple parameters on multiple nodes
+__().sine(1000).gain(0).dac();
+
+__("sine").start();
+
+//init frequency on sine to 1000, then ramp to 80 in 5 secs,
+//then ramp back to 1000 in 5 more
+__("sine").ramp([80,1000],[5,5],"frequency",1000);
+
+//init gain on the gain node to 0, then ramp to 1 in 5 secs,
+//then ramp back to 0 in another 5 secs
+__("gain").ramp([1,0],[5,5],"gain",0);
+
+        </div>
+        <p><button class="play" data-id="editor3">START</button></p>
+
+
+        <h2>ADSR</h2>
+
+        <div id="editor4" class="tiny editor">
+
+//10 second envelope on the adsr. ramp frequency on lfo & lowpass
+__().lfo({gain:100}).sine(300).lowpass({q:20}).adsr(10).dac().play();
+__("adsr").adsr("trigger");
+__("lfo").ramp([100,10],[5,5],"frequency",10);
+__("lowpass").ramp([150,900],[5,5],"frequency",900);
+
+        </div>
+        <p><button class="play" data-id="editor4">START</button></p>
+
+        <div id="editor5" class="tiny editor">
+
+//adsr parameters : attack, decay, sustain, hold, release
+__().sine().adsr([1,1,0.35,1,2.25]).gain(0.25).dac().play();
+__().sine(880).adsr([1.2,0.8,0.5,0.5,2.5]).connect("gain");
+__().sine(1760).adsr([2,1,0.35,1,2]).connect("gain");
+__("adsr").adsr("trigger");//trigger all adsr at once
+
+        </div>
+        <p><button class="play" data-id="editor5">START</button></p>
+
+        <div id="editor6" class="tiny editor">
+
+//parameters : attack, decay, sustain, release
+__().saw(30).adsr({id:"a2"}).dac().play();
+//envelope arguments can be a param to the node or the trigger method
+__("#a2").adsr("trigger",[0.025,0.15,0.15,1]);
+
+        </div>
+        <p><button class="play" data-id="editor6">START</button></p>
+
+        <div id="editor7" class="tiny editor">
+
+//short cut parameter : "fast" or "slow" (.25 or 1)
+__().sine().adsr({id:"a4"}).dac().play();
+__("#a4").adsr("trigger","fast");
+
+        </div>
+        <p><button class="play" data-id="editor7">START</button></p>
+    </div>
+</div>
+<!-- Foundation JS-->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../dist/cracked.js"></script>
+<script src="includes/examples.js"></script>
+</body>
+
+</html>

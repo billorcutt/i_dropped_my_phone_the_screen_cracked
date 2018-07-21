@@ -53,16 +53,22 @@ function audioNodeFactory(creationParams) {
         node = _context[creationParams.method].apply(_context, creationParams.methodParams || []);
         for (var creationParam in creationParams.settings) {
             if (creationParams.settings.hasOwnProperty(creationParam)) {
-                applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+                if(creationParam === "to_channel" || creationParam === "from_channel") {
+                    node[creationParam] = creationParams.settings[creationParam];
+                } else {
+                    applyParam(node, creationParam, creationParams.settings[creationParam], creationParams.mapping);
+                }
             }
         }
     } else if (_context && creationParams.method === "createDestination") {
         node = _context.destination;
     } else if (_context && creationParams.method === "createOrigin") {
         node = createMockMediaStream(creationParams);
-    } else {
+    } else if (_context && creationParams.method === "createMacro") {
         //its a macro
         node = [];
+    } else {
+        throw new Error("Couldn't create audio node. Create method "+creationParams.method+" not supported.");
     }
     logToConsole(node);
     return node;
@@ -182,6 +188,11 @@ function AudioNode(type, creationParams, userSettings) {
                         currNode[paramToRamp].linearRampToValueAtTime(target[i], (now + prevTime + time[i]));
                     }
                 } else {
+                    //if we're looping and the user seems to be trying to sync to the loop, we'll clamp it
+                    if(!_ignoreGrid && __.sec2ms(time) === _loopInterval) {
+                        time = Math.min(time,(_loopTimeToNextStep - _context.currentTime));
+                    }
+                    //and yes, this is some bullshit code to fix a bug i dont understand...
                     logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time) + " current time " + (_context.currentTime));
                     currNode[paramToRamp].linearRampToValueAtTime(target, (now + time));
                 }
@@ -452,7 +463,10 @@ function AudioNode(type, creationParams, userSettings) {
         } else {
             if (currNode && __.isFun(currNode.disconnect)) {
                 var wrapper = getNodeWithUUID(currNode.uuid);
-                currNode.disconnect();
+                //fixes a bug in Firefox and Safari when disconnecting a destination node
+                try {
+                    currNode.disconnect();
+                } catch (e) {}
                 wrapper.setIsPlaying(false);
                 this.setIsPlaying(false);
             }
@@ -464,7 +478,13 @@ function AudioNode(type, creationParams, userSettings) {
         if (nodeToConnect && this.getUUID() !== nodeToConnect.getUUID()) {
             var nodes = getNodesToConnect(this, nodeToConnect);
             if (nodes.from && __.isFun(nodes.from.connect) && nodes.to) {
-                nodes.from.connect(nodes.to);
+                var from_channel = nodes.from.from_channel;
+                var to_channel = nodes.from.to_channel;
+                if(__.isNotUndef(from_channel) && __.isNotUndef(to_channel)) {
+                    nodes.from.connect(nodes.to,from_channel,to_channel);
+                } else {
+                    nodes.from.connect(nodes.to);
+                }
             } else {
                 logToConsole("ERROR - connect did not happen");
             }
@@ -477,7 +497,13 @@ function AudioNode(type, creationParams, userSettings) {
         if (pNode && this.getUUID() !== pNode.getUUID()) {
             var nodes = getNodesToConnect(pNode, this);
             if (nodes.from && __.isFun(nodes.from.connect) && nodes.to) {
-                nodes.from.connect(nodes.to);
+                var from_channel = nodes.from.from_channel;
+                var to_channel = nodes.from.to_channel;
+                if(__.isNotUndef(from_channel) && __.isNotUndef(to_channel)) {
+                    nodes.from.connect(nodes.to,from_channel,to_channel);
+                } else {
+                    nodes.from.connect(nodes.to);
+                }
             } else {
                 logToConsole("ERROR - connect did not happen");
             }
