@@ -90,7 +90,7 @@ cracked.out = function (params) {
  * @param {Number} [userParams.channel=1]
  * @function
  * @memberof cracked
- * @name cracked#out
+ * @name cracked#multi_out
  * @public
  */
 cracked.multi_out = function (params) {
