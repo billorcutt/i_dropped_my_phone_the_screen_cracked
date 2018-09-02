@@ -430,13 +430,19 @@ function AudioNode(type, creationParams, userSettings) {
                     var offset = (currNode && currNode.loopStart && __.isNum(currNode.loopStart)) ? currNode.loopStart : 0;
                     var duration = (currNode && currNode.loopEnd && __.isNum(currNode.loopEnd)) ? currNode.loopEnd - offset : 0;
                     var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-                    /*if(offset && duration) {
+                    if(duration) {
+                        console.log("duration");
                         currNode.start(time,offset,duration);
-                    } else*/ if(offset) {
+                    } else if(offset) {
+                        console.log("offset");
                         currNode.start(time,offset);
                     } else {
+                        console.log("time");
                         currNode.start(time);
                     }
+
+                    console.log(time, offset,duration, currNode, "start stuff....");
+
                     wrapper.setIsPlaying(true);
                     this.setIsPlaying(true);
                 }
