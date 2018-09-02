@@ -200,6 +200,38 @@ function AudioNode(type, creationParams, userSettings) {
         }
     };
 
+    //instance method for getting attribute values
+    this.getAttr = function(userParams) {
+        var nativeNode = this.getNativeNode();
+        var values = [];
+        if (__.isArr(nativeNode)) {
+            flatten(nativeNode).forEach(function (_node, _i, _array) {
+                var mapping = getNodeWithUUID(_node.uuid).getParamMapping();
+                values.push(getParamValue(_node, userParams, mapping || {}));
+                logToConsole(_node);
+            });
+        } else {
+            var mapping = getNodeWithUUID(nativeNode.uuid).getParamMapping();
+            values.push(getParamValue(nativeNode, userParams, mapping || {}));
+            logToConsole(nativeNode);
+        }
+        return values[0];
+    };
+
+    //helper for above
+    function getParamValue(node, keyStr, map) {
+        var mappingResult = resolveParamMapping(keyStr, map),
+        keyArr = mappingResult.path.split(".");
+
+        for (var i = 0; i < keyArr.length; i++) {
+            if((i + 1) < keyArr.length) {
+                node = node[keyArr[i]];
+            } else {
+                return node[keyArr[i]];
+            }
+        }
+    }
+
     //instance method for setting attributes
     this.attr = function (userParams) {
         for (var key in userParams) {

@@ -441,7 +441,8 @@ cracked.buffer = function (userParams) {
         "mapping": {
             "speed": "playbackRate.value",
             "start": "loopStart",
-            "end": "loopEnd"
+            "end": "loopEnd",
+            "duration":"buffer.duration"
         }
     };
     var buffersrc = createNode("buffer", creationParams, userParams);

@@ -128,8 +128,9 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
 };
 
 /**
- * Set attribute values on a node. Takes an object with
- * any number of key:value pairs to set
+ * Set or get attribute values on a node. Takes an object with
+ * any number of key:value pairs to set. A string with the param
+ * name returns the current value of that param.
  *
  * <pre><code>//create and connect sine->lowpass->dac & play
  * __().sine().lowpass().dac().play();
@@ -146,14 +147,19 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * @param {Object} userParams options object
  * @param {String} userParams.paramName
  * @param {} userParams.paramValue
+ * @param {String} userParams
  *
  */
 cracked.attr = function (userParams) {
-    for (var i = 0; i < _selectedNodes.length; i++) {
-        var currNode = getNodeWithUUID(_selectedNodes[i]);
-        if (currNode && userParams) {
-            currNode.attr(userParams);
+    if(typeof userParams === "object") {
+        for (var i = 0; i < _selectedNodes.length; i++) {
+            var currNode = getNodeWithUUID(_selectedNodes[i]);
+            if (currNode && userParams) {
+                currNode.attr(userParams);
+            }
         }
+    } else if (typeof userParams === "string" && _selectedNodes.length && getNodeWithUUID(_selectedNodes[0])){
+        return getNodeWithUUID(_selectedNodes[0]).getAttr(userParams);
     }
     return cracked;
 };

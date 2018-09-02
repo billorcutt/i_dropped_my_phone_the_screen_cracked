@@ -509,6 +509,38 @@ function AudioNode(type, creationParams, userSettings) {
         }
     };
 
+    //instance method for getting attribute values
+    this.getAttr = function(userParams) {
+        var nativeNode = this.getNativeNode();
+        var values = [];
+        if (__.isArr(nativeNode)) {
+            flatten(nativeNode).forEach(function (_node, _i, _array) {
+                var mapping = getNodeWithUUID(_node.uuid).getParamMapping();
+                values.push(getParamValue(_node, userParams, mapping || {}));
+                logToConsole(_node);
+            });
+        } else {
+            var mapping = getNodeWithUUID(nativeNode.uuid).getParamMapping();
+            values.push(getParamValue(nativeNode, userParams, mapping || {}));
+            logToConsole(nativeNode);
+        }
+        return values[0];
+    };
+
+    //helper for above
+    function getParamValue(node, keyStr, map) {
+        var mappingResult = resolveParamMapping(keyStr, map),
+        keyArr = mappingResult.path.split(".");
+
+        for (var i = 0; i < keyArr.length; i++) {
+            if((i + 1) < keyArr.length) {
+                node = node[keyArr[i]];
+            } else {
+                return node[keyArr[i]];
+            }
+        }
+    }
+
     //instance method for setting attributes
     this.attr = function (userParams) {
         for (var key in userParams) {
@@ -1030,8 +1062,9 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
 };
 
 /**
- * Set attribute values on a node. Takes an object with
- * any number of key:value pairs to set
+ * Set or get attribute values on a node. Takes an object with
+ * any number of key:value pairs to set. A string with the param
+ * name returns the current value of that param.
  *
  * <pre><code>//create and connect sine->lowpass->dac & play
  * __().sine().lowpass().dac().play();
@@ -1048,14 +1081,19 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
  * @param {Object} userParams options object
  * @param {String} userParams.paramName
  * @param {} userParams.paramValue
+ * @param {String} userParams
  *
  */
 cracked.attr = function (userParams) {
-    for (var i = 0; i < _selectedNodes.length; i++) {
-        var currNode = getNodeWithUUID(_selectedNodes[i]);
-        if (currNode && userParams) {
-            currNode.attr(userParams);
+    if(typeof userParams === "object") {
+        for (var i = 0; i < _selectedNodes.length; i++) {
+            var currNode = getNodeWithUUID(_selectedNodes[i]);
+            if (currNode && userParams) {
+                currNode.attr(userParams);
+            }
         }
+    } else if (typeof userParams === "string" && _selectedNodes.length && getNodeWithUUID(_selectedNodes[0])){
+        return getNodeWithUUID(_selectedNodes[0]).getAttr(userParams);
     }
     return cracked;
 };
@@ -1560,7 +1598,8 @@ cracked.buffer = function (userParams) {
         "mapping": {
             "speed": "playbackRate.value",
             "start": "loopStart",
-            "end": "loopEnd"
+            "end": "loopEnd",
+            "duration":"buffer.duration"
         }
     };
     var buffersrc = createNode("buffer", creationParams, userParams);
@@ -4155,7 +4194,7 @@ cracked.out = function (params) {
  * @param {Number} [userParams.channel=1]
  * @function
  * @memberof cracked
- * @name cracked#out
+ * @name cracked#multi_out
  * @public
  */
 cracked.multi_out = function (params) {
