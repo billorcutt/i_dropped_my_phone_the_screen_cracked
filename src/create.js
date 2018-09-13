@@ -224,10 +224,12 @@ function AudioNode(type, creationParams, userSettings) {
         keyArr = mappingResult.path.split(".");
 
         for (var i = 0; i < keyArr.length; i++) {
-            if((i + 1) < keyArr.length) {
+            if((i + 1) < keyArr.length && node[keyArr[i]]) {
                 node = node[keyArr[i]];
-            } else {
+            } else if(node[keyArr[i]]) {
                 return node[keyArr[i]];
+            } else {
+                return null;
             }
         }
     }

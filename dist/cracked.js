@@ -431,18 +431,12 @@ function AudioNode(type, creationParams, userSettings) {
                     var duration = (currNode && currNode.loopEnd && __.isNum(currNode.loopEnd)) ? currNode.loopEnd - offset : 0;
                     var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
                     if(duration) {
-                        console.log("duration");
                         currNode.start(time,offset,duration);
                     } else if(offset) {
-                        console.log("offset");
                         currNode.start(time,offset);
                     } else {
-                        console.log("time");
                         currNode.start(time);
                     }
-
-                    console.log(time, offset,duration, currNode, "start stuff....");
-
                     wrapper.setIsPlaying(true);
                     this.setIsPlaying(true);
                 }
@@ -539,10 +533,12 @@ function AudioNode(type, creationParams, userSettings) {
         keyArr = mappingResult.path.split(".");
 
         for (var i = 0; i < keyArr.length; i++) {
-            if((i + 1) < keyArr.length) {
+            if((i + 1) < keyArr.length && node[keyArr[i]]) {
                 node = node[keyArr[i]];
-            } else {
+            } else if(node[keyArr[i]]) {
                 return node[keyArr[i]];
+            } else {
+                return null;
             }
         }
     }
@@ -1070,12 +1066,16 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
 /**
  * Set or get attribute values on a node. Takes an object with
  * any number of key:value pairs to set. A string with the param
- * name returns the current value of that param.
+ * name returns the current value of that param on the first selected
+ * node.
  *
  * <pre><code>//create and connect sine->lowpass->dac & play
  * __().sine().lowpass().dac().play();
  * //set the frequency of the sine to 880
- * __("sine").attr({"frequency":880});</code></pre>
+ * __("sine").attr({"frequency":880});
+ *
+ * //get the frequency
+ * __("sine").attr("frequency"); //880</code></pre>
  *
  * [See more control examples](examples/control.html)
  *

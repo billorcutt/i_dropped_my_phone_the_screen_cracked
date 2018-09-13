@@ -130,12 +130,16 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
 /**
  * Set or get attribute values on a node. Takes an object with
  * any number of key:value pairs to set. A string with the param
- * name returns the current value of that param.
+ * name returns the current value of that param on the first selected
+ * node.
  *
  * <pre><code>//create and connect sine->lowpass->dac & play
  * __().sine().lowpass().dac().play();
  * //set the frequency of the sine to 880
- * __("sine").attr({"frequency":880});</code></pre>
+ * __("sine").attr({"frequency":880});
+ *
+ * //get the frequency
+ * __("sine").attr("frequency"); //880</code></pre>
  *
  * [See more control examples](examples/control.html)
  *
