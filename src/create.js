@@ -159,8 +159,10 @@ function AudioNode(type, creationParams, userSettings) {
 
     //wrapper node ramp method
     //TBD - needs to work with something other than linear ramp
-    this.ramp = function (target, time, paramToRamp, nodeParam, initial) {
+    this.ramp = function (target, time, paramToRamp, nodeParam, initial, type) {
         var currNode = nodeParam || nativeNode;
+        var rampMethod = type === 'exp' ? 'exponentialRampToValueAtTime' : 'linearRampToValueAtTime';
+        var _target;
         if (__.isArr(currNode)) {
             currNode.forEach(function (_node, _i, _array) {
                 //recurse
@@ -171,7 +173,7 @@ function AudioNode(type, creationParams, userSettings) {
             if (
                 currNode &&
                 currNode[paramToRamp] &&
-                __.isFun(currNode[paramToRamp].linearRampToValueAtTime)
+                __.isFun(currNode[paramToRamp][rampMethod])
             ) {
                 currNode[paramToRamp].cancelScheduledValues(now);
                 var initialValue = __.ifUndef(initial, currNode[paramToRamp].value),
@@ -185,7 +187,8 @@ function AudioNode(type, creationParams, userSettings) {
                     for (var i = 0; i < target.length; i++) {
                         prevTime = __.isUndef(time[i - 1]) ? 0 : (time[i - 1] + prevTime);
                         logToConsole(" target " + target[i] + " time " + (_context.currentTime + prevTime + time[i]) + " current time " + (_context.currentTime));
-                        currNode[paramToRamp].linearRampToValueAtTime(target[i], (now + prevTime + time[i]));
+                        _target = (target[i] === 0 && type === 'exp') ? 0.0001 : target[i];
+                        currNode[paramToRamp][rampMethod](_target, (now + prevTime + time[i]));
                     }
                 } else {
                     //if we're looping and the user seems to be trying to sync to the loop, we'll clamp it
@@ -194,7 +197,8 @@ function AudioNode(type, creationParams, userSettings) {
                     }
                     //and yes, this is some bullshit code to fix a bug i dont understand...
                     logToConsole(" target " + target + " time " + (_context.currentTime + prevTime + time) + " current time " + (_context.currentTime));
-                    currNode[paramToRamp].linearRampToValueAtTime(target, (now + time));
+                    _target = (target === 0 && type === 'exp') ? 0.0001 : target;
+                    currNode[paramToRamp][rampMethod](_target, (now + time));
                 }
             }
         }

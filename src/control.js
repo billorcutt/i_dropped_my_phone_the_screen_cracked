@@ -86,9 +86,10 @@ cracked.stop = function () {
  * @param {Number|Array} timeToRamp length of ramp in seconds
  * @param {String} paramToRamp name of parameter to ramp
  * @param {Number} initial value to start the ramp at
+ * @param {String} type of ramp, "exp" is exponential. defaults to linear.
  *
  */
-cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
+cracked.ramp = function (target, timeToRamp, paramToRamp, initial, type) {
 
     //helper function to get param mapping
     var mapParam = function (node,param) {
@@ -121,7 +122,7 @@ cracked.ramp = function (target, timeToRamp, paramToRamp, initial) {
         }
 
         if (currNode) {
-            currNode.ramp(target, timeToRamp, (mappedParam || paramToRamp), null, initial);
+            currNode.ramp(target, timeToRamp, (mappedParam || paramToRamp), null, initial, type);
         }
     }
     return cracked;
