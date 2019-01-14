@@ -121,9 +121,9 @@ function AudioNode(type, creationParams, userSettings) {
                     var offset = (currNode && currNode.loopStart && __.isNum(currNode.loopStart)) ? currNode.loopStart : 0;
                     var duration = (currNode && currNode.loopEnd && __.isNum(currNode.loopEnd)) ? currNode.loopEnd - offset : 0;
                     var time = _ignoreGrid ? _context.currentTime : _loopTimeToNextStep;
-                    if(duration) {
+                    /*if(duration) {
                         currNode.start(time,offset,duration);
-                    } else if(offset) {
+                    } else*/ if(offset) {
                         currNode.start(time,offset);
                     } else {
                         currNode.start(time);
