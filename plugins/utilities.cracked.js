@@ -112,3 +112,17 @@ cracked.isSupported = function() {
 cracked.pitch2freq = function (pitch) {
     return 440.0 * Math.pow(2, ((Math.floor(pitch) - 69) / 12));
 };
+
+/**
+ * Converts a frequency to a pitch value
+ * @plugin
+ * @category Utility
+ * @function
+ * @memberof cracked
+ * @name cracked#freq2pitch
+ * @public
+ * @param {Number} freq
+ */
+cracked.freq2pitch = function (freq) {
+    return Math.floor(69 + 12 * Math.log2(freq / 440));
+};
