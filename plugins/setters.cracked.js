@@ -87,6 +87,44 @@ cracked.volume = function (userParam) {
 };
 
 /**
+ * Fade out convenience method
+ *
+ * [See more control examples](examples/control.html)
+ *
+ * @plugin
+ * @category Setters
+ * @function
+ * @memberof cracked
+ * @name cracked#fadeOut
+ * @public
+ * @param {Number} userParam optional time to set in seconds. Defaults to 0.02
+ */
+cracked.fadeOut = function (userParam) {
+    var num = __.isNum(userParam) ? userParam : 0.02;
+    cracked.ramp(0,num,"gain");
+    return cracked;
+};
+
+/**
+ * Fade in convenience method
+ *
+ * [See more control examples](examples/control.html)
+ *
+ * @plugin
+ * @category Setters
+ * @function
+ * @memberof cracked
+ * @name cracked#fadeIn
+ * @public
+ * @param {Number} userParam optional time to set in seconds. Defaults to 0.02
+ */
+cracked.fadeIn = function (userParam) {
+    var num = __.isNum(userParam) ? userParam : 0.02;
+    cracked.ramp(1,num,"gain");
+    return cracked;
+};
+
+/**
  * Delay time setter convenience method
  *
  * [See more control examples](examples/control.html)
