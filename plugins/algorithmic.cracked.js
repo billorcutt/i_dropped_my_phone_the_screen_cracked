@@ -253,7 +253,7 @@ cracked.random = function (min, max) {
 };
 
 /**
- * Create a throttling function that returns true when called every nth times
+ * Factory to create a throttling function that returns true when called every nth times
  * @plugin
  * @category Algorithmic
  * @function
@@ -268,5 +268,42 @@ cracked.throttle_factory = function  (num) {
     return function() {
         index++;
         return index % number===0;
+    };
+};
+
+/**
+ * Factory to create a sequencing function that returns true when called every nth times
+ * @plugin
+ * @category Algorithmic
+ * @function
+ * @memberof cracked
+ * @name cracked#sequence_factory
+ * @public
+ * @param {Array} arr
+ * @param {Function} fn
+ */
+cracked.sequence_factory = function  (arr,fn) {
+    var count = 0;
+    var current_index = 0;
+    var arr_copy = arr.slice();
+    var current_value = arr_copy[current_index];
+    var transition = true;
+    var first_run = true;
+    return function() {
+        if(count===current_value) {
+            if(current_index===arr_copy.length-1) {
+                current_index = 0;
+            } else {
+                current_index++;
+            }
+            count = 1;
+            transition=true;
+            current_value = arr_copy[current_index];
+        } else {
+            count++;
+            transition=first_run||false;
+        }
+        fn(transition,current_index);
+        first_run=false;
     };
 };
