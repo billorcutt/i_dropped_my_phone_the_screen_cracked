@@ -1725,7 +1725,6 @@ var _isLoopRunning = false,
  * @param {String} [arg] stop/start/reset commands
  * @param {Object} [config] configuration object
  * @param {Number} [config.interval=100] step length in ms
- * @param {Number} [config.steps=16] number of steps
  * @returns {cracked}
  */
 cracked.loop = function () {
@@ -1751,7 +1750,10 @@ cracked.loop = function () {
         } else if(arguments.length === 2 && __.isNum(arguments[0]) && __.isFun(arguments[1])) {
             //configure loop
             configureLoop({interval:arguments[0]}, arguments[1], []);
-        }
+        } else if(arguments.length === 3 && !arguments[0] && !arguments[1] && __.isArr(arguments[2])) {
+			//configure data
+	        configureLoop(arguments[0], arguments[1], arguments[2]);
+		}
     }
     return cracked;
 };
@@ -1831,7 +1833,8 @@ function resetLoop() {
 */
 function configureLoop(opts, fn, data) {
     if (opts && __.isObj(opts)) {
-        _loopStepSize = opts.steps ? opts.steps : data && data.length ? data.length : 0;
+        //step size is determined by data length now
+        //_loopStepSize = opts.steps ? opts.steps : data && data.length ? data.length : 0;
         _loopInterval = opts.interval || 200;
     } else if(opts && __.isNum(opts) && !fn && !data) {
         //just configuring tempo only
@@ -1840,8 +1843,9 @@ function configureLoop(opts, fn, data) {
     if (__.isFun(fn)) {
         _loopCB = fn;
     }
-    if (__.isArr(data) && data.length === _loopStepSize) {
+    if (__.isArr(data)) {
         _loopData = data;
+        _loopStepSize = data.length;
     } else {
         _loopData = [];
     }
