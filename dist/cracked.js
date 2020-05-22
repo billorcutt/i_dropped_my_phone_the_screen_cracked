@@ -5085,6 +5085,48 @@ cracked.pan = function (userParam) {
 };
 
 /**
+ * gang_of_oscillators
+ *
+ * Just a bunch of oscillators
+ *
+ * [See more synth examples](examples/synth.html)
+ *
+ * @plugin
+ * @category Synth
+ * @function
+ * @memberof cracked
+ * @name cracked#gang_of_oscillators
+ * @public
+ * @param {Object} [params] map of optional values
+ */
+
+cracked.gang_of_oscillators = function(params) {
+
+    /*
+     //expected format
+     {
+     size:16,
+     lp_freq:20000,
+     type:sine
+     }
+     //or just type as a string
+     */
+
+    var type = __.isStr(params) ? params : __.isObj(params) && params.type ? params.type : "sine";
+    var lp_freq =  __.isObj(params) && params.lp_freq ? params.lp_freq : 20000;
+    var size =  __.isObj(params) && params.size ? params.size : 16;
+
+    __().begin("gang_of_oscillators",params);
+    __().gain();
+    for(var i=0;i<size;i++) {
+        __().begin("v"+(i+1)).osc({type:type}).lowpass(lp_freq).gain(0).end("v"+(i+1)).connect("gain");
+    }
+    __.end("gang_of_oscillators");
+
+    return cracked;
+};
+
+/**
  * monosynth
  *
  * Simple monophonic synth
