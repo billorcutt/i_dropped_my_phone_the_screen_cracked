@@ -1,7 +1,7 @@
 /**
  * Factory to create a sequencing function that returns true when called every nth times
  * @plugin
- * @category Algorithmic
+ * @category Sequence
  * @function
  * @memberof cracked
  * @name cracked#sequence_factory
@@ -54,7 +54,7 @@ cracked.__sequence_storage = {};
  * [See more sampler examples](examples/sequence.html)
  *
  * @plugin
- * @category Miscellaneous
+ * @category Sequence
  * @function
  * @memberof cracked
  * @name cracked#sequence
