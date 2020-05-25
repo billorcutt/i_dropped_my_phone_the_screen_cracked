@@ -5606,6 +5606,25 @@ cracked.ms2sec = function(ms) {
 };
 
 /**
+ * Converts a millisecond value to minute value
+ * @plugin
+ * @category Utility
+ * @function
+ * @memberof cracked
+ * @name cracked#ms2min
+ * @public
+ * @param {Number} ms
+ */
+cracked.ms2min = function(ms) {
+    if(__.isNum(ms)) {
+        return ((ms / 1000) / 60);
+    } else {
+        console.error("ms2sec: param not number");
+        return ms;
+    }
+};
+
+/**
  * Returns a boolean true if the browser supports
  * web audio
  * @plugin
