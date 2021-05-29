@@ -3307,14 +3307,13 @@ cracked.__sequence_storage = {};
  * @memberof cracked
  * @name cracked#sequence
  * @public
- * @param {String} name name of sequencessss
+ * @param {String} name name of sequence
  */
 cracked.sequence = function(name) {
 
     if(!cracked.__sequence_storage[name]) {
         cracked.__sequence_storage[name]={
-            steps:{},
-            xxx:{}
+            steps:{}
         };
     }
 

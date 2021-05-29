@@ -17,5 +17,8 @@
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-jsdoc": "2.4.1",
     "ink-docstrap": "1.1.4"
+  },
+  "scripts":{
+    "build":"grunt default"
   }
 }
