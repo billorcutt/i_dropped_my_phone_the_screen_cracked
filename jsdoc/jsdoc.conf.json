@@ -2,7 +2,7 @@
   "tags": {
     "allowUnknownTags": true
   },
-  "plugins": ["node_modules/grunt-jsdoc/node_modules/jsdoc/plugins/markdown","jsdoc/plugins/categories"],
+  "plugins": ["jsdoc/plugins/markdown","jsdoc/plugins/categories"],
     "markdown": {
         "tags": ["category"]
     },
@@ -15,7 +15,7 @@
     "outputSourcePath": true,
     "systemName": "I Dropped My Phone The Screen Cracked",
     "footer": "",
-    "copyright": "Copyright © 2014-2016 The contributors to \"I Dropped My Phone The Screen Cracked\".",
+    "copyright": "Copyright © 2014-2021 The contributors to \"I Dropped My Phone The Screen Cracked\".",
     "navType": "vertical",
     "theme": "cerulean",
     "sort":false,
