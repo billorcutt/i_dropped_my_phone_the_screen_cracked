@@ -238,6 +238,31 @@ cracked.shuffle = function (arr) {
 };
 
 /**
+ * Returns a function that generates a unique random number between 0 & max.
+ * If max is exceeded, then repeat the sequence of random numbers.
+ * @plugin
+ * @category Algorithmic
+ * @function
+ * @memberof cracked
+ * @name cracked#urnFactory
+ * @public
+ * @param {Number} max
+ */
+cracked.urnFactory = function (max) {
+
+    var arr = [];
+    while(arr.length < max){
+        var r = Math.floor(Math.random() * max);
+        if(arr.indexOf(r) === -1) arr.push(r);
+    }
+
+    return function() {
+        return cracked.array_next(arr);
+    };
+
+};
+
+/**
  * Returns a random number between min & max
  * @plugin
  * @category Algorithmic
