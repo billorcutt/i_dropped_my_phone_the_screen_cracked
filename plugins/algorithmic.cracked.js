@@ -274,7 +274,7 @@ cracked.urnFactory = function (max) {
  * @param {Number} max
  */
 cracked.random = function (min, max) {
-    return Math.round(min + Math.random() * (max - min));
+    return Math.round(min + Math.random() * (max - min) );
 };
 
 /**
