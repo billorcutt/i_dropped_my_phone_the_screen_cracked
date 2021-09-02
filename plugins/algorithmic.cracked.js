@@ -120,7 +120,7 @@ cracked.array_next = function(arr,offset,limit,callback) {
  * @returns {boolean}
  */
 cracked.chance = function(percentage) {
-    return percentage > __.random(0,100);
+    return percentage > __.random(0,99);
 };
 
 /**
