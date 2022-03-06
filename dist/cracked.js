@@ -3095,7 +3095,7 @@ cracked.array_next = function(arr,offset,limit,callback) {
  * @returns {boolean}
  */
 cracked.chance = function(percentage) {
-    return percentage > __.random(0,100);
+    return percentage > __.random(0,99);
 };
 
 /**
@@ -3213,6 +3213,33 @@ cracked.shuffle = function (arr) {
 };
 
 /**
+ * Returns a function that generates a unique random number between 0 & max.
+ * If max is exceeded, then repeat the sequence of random numbers.
+ * @plugin
+ * @category Algorithmic
+ * @function
+ * @memberof cracked
+ * @name cracked#urnFactory
+ * @public
+ * @param {Number} max
+ */
+cracked.urnFactory = function (max) {
+
+    var arr = [];
+    while(arr.length < max){
+        var r = Math.floor(Math.random() * max);
+        if(arr.indexOf(r) === -1) {
+            arr.push(r);
+        }
+    }
+
+    return function() {
+        return cracked.array_next(arr);
+    };
+
+};
+
+/**
  * Returns a random number between min & max
  * @plugin
  * @category Algorithmic
@@ -3224,7 +3251,7 @@ cracked.shuffle = function (arr) {
  * @param {Number} max
  */
 cracked.random = function (min, max) {
-    return Math.round(min + Math.random() * (max - min));
+    return Math.round(min + Math.random() * (max - min) );
 };
 
 /**

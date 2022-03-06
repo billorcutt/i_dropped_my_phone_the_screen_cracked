@@ -253,7 +253,9 @@ cracked.urnFactory = function (max) {
     var arr = [];
     while(arr.length < max){
         var r = Math.floor(Math.random() * max);
-        if(arr.indexOf(r) === -1) arr.push(r);
+        if(arr.indexOf(r) === -1) {
+            arr.push(r);
+        }
     }
 
     return function() {
