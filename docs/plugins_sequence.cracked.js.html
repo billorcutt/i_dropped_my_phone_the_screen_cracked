@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>plugins/sequence.cracked.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><ul><li><h3><a href="cracked.html">cracked</a></h3><ul class='methods'><li><h5 style="font-size:15px">Find</h5></li><li data-type='method'><a href="cracked.html#reset">reset</a></li><li data-type='method'><a href="cracked.html#exec">exec</a></li><li data-type='method'><a href="cracked.html#each">each</a></li><li data-type='method'><a href="cracked.html#filter">filter</a></li><li data-type='method'><a href="cracked.html#find">find</a></li><li><h5 style="font-size:15px">Control</h5></li><li data-type='method'><a href="cracked.html#start">start</a></li><li data-type='method'><a href="cracked.html#stop">stop</a></li><li data-type='method'><a href="cracked.html#ramp">ramp</a></li><li data-type='method'><a href="cracked.html#attr">attr</a></li><li><h5 style="font-size:15px">Node</h5></li><li data-type='method'><a href="cracked.html#script">script</a></li><li data-type='method'><a href="cracked.html#waveshaper">waveshaper</a></li><li data-type='method'><a href="cracked.html#compressor">compressor</a></li><li data-type='method'><a href="cracked.html#gain">gain</a></li><li data-type='method'><a href="cracked.html#native_delay">native_delay</a></li><li data-type='method'><a href="cracked.html#osc">osc</a></li><li data-type='method'><a href="cracked.html#biquadFilter">biquadFilter</a></li><li data-type='method'><a href="cracked.html#channelMerger">channelMerger</a></li><li data-type='method'><a href="cracked.html#channelSplitter">channelSplitter</a></li><li data-type='method'><a href="cracked.html#convolver">convolver</a></li><li data-type='method'><a href="cracked.html#stereoPanner">stereoPanner</a></li><li data-type='method'><a href="cracked.html#destination">destination</a></li><li data-type='method'><a href="cracked.html#origin">origin</a></li><li data-type='method'><a href="cracked.html#buffer">buffer</a></li><li><h5 style="font-size:15px">Sequence</h5></li><li data-type='method'><a href="cracked.html#loop">loop</a></li><li data-type='method'><a href="cracked.html#bind">bind</a></li><li data-type='method'><a href="cracked.html#unbind">unbind</a></li><li><h5 style="font-size:15px">Macro</h5></li><li data-type='method'><a href="cracked.html#begin">begin</a></li><li data-type='method'><a href="cracked.html#end">end</a></li><li><h5 style="font-size:15px">Midi</h5></li><li data-type='method'><a href="cracked.html#midi_supported">midi_supported</a></li><li data-type='method'><a href="cracked.html#midi_init">midi_init</a></li><li data-type='method'><a href="cracked.html#midi_receive">midi_receive</a></li><li data-type='method'><a href="cracked.html#midi_noteon">midi_noteon</a></li><li data-type='method'><a href="cracked.html#midi_noteoff">midi_noteoff</a></li><li data-type='method'><a href="cracked.html#midi_control">midi_control</a></li><li><h5 style="font-size:15px">Connect</h5></li><li data-type='method'><a href="cracked.html#connect">connect</a></li><li data-type='method'><a href="cracked.html#remove">remove</a></li><li><h5 style="font-size:15px">Debug</h5></li><li data-type='method'><a href="cracked.html#log">log</a></li><li data-type='method'><a href="cracked.html#size">size</a></li><li data-type='method'><a href="cracked.html#_dumpState">_dumpState</a></li><li data-type='method'><a href="cracked.html#_getNode">_getNode</a></li><li><h5 style="font-size:15px">Type</h5></li><li data-type='method'><a href="cracked.html#ifUndef">ifUndef</a></li><li data-type='method'><a href="cracked.html#isNotUndef">isNotUndef</a></li><li data-type='method'><a href="cracked.html#isUndef">isUndef</a></li><li data-type='method'><a href="cracked.html#isObj">isObj</a></li><li data-type='method'><a href="cracked.html#isNum">isNum</a></li><li data-type='method'><a href="cracked.html#isStr">isStr</a></li><li data-type='method'><a href="cracked.html#isArr">isArr</a></li><li data-type='method'><a href="cracked.html#isFun">isFun</a></li><li><h5 style="font-size:15px">Algorithmic</h5></li><li data-type='method'><a href="cracked.html#random_interval">random_interval</a></li><li data-type='method'><a href="cracked.html#random_envelope">random_envelope</a></li><li data-type='method'><a href="cracked.html#fill_array">fill_array</a></li><li data-type='method'><a href="cracked.html#array_next">array_next</a></li><li data-type='method'><a href="cracked.html#chance">chance</a></li><li data-type='method'><a href="cracked.html#scales">scales</a></li><li data-type='method'><a href="cracked.html#chords">chords</a></li><li data-type='method'><a href="cracked.html#random_scale">random_scale</a></li><li data-type='method'><a href="cracked.html#random_arpeggio">random_arpeggio</a></li><li data-type='method'><a href="cracked.html#shuffle">shuffle</a></li><li data-type='method'><a href="cracked.html#random">random</a></li><li data-type='method'><a href="cracked.html#throttle_factory">throttle_factory</a></li><li><h5 style="font-size:15px">Delay</h5></li><li data-type='method'><a href="cracked.html#reverb">reverb</a></li><li data-type='method'><a href="cracked.html#delay">delay</a></li><li data-type='method'><a href="cracked.html#comb">comb</a></li><li><h5 style="font-size:15px">Distortion</h5></li><li data-type='method'><a href="cracked.html#bitcrusher">bitcrusher</a></li><li data-type='method'><a href="cracked.html#ring">ring</a></li><li data-type='method'><a href="cracked.html#overdrive">overdrive</a></li><li><h5 style="font-size:15px">Envelope</h5></li><li data-type='method'><a href="cracked.html#adsr">adsr</a></li><li><h5 style="font-size:15px">Filter</h5></li><li data-type='method'><a href="cracked.html#lowpass">lowpass</a></li><li data-type='method'><a href="cracked.html#highpass">highpass</a></li><li data-type='method'><a href="cracked.html#bandpass">bandpass</a></li><li data-type='method'><a href="cracked.html#lowshelf">lowshelf</a></li><li data-type='method'><a href="cracked.html#highshelf">highshelf</a></li><li data-type='method'><a href="cracked.html#peaking">peaking</a></li><li data-type='method'><a href="cracked.html#notch">notch</a></li><li data-type='method'><a href="cracked.html#allpass">allpass</a></li><li><h5 style="font-size:15px">Interaction</h5></li><li data-type='method'><a href="cracked.html#mouse_movement">mouse_movement</a></li><li data-type='method'><a href="cracked.html#key_press">key_press</a></li><li><h5 style="font-size:15px">Miscellaneous</h5></li><li data-type='method'><a href="cracked.html#clip">clip</a></li><li data-type='method'><a href="cracked.html#dac">dac</a></li><li data-type='method'><a href="cracked.html#adc">adc</a></li><li data-type='method'><a href="cracked.html#out">out</a></li><li data-type='method'><a href="cracked.html#multi_out">multi_out</a></li><li data-type='method'><a href="cracked.html#in">in</a></li><li data-type='method'><a href="cracked.html#panner">panner</a></li><li data-type='method'><a href="cracked.html#sampler">sampler</a></li><li><h5 style="font-size:15px">Modulator</h5></li><li data-type='method'><a href="cracked.html#lfo">lfo</a></li><li data-type='method'><a href="cracked.html#stepper">stepper</a></li><li><h5 style="font-size:15px">Noise</h5></li><li data-type='method'><a href="cracked.html#noise">noise</a></li><li data-type='method'><a href="cracked.html#pink">pink</a></li><li data-type='method'><a href="cracked.html#white">white</a></li><li data-type='method'><a href="cracked.html#brown">brown</a></li><li><h5 style="font-size:15px">Oscillator</h5></li><li data-type='method'><a href="cracked.html#sine">sine</a></li><li data-type='method'><a href="cracked.html#square">square</a></li><li data-type='method'><a href="cracked.html#saw">saw</a></li><li data-type='method'><a href="cracked.html#triangle">triangle</a></li><li><h5 style="font-size:15px">Sequence</h5></li><li data-type='method'><a href="cracked.html#sequence_factory">sequence_factory</a></li><li data-type='method'><a href="cracked.html#sequence">sequence</a></li><li><h5 style="font-size:15px">Setters</h5></li><li data-type='method'><a href="cracked.html#frequency">frequency</a></li><li data-type='method'><a href="cracked.html#detune">detune</a></li><li data-type='method'><a href="cracked.html#type">type</a></li><li data-type='method'><a href="cracked.html#volume">volume</a></li><li data-type='method'><a href="cracked.html#fadeOut">fadeOut</a></li><li data-type='method'><a href="cracked.html#fadeIn">fadeIn</a></li><li data-type='method'><a href="cracked.html#time">time</a></li><li data-type='method'><a href="cracked.html#feedback">feedback</a></li><li data-type='method'><a href="cracked.html#speed">speed</a></li><li data-type='method'><a href="cracked.html#drive">drive</a></li><li data-type='method'><a href="cracked.html#distortion">distortion</a></li><li data-type='method'><a href="cracked.html#q">q</a></li><li data-type='method'><a href="cracked.html#pan">pan</a></li><li><h5 style="font-size:15px">Synth</h5></li><li data-type='method'><a href="cracked.html#gang_of_oscillators">gang_of_oscillators</a></li><li data-type='method'><a href="cracked.html#monosynth">monosynth</a></li><li data-type='method'><a href="cracked.html#polysynth">polysynth</a></li><li><h5 style="font-size:15px">Utility</h5></li><li data-type='method'><a href="cracked.html#play">play</a></li><li data-type='method'><a href="cracked.html#scale">scale</a></li><li data-type='method'><a href="cracked.html#sec2ms">sec2ms</a></li><li data-type='method'><a href="cracked.html#ms2sec">ms2sec</a></li><li data-type='method'><a href="cracked.html#isSupported">isSupported</a></li><li data-type='method'><a href="cracked.html#pitch2freq">pitch2freq</a></li><li data-type='method'><a href="cracked.html#freq2pitch">freq2pitch</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plugins/sequence.cracked.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Factory to create a sequencing function that returns true when called every nth times
+ * @plugin
+ * @category Sequence
+ * @function
+ * @memberof cracked
+ * @name cracked#sequence_factory
+ * @public
+ * @param {Array} arr
+ * @param {Function} fn
+ */
+cracked.sequence_factory = function  (arr,fn) {
+    var count = 0;
+    var current_index = 0;
+    var arr_copy = arr.slice();
+    var current_value = arr_copy[current_index];
+    var transition = true;
+    var first_run = true;
+    return function() {
+        if(count===current_value) {
+            if(current_index===arr_copy.length-1) {
+                current_index = 0;
+            } else {
+                current_index++;
+            }
+            count = 1;
+            transition=true;
+            current_value = arr_copy[current_index];
+        } else {
+            count++;
+            transition=first_run||false;
+        }
+        fn(transition,current_index);
+        first_run=false;
+    };
+};
+
+//Sequence
+
+/*
+ __.sequence("foo")
+    .step(function(){console.log("this step got called at minute 1")},1)
+    .step(function(){console.log("this step got called at minute 2")},2);
+
+ __.sequence("foo").start();
+ */
+
+//this should be private
+cracked.__sequence_storage = {};
+
+/**
+ * Sequence - create a series of steps that take a function to execute and a time in minutes for when to execute it
+ *
+ * [See more sampler examples](examples/sequence.html)
+ *
+ * @plugin
+ * @category Sequence
+ * @function
+ * @memberof cracked
+ * @name cracked#sequence
+ * @public
+ * @param {String} name name of sequence
+ */
+cracked.sequence = function(name) {
+
+    if(!cracked.__sequence_storage[name]) {
+        cracked.__sequence_storage[name]={
+            steps:{}
+        };
+    }
+
+    return (function(name){
+        return {
+            step:function(func,time){
+                cracked.__sequence_storage[name].steps[time.toString()]=func;
+                return this;
+            },
+            start:function(){
+                cracked.__sequence_storage[name].startTime = Date.now();
+                cracked.__sequence_storage[name].clearInterval=setInterval(function(){
+                    var time_elapsed = Date.now() - cracked.__sequence_storage[name].startTime;
+                    var steps = Object.keys(cracked.__sequence_storage[name].steps);
+                    if(steps.length) {
+                        steps.map(function(x){
+                            if(Math.floor(time_elapsed/60000) >= x) {
+                                cracked.__sequence_storage[name].steps[x]();
+                                delete cracked.__sequence_storage[name].steps[x];
+                            }
+                        });
+                    } else {
+                        clearInterval(cracked.__sequence_storage[name].clearInterval);
+                    }
+                },1000);
+            },
+            stop:function(){
+                clearInterval(cracked.__sequence_storage[name].clearInterval);
+            }
+        };
+    })(name);
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Sun May 24 2020 15:37:03 GMT-0700 (Pacific Daylight Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

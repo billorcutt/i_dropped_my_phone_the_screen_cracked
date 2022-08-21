@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/macro.js - Documentation</title>
+    <title>plugins/interaction.cracked.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">src/macro.js</h1>
+    <h1 class="page-title">plugins/interaction.cracked.js</h1>
     
 
     
@@ -39,130 +39,44 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * #Macro#
- *
- * Macro support
- *
- */
-
-/**
- * start macro recording, add any user parameters (id,classname,etc) to the container macro
- * &lt;pre>&lt;code>//define a simple macro named "microsynth"
- * __().begin("microsynth").sine().gain(0).dac().end("microsynth");&lt;/code>&lt;/pre>
- *
- * @memberof cracked
- * @category Macro
- * @name cracked#begin
- * @public
+ * Passes mouse move events to a callback. Tracks the movement of the mouse.
+ * web audio
+ * @plugin
+ * @category Interaction
  * @function
- * @param {String} name macro name
- * @param {Object} userParams options object
- */
-cracked.begin = function (name, userParams) {
-    if (name) {
-        _currentMacro.push(createMacro(name, userParams));
-    }
-    return cracked;
-};
-
-/**
- * end macro recording
- * &lt;pre>&lt;code>//define a simple macro named "microsynth"
- * __().begin("microsynth").sine().gain(0).dac().end("microsynth");&lt;/code>&lt;/pre>
- *
  * @memberof cracked
- * @category Macro
- * @name cracked#end
+ * @name cracked#mouse_movement
  * @public
- * @function
- * @param {String} name macro name
  */
-cracked.end = function (name) {
-    if (
-        recordingMacro() &amp;&amp;
-        getCurrentMacro().getType() === name
-    ) {
-        getCurrentMacro().setMacroNameSpace(getCurrentMacroNamespace());
-        _currentMacro.pop();
-    }
-    return cracked;
-};
-
-/**
-* create the macro container node
-* @function
-* @private
-*/
-function createMacro(name, userParams) {
-    //tbd - macro needs its own class
-    return createNode(name, {
-        method: "createMacro",
-        settings: {}
-    }, userParams);
-}
-
-/**
-* method that updates the current macro
-* container with nodes as they are created
-* @function
-* @private
-*/
-function updateMacro(node) {
-    if (recordingMacro()) {
-        node.setMacroContainerUUID(getCurrentMacro().getUUID());
-        getCurrentMacro().addNativeNode(node.getNativeNode());
-    }
-}
-
-/**
-* are we currently recording a macro? returns boolean
-* @function
-* @private
-*/
-function recordingMacro() {
-    return !!_currentMacro.length;
-}
-
-/**
-* returns the current macro if there is one
-* @function
-* @private
-*/
-function getCurrentMacro() {
-    if (recordingMacro()) {
-        return _currentMacro[_currentMacro.length - 1];
-    } else {
-        return null;
-    }
-}
-
-/**
-* walks the currentMacro stack and returns a
-* str with the current namespace
-* @function
-* @private
-* @return {String} namespace
-*/
-function getCurrentMacroNamespace() {
-    var arr = [],
-        space = " ";
-    if (recordingMacro()) {
-        for (var i = 0; i &lt; _currentMacro.length; i++) {
-            arr.push(_currentMacro[i].getType());
-            arr.push(space);
+cracked.mouse_movement = function(callback) {
+    function moveHandler(e) {
+        if(callback) {
+            callback(e);
         }
     }
-    return arr.join("");
-}
+    window.parent.document.removeEventListener("mousemove", moveHandler, false);
+    window.parent.document.addEventListener("mousemove", moveHandler, false);
+};
 
 /**
-* resets the current Macro;
-* @function
-* @private
-*/
-function resetMacro() {
-    _currentMacro = [];
-}</code></pre>
+ * Passes key press events to a callback. Tracks keyboard activity.
+ * web audio
+ * @plugin
+ * @category Interaction
+ * @function
+ * @memberof cracked
+ * @name cracked#key_press
+ * @public
+ */
+cracked.key_press = function(callback) {
+    function keyPressHandler(e) {
+        if(callback) {
+            callback(e);
+        }
+    }
+    window.parent.document.removeEventListener("keypress", keyPressHandler, false);
+    window.parent.document.addEventListener("keypress", keyPressHandler, false);
+};</code></pre>
         </article>
     </section>
 
