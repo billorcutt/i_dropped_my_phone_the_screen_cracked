@@ -178,5 +178,5 @@ cracked.freq2pitch = function (freq) {
  cracked.pitch2note = function (notenum) {
     var octave = parseInt((notenum / 12) - 1);
     var index = notenum % 12;  
-    return ([ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ][index] + " " + octave);
+    return ([ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ][index] + "" + octave);
 };
