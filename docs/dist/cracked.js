@@ -5713,4 +5713,19 @@ cracked.freq2pitch = function (freq) {
     return Math.floor(69 + 12 * Math.log2(freq / 440));
 };
 
+/**
+ * Converts a midi number to a note value
+ * @plugin
+ * @category Utility
+ * @function
+ * @memberof cracked
+ * @name cracked#pitch2note
+ * @public
+ * @param {Number} freq
+ */
+ cracked.pitch2note = function (notenum) {
+    var octave = parseInt((notenum / 12) - 1);
+    var index = notenum % 12;  
+    return ([ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ][index] + "" + octave);
+};
 })();
