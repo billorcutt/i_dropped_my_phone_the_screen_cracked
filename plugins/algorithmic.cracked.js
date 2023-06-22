@@ -298,43 +298,6 @@ cracked.throttle_factory = function  (num) {
     };
 };
 
-/**
- * Factory to create a sequencing function that returns true when called every nth times
- * @plugin
- * @category Algorithmic
- * @function
- * @memberof cracked
- * @name cracked#sequence_factory
- * @public
- * @param {Array} arr
- * @param {Function} fn
- */
-cracked.sequence_factory = function  (arr,fn) {
-    var count = 0;
-    var current_index = 0;
-    var arr_copy = arr.slice();
-    var current_value = arr_copy[current_index];
-    var transition = true;
-    var first_run = true;
-    return function() {
-        if(count===current_value) {
-            if(current_index===arr_copy.length-1) {
-                current_index = 0;
-            } else {
-                current_index++;
-            }
-            count = 1;
-            transition=true;
-            current_value = arr_copy[current_index];
-        } else {
-            count++;
-            transition=first_run||false;
-        }
-        fn(transition,current_index);
-        first_run=false;
-    };
-};
-
 //Sequence
 
 /*
@@ -349,7 +312,7 @@ cracked.sequence_factory = function  (arr,fn) {
 cracked.__sequence_storage = {};
 
 /**
- * Sequence - create a series of steps that take a function to execute and a time in minutes for when to execute it
+ * Sequence - create a series of steps that take a function to execute and a time in minutes (including fractions) for when to execute it
  *
  * [See more sampler examples](examples/sequence.html)
  *
@@ -382,7 +345,7 @@ cracked.sequence = function(name) {
                     var steps = Object.keys(cracked.__sequence_storage[name].steps);
                     if(steps.length) {
                         steps.map(function(x){
-                            if(Math.floor(time_elapsed/60000) >= x) {
+                            if(time_elapsed >= (x * 60000)) {
                                 cracked.__sequence_storage[name].steps[x]();
                                 delete cracked.__sequence_storage[name].steps[x];
                             }
