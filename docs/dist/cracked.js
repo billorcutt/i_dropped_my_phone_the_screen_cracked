@@ -3072,12 +3072,12 @@ cracked.fill_array = function(size,fn) {
 
 cracked.array_next = function(arr,offset,limit,callback) {
     offset = offset || 0;
-    limit = limit || arr.length;
+    limit = limit===0 ? 1 : !limit ? arr.length : limit;
     var adjusted_limit = Math.min(limit,arr.length);
     var adjusted_offset = Math.min(offset,adjusted_limit-1);
     var old_index = arr.current_index = __.ifUndef(arr.current_index,-1);
     arr.current_index = (arr.current_index+1+adjusted_offset) >= adjusted_limit ? 0 : arr.current_index+1;
-    if((old_index > arr.current_index) && (typeof callback === "function")) {
+    if((old_index >= arr.current_index) && (typeof callback === "function")) {
         callback();
     }
     return arr[arr.current_index + adjusted_offset];
