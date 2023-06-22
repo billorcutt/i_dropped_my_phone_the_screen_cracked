@@ -312,7 +312,7 @@ cracked.throttle_factory = function  (num) {
 cracked.__sequence_storage = {};
 
 /**
- * Sequence - create a series of steps that take a function to execute and a time in minutes for when to execute it
+ * Sequence - create a series of steps that take a function to execute and a time in minutes (including fractions) for when to execute it
  *
  * [See more sampler examples](examples/sequence.html)
  *
@@ -345,7 +345,7 @@ cracked.sequence = function(name) {
                     var steps = Object.keys(cracked.__sequence_storage[name].steps);
                     if(steps.length) {
                         steps.map(function(x){
-                            if(Math.floor(time_elapsed/60000) >= x) {
+                            if(time_elapsed >= (x * 60000)) {
                                 cracked.__sequence_storage[name].steps[x]();
                                 delete cracked.__sequence_storage[name].steps[x];
                             }
